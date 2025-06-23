@@ -1,0 +1,41 @@
+Compile a list of security, operational, and cost requirements to use the AWS {{ .ServiceName }} service.
+
+These requirements should focus on the following areas:
+- Access Control an Authentication
+- Network Security
+- Data Protection, Classification, and Management
+- Logging, Monitoring and Alerting
+- Resiliency and Disaster Recovery
+- Cost Management and Resource Governance
+
+These requirements should be organized as a resulting raw JSON object with the following structure:
+
+{
+    "service": "",
+    "security": [
+        {
+            "name": "",
+            "version": ""
+            "controls": [
+                {
+                    "identifier": "",
+                    "title": ""
+                    "severity": "",
+                    "description": "",
+                    "implementation": {
+                        "type": "",
+                        "description": "",
+                    } 
+                }
+            ]
+        },
+    ],
+    "operational": [],
+    "cost": []
+}
+
+You should compile security requirements from the latest {{ .Frameworks }} frameworks and organize them under the "security" key that outlines each framework's name, version, and a list of the controls under that framework organized by severity, a short description, as well as an implementation key organized by type that identifies whether this control should be implemented from the platform, individual users of the service, or within reuseable Infrastructure as Code (IaC) templates, and also include a short description of how to implement the control. Each control should be sorted based on severity.
+
+You should NOT populate operational requirements or anything further under the "operational" key.
+
+Finally, compile a list of cost reduction requirements from the service's best practice documentation and populate that under the "cost" key using the same structure outlined earlier for the "security" key.
