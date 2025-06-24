@@ -29,8 +29,8 @@ func main() {
 	wg.Add(len(services.ModuleServices))
 	for _, s := range services.ModuleServices {
 		fmt.Printf("Loading %s\n", s.Short)
-		s.ControlPrompt.Outfile = "controls/" + s.Short + ".json"
-		s.ReviewPrompt.Outfile = "reviews/" + s.Short + ".md"
+		s.ControlPrompt.Outfile = "results/controls/" + s.Short + ".json"
+		s.ReviewPrompt.Outfile = "results/reviews/" + s.Short + ".md"
 		initServices <- s
 	}
 	close(initServices)
