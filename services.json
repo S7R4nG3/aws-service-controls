@@ -1,0 +1,12 @@
+{
+    "services": [
+        {
+            "short": "iam",
+            "long": "Identity and Access Management"
+        },
+        {
+            "short": "batch",
+            "long": "Batch"
+        }
+    ]
+}

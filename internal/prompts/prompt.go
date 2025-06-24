@@ -2,6 +2,7 @@ package prompts
 
 import (
 	"bytes"
+	"embed"
 	"io"
 	"os"
 	"text/template"
@@ -18,14 +19,17 @@ type ReviewTemplate struct {
 	TemplateFile string
 }
 
+//go:embed templates
+var templates embed.FS
+
 func GenerateControlText(serviceName string, frameworks string) string {
 	t := GenerateTemplate{
 		ServiceName:  serviceName,
 		Frameworks:   frameworks,
-		TemplateFile: "./templates/generate.tmpl",
+		TemplateFile: "templates/generate.tmpl",
 	}
 	buf := new(bytes.Buffer)
-	tmpl, err := template.ParseFiles(t.TemplateFile)
+	tmpl, err := template.ParseFS(templates, t.TemplateFile)
 	if err != nil {
 		panic(err)
 	}
@@ -45,7 +49,7 @@ func GenerateReviewText(filename string) string {
 		FileContent:  string(c),
 		TemplateFile: "templates/review.tmpl",
 	}
-	tmpl, err := template.ParseFiles(r.TemplateFile)
+	tmpl, err := template.ParseFS(templates, r.TemplateFile)
 	if err != nil {
 		panic(err)
 	}

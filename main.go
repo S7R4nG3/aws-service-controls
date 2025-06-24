@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sync"
+
 	"github.com/S7R4nG3/aws-service-controls/internal/llm"
 	"github.com/S7R4nG3/aws-service-controls/internal/prompts"
 	"github.com/S7R4nG3/aws-service-controls/internal/services"
@@ -11,14 +12,14 @@ import (
 const frameworks string = "CSA v5, NIST 800-53, AWS Foundational Security Best Practices, and AWS Security Hub"
 
 func main() {
-	services := make(chan services.Service, len(services.ModuleServices))
+	initServices := make(chan services.Service, len(services.ModuleServices))
 	controls := make(chan services.Service, len(services.ModuleServices))
 	reviews := make(chan string, len(services.ModuleServices))
 	workerCount := len(services.ModuleServices)
 	var wg sync.WaitGroup
 
 	for i := 0; i < workerCount; i++ {
-		go generateControls(services, controls, &wg)
+		go generateControls(initServices, controls, &wg)
 	}
 
 	for t := 0; t < workerCount; t++ {
@@ -30,9 +31,9 @@ func main() {
 		fmt.Printf("Loading %s\n", s.Short)
 		s.ControlPrompt.Outfile = "controls/" + s.Short + ".json"
 		s.ReviewPrompt.Outfile = "reviews/" + s.Short + ".md"
-		services <- s
+		initServices <- s
 	}
-	close(services)
+	close(initServices)
 	wg.Wait()
 
 	for r := 0; r < len(services.ModuleServices); r++ {
