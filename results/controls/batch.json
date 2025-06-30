@@ -1,0 +1,308 @@
+{
+    "service": "AWS Batch",
+    "security": [
+        {
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v5.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management",
+                    "severity": "High",
+                    "description": "Implement strong identity and access management controls for AWS Batch resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Define IAM roles and policies in CloudFormation/Terraform templates with least privilege access to Batch resources"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "High",
+                    "description": "Ensure proper data classification and protection for data processed in Batch jobs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement data encryption at rest and in transit, classify data sensitivity levels, and apply appropriate security controls"
+                    }
+                },
+                {
+                    "identifier": "EKM-01",
+                    "title": "Encryption and Key Management",
+                    "severity": "High",
+                    "description": "Implement proper encryption key management for Batch resources",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Use AWS KMS for encryption key management and enable encryption for EBS volumes and S3 buckets used by Batch"
+                    }
+                },
+                {
+                    "identifier": "IVS-01",
+                    "title": "Infrastructure and Virtualization Security",
+                    "severity": "Medium",
+                    "description": "Secure the underlying infrastructure and compute environments for Batch",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure secure compute environments with proper security groups, subnets, and instance types in infrastructure templates"
+                    }
+                },
+                {
+                    "identifier": "LOG-01",
+                    "title": "Logging and Monitoring",
+                    "severity": "Medium",
+                    "description": "Implement comprehensive logging and monitoring for Batch activities",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable CloudTrail logging, CloudWatch monitoring, and configure log aggregation for Batch job execution"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "High",
+                    "description": "Manage AWS Batch service accounts and access permissions",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement automated account provisioning and deprovisioning through IAM roles and policies defined in infrastructure code"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "High",
+                    "description": "Protect data transmission to and from Batch compute environments",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable TLS/SSL encryption for all API communications and data transfers to/from Batch resources"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "High",
+                    "description": "Encrypt data at rest in Batch storage systems",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure EBS volume encryption and S3 bucket encryption in infrastructure templates for Batch storage"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "Medium",
+                    "description": "Log security-relevant events in AWS Batch",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable CloudTrail for API logging and CloudWatch for operational logging of Batch activities"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "Medium",
+                    "description": "Monitor AWS Batch systems for security events and anomalies",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement CloudWatch monitoring, AWS Security Hub, and GuardDuty for continuous security monitoring"
+                    }
+                },
+                {
+                    "identifier": "CM-2",
+                    "title": "Baseline Configuration",
+                    "severity": "Low",
+                    "description": "Maintain baseline configurations for Batch compute environments",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Define and maintain standardized compute environment configurations using infrastructure as code templates"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Standard",
+            "version": "v1.0.0",
+            "controls": [
+                {
+                    "identifier": "Batch.1",
+                    "title": "Batch compute environments should use EC2 instances with IMDSv2",
+                    "severity": "High",
+                    "description": "Configure Batch compute environments to use EC2 instances with Instance Metadata Service version 2",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set httpTokens to 'required' and httpPutResponseHopLimit appropriately in launch templates used by Batch compute environments"
+                    }
+                },
+                {
+                    "identifier": "Batch.2",
+                    "title": "Batch job definitions should not have privileged mode enabled",
+                    "severity": "High",
+                    "description": "Ensure Batch job definitions do not run containers in privileged mode",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Set privileged parameter to false in containerProperties of job definitions"
+                    }
+                },
+                {
+                    "identifier": "Batch.3",
+                    "title": "Batch compute environments should be in a VPC",
+                    "severity": "Medium",
+                    "description": "Deploy Batch compute environments within a VPC for network isolation",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure subnets parameter in compute environment definitions to deploy instances in private subnets"
+                    }
+                },
+                {
+                    "identifier": "Batch.4",
+                    "title": "Batch job queues should have logging enabled",
+                    "severity": "Medium",
+                    "description": "Enable logging for Batch job queues to track job execution",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure CloudWatch Logs integration and enable container logging in job definitions"
+                    }
+                },
+                {
+                    "identifier": "Batch.5",
+                    "title": "Batch compute environments should use managed scaling",
+                    "severity": "Low",
+                    "description": "Use AWS managed scaling for Batch compute environments",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set type to 'MANAGED' in compute environment configuration for automatic scaling management"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "2023.1",
+            "controls": [
+                {
+                    "identifier": "Batch.1",
+                    "title": "Batch job definitions should not have elevated privileges",
+                    "severity": "High",
+                    "description": "Job definitions should not grant unnecessary elevated privileges to containers",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure job definitions with minimal required privileges and avoid privileged mode, readonlyRootFilesystem should be true"
+                    }
+                },
+                {
+                    "identifier": "Batch.2",
+                    "title": "Batch compute environments should have detailed monitoring enabled",
+                    "severity": "Medium",
+                    "description": "Enable detailed monitoring for Batch compute environments",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set instanceRole and enable detailed monitoring in compute environment launch templates"
+                    }
+                },
+                {
+                    "identifier": "Batch.3",
+                    "title": "Batch job definitions should specify resource limits",
+                    "severity": "Medium",
+                    "description": "Define appropriate CPU and memory limits for Batch jobs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Specify vcpus and memory parameters in job definition containerProperties to prevent resource exhaustion"
+                    }
+                },
+                {
+                    "identifier": "Batch.4",
+                    "title": "Batch compute environments should use encryption for EBS volumes",
+                    "severity": "Low",
+                    "description": "Enable EBS encryption for compute environment storage",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure encrypted EBS volumes in launch templates used by Batch compute environments"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS Batch Cost Optimization",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "COST-01",
+                    "title": "Use Spot Instances for Fault-Tolerant Workloads",
+                    "severity": "High",
+                    "description": "Leverage EC2 Spot Instances in Batch compute environments for significant cost savings on fault-tolerant workloads",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure bidPercentage and allocationStrategy in compute environment to use Spot instances with diversified instance types"
+                    }
+                },
+                {
+                    "identifier": "COST-02",
+                    "title": "Implement Auto Scaling and Right-Sizing",
+                    "severity": "High",
+                    "description": "Use managed compute environments with auto scaling to automatically adjust capacity based on job queue demand",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set appropriate minvCpus, maxvCpus, and desiredvCpus in managed compute environments for optimal scaling"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Optimize Instance Types and Families",
+                    "severity": "Medium",
+                    "description": "Select appropriate EC2 instance types based on workload characteristics to optimize cost-performance ratio",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Analyze job resource requirements and specify optimal instance types in compute environment instanceTypes parameter"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Implement Job Queue Prioritization",
+                    "severity": "Medium",
+                    "description": "Use job queue priorities to ensure critical jobs run first and optimize resource utilization",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure priority values for job queues and implement job scheduling strategies to maximize throughput"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Enable Cost Allocation Tags",
+                    "severity": "Medium",
+                    "description": "Implement comprehensive tagging strategy for cost tracking and allocation across different teams or projects",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Define consistent tagging strategy in infrastructure templates for all Batch resources including compute environments and job queues"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Optimize Storage Costs",
+                    "severity": "Low",
+                    "description": "Use appropriate storage types and lifecycle policies for temporary and persistent data",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure S3 storage classes, lifecycle policies, and use appropriate EBS volume types for different data access patterns"
+                    }
+                },
+                {
+                    "identifier": "COST-07",
+                    "title": "Implement Resource Monitoring and Alerting",
+                    "severity": "Low",
+                    "description": "Set up monitoring and alerting for cost anomalies and resource utilization",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure CloudWatch billing alarms, AWS Cost Explorer, and AWS Budgets to monitor and alert on Batch costs"
+                    }
+                }
+            ]
+        }
+    ]
+}

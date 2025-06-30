@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 
+	"github.com/S7R4nG3/aws-service-controls/internal/utils"
 	"github.com/anthropics/anthropic-sdk-go"
 )
 
@@ -21,7 +22,7 @@ type LlmPrompt struct {
 
 func NewLlmPrompt(opts ...func(*LlmPrompt)) *LlmPrompt {
 	np := &LlmPrompt{
-		Model:     anthropic.ModelClaude3_7SonnetLatest,
+		Model:     anthropic.ModelClaude4Sonnet20250514,
 		MaxTokens: 32000,
 	}
 	for _, o := range opts {
@@ -73,9 +74,7 @@ func (p LlmPrompt) Run() string {
 	for stream.Next() {
 		event := stream.Current()
 		err := message.Accumulate(event)
-		if err != nil {
-			panic(err)
-		}
+		utils.Check(err, "Error accumulating streaming events...")
 
 		switch eventVariant := event.AsAny().(type) {
 		case anthropic.ContentBlockDeltaEvent:

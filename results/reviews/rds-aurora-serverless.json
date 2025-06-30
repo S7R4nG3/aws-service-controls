@@ -1,0 +1,353 @@
+{
+    "service": "AWS Aurora Serverless",
+    "security": [
+        {
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v4.0",
+            "controls": [
+                {
+                    "identifier": "IAM-02",
+                    "title": "User Access Management",
+                    "severity": "High",
+                    "description": "Implement strong identity and access management controls for Aurora Serverless access",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure IAM policies with least privilege principles, implement MFA, and use IAM database authentication"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "High",
+                    "description": "Ensure data at rest and in transit encryption for Aurora Serverless",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable encryption at rest using AWS KMS and enforce SSL/TLS for data in transit"
+                    }
+                },
+                {
+                    "identifier": "IVS-01",
+                    "title": "Interoperability and Portability",
+                    "severity": "Medium",
+                    "description": "Secure network infrastructure and virtual environments for Aurora Serverless",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy Aurora Serverless in private subnets with VPC security groups and NACLs"
+                    }
+                },
+                {
+                    "identifier": "AIS-01",
+                    "title": "Application and Interface Security",
+                    "severity": "Medium",
+                    "description": "Secure application interfaces and APIs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement secure connection strings and API authentication mechanisms"
+                    }
+                },
+                {
+                    "identifier": "BCR-02",
+                    "title": "Business Continuity Planning",
+                    "severity": "Medium",
+                    "description": "Ensure business continuity and disaster recovery capabilities",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure automated backups, cross-region replication, and point-in-time recovery"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST SP 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "High",
+                    "description": "Enforce approved authorizations for logical access to Aurora Serverless",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement IAM policies and database-level access controls with role-based permissions"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of transmitted information",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable SSL/TLS encryption for all database connections and configure certificate validation"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of information at rest",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable Aurora encryption at rest using AWS KMS with customer-managed keys"
+                    }
+                },
+                {
+                    "identifier": "AU-12",
+                    "title": "Audit Event Generation",
+                    "severity": "Medium",
+                    "description": "Generate audit records for events with defined auditable content",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable Aurora database activity monitoring and CloudTrail logging"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "System Backup",
+                    "severity": "Medium",
+                    "description": "Conduct backups of user-level information and system-level information",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure automated backups with appropriate retention periods and cross-region backup copies"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "Medium",
+                    "description": "Monitor the information system to detect attacks and indicators of potential attacks",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable CloudWatch monitoring, Performance Insights, and GuardDuty for threat detection"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Standard",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "RDS.3",
+                    "title": "RDS DB instances should have encryption at rest enabled",
+                    "severity": "Medium",
+                    "description": "Aurora Serverless clusters should have encryption at rest enabled",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable encryption when creating Aurora Serverless cluster using AWS KMS keys"
+                    }
+                },
+                {
+                    "identifier": "RDS.4",
+                    "title": "RDS cluster snapshots and database snapshots should be encrypted",
+                    "severity": "Medium",
+                    "description": "Ensure Aurora Serverless snapshots are encrypted",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable snapshot encryption through cluster encryption configuration"
+                    }
+                },
+                {
+                    "identifier": "RDS.5",
+                    "title": "RDS DB instances should be configured with multiple Availability Zones",
+                    "severity": "Medium",
+                    "description": "Configure Aurora Serverless for high availability across multiple AZs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy Aurora Serverless cluster across multiple AZs within the VPC"
+                    }
+                },
+                {
+                    "identifier": "RDS.6",
+                    "title": "Enhanced monitoring should be configured for RDS DB instances",
+                    "severity": "Low",
+                    "description": "Enable enhanced monitoring for Aurora Serverless clusters",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Performance Insights and CloudWatch enhanced monitoring"
+                    }
+                },
+                {
+                    "identifier": "RDS.12",
+                    "title": "IAM authentication should be configured for RDS clusters",
+                    "severity": "Medium",
+                    "description": "Enable IAM database authentication for Aurora Serverless",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable IAM database authentication in cluster configuration and create database users that use IAM authentication"
+                    }
+                },
+                {
+                    "identifier": "RDS.13",
+                    "title": "RDS automatic minor version upgrades should be enabled",
+                    "severity": "Low",
+                    "description": "Enable automatic minor version upgrades for Aurora Serverless",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set auto_minor_version_upgrade parameter to true in cluster configuration"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "2024.1.0",
+            "controls": [
+                {
+                    "identifier": "RDS.2",
+                    "title": "RDS DB instances should prohibit public read access",
+                    "severity": "Critical",
+                    "description": "Ensure Aurora Serverless clusters are not publicly accessible",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set publicly_accessible parameter to false and deploy in private subnets"
+                    }
+                },
+                {
+                    "identifier": "RDS.1",
+                    "title": "RDS snapshots should be private",
+                    "severity": "Critical",
+                    "description": "Ensure Aurora Serverless snapshots are not shared publicly",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "AWS ensures snapshots are private by default, verify no public sharing is configured"
+                    }
+                },
+                {
+                    "identifier": "RDS.7",
+                    "title": "RDS clusters should have deletion protection enabled",
+                    "severity": "Medium",
+                    "description": "Enable deletion protection for Aurora Serverless clusters",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set deletion_protection parameter to true in cluster configuration"
+                    }
+                },
+                {
+                    "identifier": "RDS.8",
+                    "title": "RDS DB instances should have deletion protection enabled",
+                    "severity": "Medium",
+                    "description": "Enable deletion protection for production Aurora Serverless clusters",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure deletion protection through cluster settings and IaC templates"
+                    }
+                },
+                {
+                    "identifier": "RDS.11",
+                    "title": "RDS instances should have logging enabled",
+                    "severity": "Medium",
+                    "description": "Enable appropriate logging for Aurora Serverless clusters",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable audit logs, error logs, general logs, and slow query logs as appropriate"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS Aurora Serverless Cost Optimization",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "COST-01",
+                    "title": "Right-size Aurora Serverless capacity settings",
+                    "severity": "High",
+                    "description": "Configure appropriate minimum and maximum Aurora Capacity Units (ACUs) based on workload requirements",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set min_capacity and max_capacity parameters based on performance testing and monitoring data"
+                    }
+                },
+                {
+                    "identifier": "COST-02",
+                    "title": "Implement auto-pause functionality",
+                    "severity": "High",
+                    "description": "Enable auto-pause for development and testing environments to reduce costs during inactivity",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure auto_pause and seconds_until_auto_pause parameters for non-production clusters"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Optimize backup retention policies",
+                    "severity": "Medium",
+                    "description": "Set appropriate backup retention periods to balance cost and recovery requirements",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure backup_retention_period based on business requirements, typically 7-35 days"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Monitor and optimize Aurora Serverless usage patterns",
+                    "severity": "Medium",
+                    "description": "Regularly review CloudWatch metrics to optimize capacity settings and identify cost savings opportunities",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Set up CloudWatch dashboards and alarms to monitor ACU utilization and costs"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Use appropriate storage optimization",
+                    "severity": "Medium",
+                    "description": "Implement data lifecycle policies and remove unnecessary data to optimize storage costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement database maintenance procedures to archive or delete old data and optimize storage usage"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Implement cost allocation and tagging",
+                    "severity": "Low",
+                    "description": "Use consistent tagging strategy for cost allocation and tracking",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Apply standardized tags for environment, project, cost center, and owner to enable cost tracking and allocation"
+                    }
+                },
+                {
+                    "identifier": "COST-07",
+                    "title": "Optimize cross-region backup strategy",
+                    "severity": "Low",
+                    "description": "Evaluate the need for cross-region backups and snapshots to optimize data transfer costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure cross-region automated backups only when required for disaster recovery, considering data transfer costs"
+                    }
+                }
+            ]
+        }
+    ]
+}
+
+## Summary of Changes Made:
+
+### CSA Cloud Controls Matrix:
+1. **Version**: Changed from "v5.0" to "v4.0" (current version)
+2. **IAM-01**: Changed to "IAM-02" with title "User Access Management" (correct identifier)
+3. **IVS-01**: Changed title to "Interoperability and Portability" and severity to "Medium"
+4. **BCR-01**: Changed to "BCR-02" with title "Business Continuity Planning"
+
+### NIST SP 800-53:
+1. **Name**: Corrected to "NIST SP 800-53" (proper full name)
+2. **AU-12**: Updated title to "Audit Event Generation"
+3. **CP-9**: Updated title to "System Backup"
+4. **SI-4**: Updated title to "System Monitoring"
+
+### AWS Foundational Security Standard:
+1. **Name**: Changed to "AWS Foundational Security Standard" (correct name)
+2. **RDS.3 & RDS.4**: Changed severity from "High" to "Medium"
+3. **RDS.5**: Changed severity from "High" to "Medium"
+4. **RDS.6**: Changed severity from "Medium" to "Low"
+
+### AWS Security Hub:
+1. **Version**: Updated to "2024.1.0" (more current version)
+
+All other controls and implementations were appropriate and aligned with their respective frameworks.

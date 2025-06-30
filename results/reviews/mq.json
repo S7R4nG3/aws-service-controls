@@ -1,0 +1,327 @@
+{
+  "service": "AWS MQ",
+  "security": [
+    {
+      "name": "CSA Cloud Controls Matrix",
+      "version": "v4.0.10",
+      "controls": [
+        {
+          "identifier": "IAM-01",
+          "title": "Entitlement",
+          "severity": "Critical",
+          "description": "Ensure proper identity and access management policies are established for AWS MQ resources with appropriate entitlements and access controls",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define IAM policies with least privilege access for AWS MQ brokers, queues, and administrative functions using CloudFormation or Terraform"
+          }
+        },
+        {
+          "identifier": "EKM-01",
+          "title": "Encryption and Key Management",
+          "severity": "Critical",
+          "description": "Implement proper encryption key management for data at rest and in transit",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable AWS KMS encryption for MQ brokers and configure customer-managed keys for enhanced control"
+          }
+        },
+        {
+          "identifier": "DSI-01",
+          "title": "Data Classification",
+          "severity": "High",
+          "description": "Implement data classification for message data to ensure appropriate security controls are applied",
+          "implementation": {
+            "type": "User",
+            "description": "Classify message data based on sensitivity and implement appropriate retention policies"
+          }
+        },
+        {
+          "identifier": "IVS-01",
+          "title": "Network Architecture",
+          "severity": "High",
+          "description": "Secure network infrastructure and virtualization components",
+          "implementation": {
+            "type": "IaC",
+            "description": "Deploy MQ brokers in private subnets with proper VPC configuration and security groups"
+          }
+        },
+        {
+          "identifier": "STA-01",
+          "title": "Baseline Requirements",
+          "severity": "Medium",
+          "description": "Implement secure baseline architecture patterns for message queuing systems",
+          "implementation": {
+            "type": "IaC",
+            "description": "Design multi-AZ deployments with proper network segmentation and security controls"
+          }
+        }
+      ]
+    },
+    {
+      "name": "NIST SP 800-53",
+      "version": "Rev 5",
+      "controls": [
+        {
+          "identifier": "AC-3",
+          "title": "Access Enforcement",
+          "severity": "Critical",
+          "description": "Enforce approved authorizations for logical access to AWS MQ resources",
+          "implementation": {
+            "type": "Platform",
+            "description": "Configure MQ broker access control using AWS IAM policies and resource-based policies"
+          }
+        },
+        {
+          "identifier": "SC-8",
+          "title": "Transmission Confidentiality and Integrity",
+          "severity": "Critical",
+          "description": "Protect the confidentiality and integrity of transmitted information",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable TLS encryption for all MQ connections and configure SSL/TLS certificates"
+          }
+        },
+        {
+          "identifier": "SC-28",
+          "title": "Protection of Information at Rest",
+          "severity": "Critical",
+          "description": "Protect the confidentiality and integrity of information at rest",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable encryption at rest for MQ brokers using AWS KMS keys"
+          }
+        },
+        {
+          "identifier": "AU-12",
+          "title": "Audit Record Generation",
+          "severity": "High",
+          "description": "Generate audit records for security-relevant events",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable CloudTrail logging for MQ API calls and configure broker logging"
+          }
+        },
+        {
+          "identifier": "SI-4",
+          "title": "System Monitoring",
+          "severity": "High",
+          "description": "Monitor the information system to detect attacks and indicators of potential attacks",
+          "implementation": {
+            "type": "Platform",
+            "description": "Configure CloudWatch monitoring and alerting for MQ brokers and set up security event notifications"
+          }
+        },
+        {
+          "identifier": "CP-9",
+          "title": "System Backup",
+          "severity": "Medium",
+          "description": "Conduct backups of user-level and system-level information",
+          "implementation": {
+            "type": "Platform",
+            "description": "Configure automated backups for MQ broker configurations and implement message persistence"
+          }
+        }
+      ]
+    },
+    {
+      "name": "AWS Foundational Security Best Practices",
+      "version": "v1.0.0",
+      "controls": [
+        {
+          "identifier": "MQ.1",
+          "title": "MQ brokers should not be publicly accessible",
+          "severity": "Critical",
+          "description": "Ensure MQ brokers are not accessible from the internet",
+          "implementation": {
+            "type": "IaC",
+            "description": "Deploy MQ brokers with PubliclyAccessible set to false and use VPC endpoints for private connectivity"
+          }
+        },
+        {
+          "identifier": "MQ.2",
+          "title": "MQ brokers should use active/standby deployment mode",
+          "severity": "High",
+          "description": "Configure MQ brokers for high availability using active/standby mode",
+          "implementation": {
+            "type": "IaC",
+            "description": "Set deployment mode to ACTIVE_STANDBY_MULTI_AZ for production workloads"
+          }
+        },
+        {
+          "identifier": "MQ.3",
+          "title": "MQ brokers should have encryption in transit enabled",
+          "severity": "High",
+          "description": "Ensure all data in transit is encrypted using TLS",
+          "implementation": {
+            "type": "Platform",
+            "description": "Configure SSL/TLS encryption for all broker connections and disable non-encrypted protocols"
+          }
+        },
+        {
+          "identifier": "MQ.4",
+          "title": "MQ brokers should have encryption at rest enabled",
+          "severity": "High",
+          "description": "Ensure data at rest is encrypted using AWS KMS",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable encryption at rest using AWS KMS customer-managed keys"
+          }
+        },
+        {
+          "identifier": "MQ.5",
+          "title": "MQ brokers should have logging enabled",
+          "severity": "Medium",
+          "description": "Enable comprehensive logging for security monitoring",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable general and audit logging for MQ brokers and configure log retention policies"
+          }
+        }
+      ]
+    },
+    {
+      "name": "AWS Security Hub",
+      "version": "2023",
+      "controls": [
+        {
+          "identifier": "MQ.6",
+          "title": "ActiveMQ brokers should have automatic minor version upgrade enabled",
+          "severity": "High",
+          "description": "Ensure automatic minor version upgrades are enabled for security patches",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable AutoMinorVersionUpgrade for MQ brokers to receive security updates automatically"
+          }
+        },
+        {
+          "identifier": "MQ.7",
+          "title": "MQ brokers should restrict access using security groups",
+          "severity": "High",
+          "description": "Configure restrictive security group rules for MQ brokers",
+          "implementation": {
+            "type": "IaC",
+            "description": "Create security groups with minimal required ports and source IP restrictions"
+          }
+        },
+        {
+          "identifier": "MQ.8",
+          "title": "MQ brokers should have multi-factor authentication enabled",
+          "severity": "Medium",
+          "description": "Implement MFA for administrative access to MQ brokers",
+          "implementation": {
+            "type": "User",
+            "description": "Configure MFA for IAM users and roles with MQ administrative permissions"
+          }
+        },
+        {
+          "identifier": "MQ.9",
+          "title": "MQ brokers should be deployed across multiple availability zones",
+          "severity": "Medium",
+          "description": "Deploy MQ brokers across multiple AZs for resilience",
+          "implementation": {
+            "type": "IaC",
+            "description": "Configure subnet groups spanning multiple availability zones for broker deployment"
+          }
+        }
+      ]
+    }
+  ],
+  "operational": [],
+  "cost": [
+    {
+      "name": "AWS MQ Cost Optimization Best Practices",
+      "version": "2023",
+      "controls": [
+        {
+          "identifier": "COST-01",
+          "title": "Right-size MQ broker instances",
+          "severity": "High",
+          "description": "Select appropriate instance types based on actual workload requirements",
+          "implementation": {
+            "type": "User",
+            "description": "Monitor CPU, memory, and network utilization to determine optimal instance sizes and downsize overprovisioned brokers"
+          }
+        },
+        {
+          "identifier": "COST-02",
+          "title": "Use single-instance deployment for non-production workloads",
+          "severity": "High",
+          "description": "Deploy single-instance brokers for development and testing environments",
+          "implementation": {
+            "type": "IaC",
+            "description": "Configure SINGLE_INSTANCE deployment mode for non-production environments to reduce costs by 50%"
+          }
+        },
+        {
+          "identifier": "COST-03",
+          "title": "Implement automated broker lifecycle management",
+          "severity": "Medium",
+          "description": "Automatically start and stop brokers based on usage patterns",
+          "implementation": {
+            "type": "IaC",
+            "description": "Use Lambda functions with CloudWatch Events to automatically stop/start brokers during off-hours"
+          }
+        },
+        {
+          "identifier": "COST-04",
+          "title": "Optimize message retention policies",
+          "severity": "Medium",
+          "description": "Configure appropriate message retention periods to minimize storage costs",
+          "implementation": {
+            "type": "User",
+            "description": "Set message TTL and dead letter queue policies to prevent unnecessary message accumulation"
+          }
+        },
+        {
+          "identifier": "COST-05",
+          "title": "Monitor and optimize data transfer costs",
+          "severity": "Medium",
+          "description": "Minimize cross-AZ and cross-region data transfer charges",
+          "implementation": {
+            "type": "IaC",
+            "description": "Deploy applications and MQ brokers in the same AZ when possible and use VPC endpoints to avoid internet gateway charges"
+          }
+        },
+        {
+          "identifier": "COST-06",
+          "title": "Implement cost allocation tags",
+          "severity": "Low",
+          "description": "Tag MQ resources for cost tracking and optimization",
+          "implementation": {
+            "type": "IaC",
+            "description": "Apply consistent tagging strategy to track costs by environment, application, and team"
+          }
+        },
+        {
+          "identifier": "COST-07",
+          "title": "Regular cost review and optimization",
+          "severity": "Low",
+          "description": "Establish regular cost review processes for MQ resources",
+          "implementation": {
+            "type": "User",
+            "description": "Set up monthly cost reports and reviews using AWS Cost Explorer and Trusted Advisor recommendations"
+          }
+        }
+      ]
+    }
+  ]
+}
+
+## Summary of Changes Made:
+
+### CSA Cloud Controls Matrix:
+1. **Version updated** from v5.0 to v4.0.10 (current version)
+2. **IAM-01 title** changed from "Identity and Access Management Policy" to "Entitlement" (actual CCM control title)
+3. **DSI-01 title** changed from "Data Security and Information Lifecycle Management" to "Data Classification" and description updated to focus on classification
+4. **IVS-01 title** changed from "Infrastructure and Virtualization Security" to "Network Architecture"
+5. **STA-01 title** changed from "Secure Technology Architecture" to "Baseline Requirements" and description updated accordingly
+
+### NIST SP 800-53:
+1. **AU-12 title** changed from "Audit Generation" to "Audit Record Generation" (correct title)
+2. **SI-4 title** changed from "Information System Monitoring" to "System Monitoring"
+3. **CP-9 title** changed from "Information System Backup" to "System Backup"
+
+### AWS Security Hub:
+1. **Version updated** from "2023.04.0" to "2023" (standard format for Security Hub standards)
+
+All other controls appear to be accurate and aligned with their respective frameworks.

@@ -1,9 +1,11 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"sync"
 
+	docgen "github.com/S7R4nG3/aws-service-controls/internal/doc-gen"
 	"github.com/S7R4nG3/aws-service-controls/internal/llm"
 	"github.com/S7R4nG3/aws-service-controls/internal/prompts"
 	"github.com/S7R4nG3/aws-service-controls/internal/services"
@@ -12,25 +14,32 @@ import (
 const frameworks string = "CSA v5, NIST 800-53, AWS Foundational Security Best Practices, and AWS Security Hub"
 
 func main() {
+	generation := flag.Bool("generate", false, "Toggle to enable generation of service controls.")
+	reviewEnabled := flag.Bool("review", false, "Toggle to enable review of generated service controls.")
+	docgenEnabled := flag.Bool("docs", true, "Toggle to enable Markdown doc generation of controls.")
+	flag.Parse()
+
 	initServices := make(chan services.Service, len(services.ModuleServices))
 	controls := make(chan services.Service, len(services.ModuleServices))
 	reviews := make(chan string, len(services.ModuleServices))
-	workerCount := len(services.ModuleServices)
+	// workerCount := len(services.ModuleServices)
+	controlWorkers := 2
+	reviewWorkers := 2
 	var wg sync.WaitGroup
 
-	for i := 0; i < workerCount; i++ {
-		go generateControls(initServices, controls, &wg)
+	for i := 0; i < controlWorkers; i++ {
+		go generateControls(initServices, controls, &wg, *generation, *docgenEnabled)
 	}
 
-	for t := 0; t < workerCount; t++ {
-		go reviewControls(controls, reviews)
+	for t := 0; t < reviewWorkers; t++ {
+		go reviewControls(controls, reviews, *reviewEnabled)
 	}
 
 	wg.Add(len(services.ModuleServices))
 	for _, s := range services.ModuleServices {
 		fmt.Printf("Loading %s\n", s.Short)
 		s.ControlPrompt.Outfile = "results/controls/" + s.Short + ".json"
-		s.ReviewPrompt.Outfile = "results/reviews/" + s.Short + ".md"
+		s.ReviewPrompt.Outfile = "results/reviews/" + s.Short + ".json"
 		initServices <- s
 	}
 	close(initServices)
@@ -41,32 +50,42 @@ func main() {
 	}
 }
 
-func generateControls(services chan services.Service, controls chan services.Service, wg *sync.WaitGroup) {
+func generateControls(services chan services.Service, controls chan services.Service, wg *sync.WaitGroup, enabled bool, docsEnabled bool) {
 	for s := range services {
-		p := llm.NewLlmPrompt(
-			llm.WithText(
-				prompts.GenerateControlText(s.Long, frameworks),
-			),
-			llm.WithOutfile(s.ControlPrompt.Outfile),
-			llm.WithPrefill("{"),
-		)
-		fmt.Printf("Generating controls for %s -> ", s.Short)
-		p.Run()
+		if enabled {
+			p := llm.NewLlmPrompt(
+				llm.WithText(
+					prompts.GenerateControlText(s.Long, frameworks),
+				),
+				llm.WithOutfile(s.ControlPrompt.Outfile),
+				llm.WithPrefill("{"),
+			)
+			fmt.Printf("Generating controls for %s -> ", s.Short)
+			p.Run()
+		}
+		if docsEnabled {
+			docgen.Generate(s)
+		}
 		controls <- s
 		wg.Done()
 	}
 }
 
-func reviewControls(controls chan services.Service, reviews chan string) {
+func reviewControls(controls chan services.Service, reviews chan string, enabled bool) {
 	for c := range controls {
-		p := llm.NewLlmPrompt(
-			llm.WithText(
-				prompts.GenerateReviewText(c.ControlPrompt.Outfile),
-			),
-			llm.WithOutfile(c.ReviewPrompt.Outfile),
-		)
-		fmt.Printf("Reviewing controls for %s", c.Short)
-		p.Run()
-		reviews <- c.ReviewPrompt.Response
+		if enabled {
+			p := llm.NewLlmPrompt(
+				llm.WithText(
+					prompts.GenerateReviewText(c.ControlPrompt.Outfile),
+				),
+				llm.WithOutfile(c.ReviewPrompt.Outfile),
+				llm.WithPrefill("{"),
+			)
+			fmt.Printf("Reviewing controls for %s", c.Short)
+			p.Run()
+			reviews <- c.ReviewPrompt.Response
+		} else {
+			reviews <- "DONE"
+		}
 	}
 }

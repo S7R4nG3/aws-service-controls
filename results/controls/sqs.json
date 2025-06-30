@@ -1,0 +1,298 @@
+{
+    "service": "AWS Simple Queue Service (SQS)",
+    "security": [
+        {
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v5",
+            "controls": [
+                {
+                    "identifier": "IAM-02",
+                    "title": "User Access Authorization",
+                    "severity": "HIGH",
+                    "description": "Verify user access authorization and user access reviews for entitlements",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement IAM policies with least privilege access to SQS queues, use resource-based policies to control queue access"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Classification",
+                    "severity": "HIGH",
+                    "description": "Data and objects must be classified based on organizational requirements",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Classify data before sending to SQS queues, implement appropriate tagging strategy for queues based on data sensitivity"
+                    }
+                },
+                {
+                    "identifier": "DSI-02",
+                    "title": "Data Handling/Labeling/Security Policy",
+                    "severity": "HIGH",
+                    "description": "Procedures for data handling, labeling, and security policies must be established",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Establish data handling procedures for SQS messages, implement message labeling standards for sensitive data"
+                    }
+                },
+                {
+                    "identifier": "EKM-01",
+                    "title": "Encryption Key Management",
+                    "severity": "HIGH",
+                    "description": "Encryption keys must be managed throughout their lifecycle",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure SQS with server-side encryption using AWS KMS, implement key rotation policies"
+                    }
+                },
+                {
+                    "identifier": "IVS-01",
+                    "title": "Network Segmentation",
+                    "severity": "MEDIUM",
+                    "description": "Network environments must be segregated and traffic filtered",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure VPC endpoints for SQS to keep traffic within VPC, implement proper security group rules"
+                    }
+                },
+                {
+                    "identifier": "LOG-01",
+                    "title": "Audit Logging",
+                    "severity": "MEDIUM",
+                    "description": "Audit logs must be generated for all security events",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable CloudTrail logging for SQS API calls, configure CloudWatch metrics and alarms"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "HIGH",
+                    "description": "Enforce approved authorizations for logical access to information and system resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement IAM policies with condition keys to enforce access controls based on time, IP address, and MFA"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "HIGH",
+                    "description": "Protect the confidentiality and integrity of transmitted information",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Use HTTPS/TLS for all SQS communications, enable server-side encryption for messages at rest"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "HIGH",
+                    "description": "Identify the types of events that the system is capable of logging",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure CloudTrail to log all SQS API calls, enable CloudWatch Logs for application-level logging"
+                    }
+                },
+                {
+                    "identifier": "IA-2",
+                    "title": "Identification and Authentication",
+                    "severity": "HIGH",
+                    "description": "Uniquely identify and authenticate organizational users",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Require MFA for sensitive SQS operations, use IAM roles for service-to-service authentication"
+                    }
+                },
+                {
+                    "identifier": "SC-7",
+                    "title": "Boundary Protection",
+                    "severity": "MEDIUM",
+                    "description": "Monitor, control, and protect communications at the external boundary",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement VPC endpoints for SQS, configure security groups and NACLs appropriately"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "System Backup",
+                    "severity": "MEDIUM",
+                    "description": "Conduct backups of user-level and system-level information",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement message backup strategies using dead letter queues, configure message retention policies"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0",
+            "controls": [
+                {
+                    "identifier": "SQS.1",
+                    "title": "Amazon SQS queues should be encrypted at rest",
+                    "severity": "HIGH",
+                    "description": "SQS queues should use server-side encryption to protect sensitive data",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure SQS queues with KmsMasterKeyId parameter to enable encryption at rest"
+                    }
+                },
+                {
+                    "identifier": "SQS.2",
+                    "title": "Amazon SQS queues should not be publicly accessible",
+                    "severity": "HIGH",
+                    "description": "SQS queue policies should not allow public access",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Review and restrict SQS queue policies to prevent public access, use IAM policies for access control"
+                    }
+                },
+                {
+                    "identifier": "SQS.3",
+                    "title": "Amazon SQS dead letter queues should be configured",
+                    "severity": "MEDIUM",
+                    "description": "Configure dead letter queues to handle message processing failures",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure dead letter queues with appropriate maxReceiveCount to handle failed message processing"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "Current",
+            "controls": [
+                {
+                    "identifier": "SQS.1",
+                    "title": "SQS queues should be encrypted at rest",
+                    "severity": "HIGH",
+                    "description": "This control checks whether SQS queues are encrypted at rest",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable server-side encryption using AWS managed keys or customer managed keys"
+                    }
+                },
+                {
+                    "identifier": "SQS.2",
+                    "title": "SQS queues should not be publicly accessible",
+                    "severity": "HIGH",
+                    "description": "This control checks whether SQS queues have resource-based policies that allow public access",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Review queue policies to ensure they don't contain wildcard principals or public access statements"
+                    }
+                },
+                {
+                    "identifier": "SQS.3",
+                    "title": "SQS dead letter queues should be configured",
+                    "severity": "MEDIUM",
+                    "description": "This control checks whether SQS queues have dead letter queues configured",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure RedrivePolicy with dead letter queue ARN and maxReceiveCount"
+                    }
+                },
+                {
+                    "identifier": "CloudTrail.1",
+                    "title": "CloudTrail should be enabled",
+                    "severity": "HIGH",
+                    "description": "This control checks whether CloudTrail is enabled for SQS API logging",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable CloudTrail in all regions to capture SQS API calls and management events"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS SQS Cost Optimization Best Practices",
+            "version": "Current",
+            "controls": [
+                {
+                    "identifier": "COST-01",
+                    "title": "Use Long Polling",
+                    "severity": "HIGH",
+                    "description": "Reduce the number of empty receives and lower costs by using long polling",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set ReceiveMessageWaitTimeSeconds to 1-20 seconds to enable long polling and reduce API calls"
+                    }
+                },
+                {
+                    "identifier": "COST-02",
+                    "title": "Optimize Message Batching",
+                    "severity": "HIGH",
+                    "description": "Use batch operations to reduce the number of API calls and lower costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement SendMessageBatch and DeleteMessageBatch operations to process up to 10 messages per API call"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Set Appropriate Message Retention",
+                    "severity": "MEDIUM",
+                    "description": "Configure message retention period based on business requirements to avoid unnecessary storage costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set MessageRetentionPeriod to the minimum required duration (60 seconds to 14 days)"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Monitor Queue Metrics",
+                    "severity": "MEDIUM",
+                    "description": "Monitor queue metrics to identify cost optimization opportunities",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Set up CloudWatch metrics monitoring for NumberOfEmptyReceives, ApproximateNumberOfMessages, and other cost-related metrics"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Use Standard Queues When Possible",
+                    "severity": "MEDIUM",
+                    "description": "Use standard queues instead of FIFO queues when strict ordering is not required",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy standard queues (lower cost) unless FIFO ordering and deduplication are business requirements"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Implement Queue Cleanup Policies",
+                    "severity": "LOW",
+                    "description": "Regularly clean up unused queues to avoid unnecessary charges",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement automated processes to identify and delete unused queues, set up tagging for queue lifecycle management"
+                    }
+                },
+                {
+                    "identifier": "COST-07",
+                    "title": "Optimize Visibility Timeout",
+                    "severity": "LOW",
+                    "description": "Set appropriate visibility timeout to reduce duplicate processing and associated costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure VisibilityTimeoutSeconds based on message processing time to minimize reprocessing costs"
+                    }
+                }
+            ]
+        }
+    ]
+}

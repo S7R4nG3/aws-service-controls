@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/S7R4nG3/aws-service-controls/internal/llm"
+	"github.com/S7R4nG3/aws-service-controls/internal/utils"
 )
 
 type ServicesFile struct {
@@ -32,29 +33,23 @@ func LoadServices() []Service {
 				Short: "lambda",
 				Long:  "Lambda",
 			},
-			// {
-			// 	Short: "ecs",
-			// 	Long:  "Elastic Container Service",
-			// },
-			// {
-			// 	Short: "cloudfront",
-			// 	Long:  "CloudFront",
-			// },
+			{
+				Short: "ecs",
+				Long:  "Elastic Container Service",
+			},
+			{
+				Short: "cloudfront",
+				Long:  "CloudFront",
+			},
 		}
 	} else {
 		var serviceFile ServicesFile
 		file, err := os.Open("services.json")
-		if err != nil {
-			panic(err)
-		}
+		utils.Check(err, "Error opening services.json file...")
 		contents, err := io.ReadAll(file)
-		if err != nil {
-			panic(err)
-		}
+		utils.Check(err, "Error reading services.json contents...")
 		err = json.Unmarshal(contents, &serviceFile)
-		if err != nil {
-			panic(err)
-		}
+		utils.Check(err, "Error unmarshalling services.json contents...")
 		return serviceFile.Services
 	}
 }

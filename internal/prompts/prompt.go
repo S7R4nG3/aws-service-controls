@@ -6,6 +6,8 @@ import (
 	"io"
 	"os"
 	"text/template"
+
+	"github.com/S7R4nG3/aws-service-controls/internal/utils"
 )
 
 type GenerateTemplate struct {
@@ -30,13 +32,9 @@ func GenerateControlText(serviceName string, frameworks string) string {
 	}
 	buf := new(bytes.Buffer)
 	tmpl, err := template.ParseFS(templates, t.TemplateFile)
-	if err != nil {
-		panic(err)
-	}
+	utils.Check(err, "Error parsing control text templates...")
 	err = tmpl.Execute(buf, t)
-	if err != nil {
-		panic(err)
-	}
+	utils.Check(err, "Error executing control text template...")
 	return buf.String()
 }
 
@@ -50,12 +48,8 @@ func GenerateReviewText(filename string) string {
 		TemplateFile: "templates/review.tmpl",
 	}
 	tmpl, err := template.ParseFS(templates, r.TemplateFile)
-	if err != nil {
-		panic(err)
-	}
+	utils.Check(err, "Error parsing review text templates...")
 	err = tmpl.Execute(buf, r)
-	if err != nil {
-		panic(err)
-	}
+	utils.Check(err, "Error executing review text template...")
 	return buf.String()
 }

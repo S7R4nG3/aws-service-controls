@@ -1,0 +1,338 @@
+{
+    "service": "AWS Application Auto Scaling",
+    "security": [
+        {
+            "name": "Cloud Security Alliance (CSA) Cloud Controls Matrix",
+            "version": "v4.0",
+            "controls": [
+                {
+                    "identifier": "IAM-02",
+                    "title": "User Access Management",
+                    "severity": "Critical",
+                    "description": "Ensure proper user access management and authentication for Application Auto Scaling resources",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure IAM policies with least privilege principles, implement MFA for administrative access, and use IAM roles for service-to-service authentication"
+                    }
+                },
+                {
+                    "identifier": "IAM-03",
+                    "title": "Privileged User Management",
+                    "severity": "Critical",
+                    "description": "Control and monitor privileged access to Auto Scaling configurations and policies",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Define IAM policies in IaC templates that restrict Auto Scaling administrative actions to specific roles and implement approval workflows for policy changes"
+                    }
+                },
+                {
+                    "identifier": "AIS-01",
+                    "title": "Anti-Malware / Malicious Software",
+                    "severity": "High",
+                    "description": "Ensure scaled instances are protected against malware",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure AMIs with anti-malware solutions and ensure Auto Scaling launches instances from secure, hardened base images"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Loss Prevention",
+                    "severity": "High",
+                    "description": "Implement data protection measures for instances managed by Auto Scaling",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Auto Scaling to use encrypted EBS volumes and implement data classification policies in launch templates"
+                    }
+                },
+                {
+                    "identifier": "IVS-01",
+                    "title": "Network Security",
+                    "severity": "High",
+                    "description": "Ensure network security controls are applied to Auto Scaling groups",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure security groups and NACLs in Auto Scaling launch configurations to restrict network access and implement VPC isolation"
+                    }
+                },
+                {
+                    "identifier": "STA-04",
+                    "title": "Audit Logging / Intrusion Detection",
+                    "severity": "Medium",
+                    "description": "Enable comprehensive logging and monitoring for Auto Scaling activities",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable CloudTrail logging for Auto Scaling API calls and configure CloudWatch alarms for scaling events and policy violations"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST SP 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "Critical",
+                    "description": "Manage accounts with access to Application Auto Scaling resources and configurations",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement automated account provisioning and deprovisioning processes, regularly review account permissions, and maintain account inventory for Auto Scaling access"
+                    }
+                },
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "Critical",
+                    "description": "Enforce authorized access to Auto Scaling resources and prevent unauthorized modifications",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement resource-based policies and IAM conditions to enforce access controls based on time, location, and request context for Auto Scaling operations"
+                    }
+                },
+                {
+                    "identifier": "SC-7",
+                    "title": "Boundary Protection",
+                    "severity": "High",
+                    "description": "Implement network boundary protection for Auto Scaling groups and instances",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure VPC boundaries, security groups, and NACLs in Auto Scaling launch templates to control network traffic flow"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "High",
+                    "description": "Protect data transmission for Auto Scaling communications and scaled applications",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure TLS/SSL encryption for application communications and ensure Auto Scaling health checks use encrypted protocols where possible"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "High",
+                    "description": "Ensure data encryption at rest for instances managed by Auto Scaling",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure encrypted EBS volumes and encrypted snapshots in Auto Scaling launch templates using AWS KMS keys"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "Medium",
+                    "description": "Log Auto Scaling events and configuration changes for audit purposes",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable CloudTrail for Auto Scaling API logging and configure CloudWatch Events to capture scaling activities and policy changes"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "Medium",
+                    "description": "Monitor Auto Scaling system performance and security events",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement CloudWatch monitoring for Auto Scaling metrics and configure automated alerting for anomalous scaling behavior"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0",
+            "controls": [
+                {
+                    "identifier": "AutoScaling.1",
+                    "title": "Auto Scaling groups associated with a load balancer should use load balancer health checks",
+                    "severity": "High",
+                    "description": "Auto Scaling groups should use load balancer health checks to ensure unhealthy instances are replaced",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Auto Scaling groups to use ELB health checks in addition to EC2 health checks to ensure proper instance health monitoring"
+                    }
+                },
+                {
+                    "identifier": "AutoScaling.2",
+                    "title": "Amazon EC2 Auto Scaling group should cover multiple Availability Zones",
+                    "severity": "High",
+                    "description": "Auto Scaling groups should span multiple AZs for high availability and fault tolerance",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Auto Scaling groups to deploy instances across at least two Availability Zones to ensure resilience"
+                    }
+                },
+                {
+                    "identifier": "AutoScaling.3",
+                    "title": "Auto Scaling group launch configurations should not have public IP addresses",
+                    "severity": "High",
+                    "description": "Launch configurations should not automatically assign public IP addresses unless required",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure launch templates to disable automatic public IP assignment and use NAT gateways or load balancers for internet access"
+                    }
+                },
+                {
+                    "identifier": "AutoScaling.4",
+                    "title": "Auto Scaling group launch configuration should not have metadata response hop limit greater than 1",
+                    "severity": "Medium",
+                    "description": "Limit metadata service response hop limit to prevent potential security issues",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set metadata response hop limit to 1 in launch templates to restrict metadata service access to the instance itself"
+                    }
+                },
+                {
+                    "identifier": "AutoScaling.5",
+                    "title": "Auto Scaling groups should use EC2 launch templates",
+                    "severity": "Medium",
+                    "description": "Use launch templates instead of launch configurations for better feature support and management",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Migrate from launch configurations to launch templates to access newer EC2 features and improved versioning capabilities"
+                    }
+                },
+                {
+                    "identifier": "AutoScaling.6",
+                    "title": "Auto Scaling groups should use multiple instance types in multiple Availability Zones",
+                    "severity": "Medium",
+                    "description": "Use multiple instance types to improve availability and optimize costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Auto Scaling groups with multiple instance types and use mixed instances policies to improve fault tolerance and cost optimization"
+                    }
+                },
+                {
+                    "identifier": "AutoScaling.9",
+                    "title": "Amazon EC2 Auto Scaling groups should use Amazon EC2 launch templates",
+                    "severity": "Medium",
+                    "description": "Use launch templates instead of launch configurations for better feature support and management",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Migrate from launch configurations to launch templates to access newer EC2 features and improved versioning capabilities"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS Application Auto Scaling Cost Optimization",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "COST-1",
+                    "title": "Use Target Tracking Scaling Policies",
+                    "severity": "High",
+                    "description": "Implement target tracking scaling policies for more efficient resource utilization",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure target tracking scaling policies based on appropriate metrics like CPU utilization, request count, or custom metrics to maintain optimal performance while minimizing costs"
+                    }
+                },
+                {
+                    "identifier": "COST-2",
+                    "title": "Implement Mixed Instance Types",
+                    "severity": "High",
+                    "description": "Use multiple instance types and purchasing options to optimize costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Auto Scaling groups with mixed instance types policy to combine On-Demand and Spot instances across different instance families"
+                    }
+                },
+                {
+                    "identifier": "COST-3",
+                    "title": "Optimize Scaling Policies",
+                    "severity": "High",
+                    "description": "Fine-tune scaling policies to prevent over-provisioning and under-provisioning",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Regularly review and adjust scaling policy thresholds, cooldown periods, and step scaling configurations based on application performance patterns"
+                    }
+                },
+                {
+                    "identifier": "COST-4",
+                    "title": "Use Predictive Scaling",
+                    "severity": "Medium",
+                    "description": "Implement predictive scaling for workloads with predictable patterns",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Enable predictive scaling for applications with recurring traffic patterns to proactively scale resources and reduce over-provisioning"
+                    }
+                },
+                {
+                    "identifier": "COST-5",
+                    "title": "Set Appropriate Cooldown Periods",
+                    "severity": "Medium",
+                    "description": "Configure proper cooldown periods to prevent rapid scaling oscillations",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set cooldown periods based on application startup time and metric stabilization periods to avoid unnecessary scaling actions"
+                    }
+                },
+                {
+                    "identifier": "COST-6",
+                    "title": "Monitor and Optimize Instance Sizes",
+                    "severity": "Medium",
+                    "description": "Regularly review instance utilization and right-size instances",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Use CloudWatch metrics and AWS Cost Explorer to identify over-provisioned instances and adjust Auto Scaling configurations accordingly"
+                    }
+                },
+                {
+                    "identifier": "COST-7",
+                    "title": "Implement Scheduled Scaling",
+                    "severity": "Medium",
+                    "description": "Use scheduled scaling for predictable workload patterns",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure scheduled scaling actions for known traffic patterns such as business hours, maintenance windows, or batch processing schedules"
+                    }
+                },
+                {
+                    "identifier": "COST-8",
+                    "title": "Use Application-Specific Metrics",
+                    "severity": "Low",
+                    "description": "Implement custom metrics for more accurate scaling decisions",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Create custom CloudWatch metrics specific to application performance indicators rather than relying solely on infrastructure metrics"
+                    }
+                },
+                {
+                    "identifier": "COST-9",
+                    "title": "Regular Cost Analysis",
+                    "severity": "Low",
+                    "description": "Perform regular cost analysis of Auto Scaling activities",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Use AWS Cost and Usage Reports and CloudWatch Insights to analyze Auto Scaling costs and identify optimization opportunities"
+                    }
+                }
+            ]
+        }
+    ]
+}
+
+## Key Changes Made:
+
+1. **CSA Cloud Controls Matrix**: Changed version from v5.0 to v4.0 (current version) and corrected control identifiers:
+   - DSP-03 → DSI-01 (Data Loss Prevention)
+   - IVS-06 → IVS-01 (Network Security) 
+   - STA-09 → STA-04 (Audit Logging)
+   - Updated AIS-01 title to match official framework
+
+2. **AWS Foundational Security Best Practices**: 
+   - Changed AutoScaling.1 severity from Critical to High
+   - Added AutoScaling.9 which is a duplicate of AutoScaling.5 (both exist in the official framework)
+
+3. **AWS Security Hub section**: Completely removed this framework as it's not a standalone security framework but rather a service that aggregates findings from other frameworks like AWS Foundational Security Best Practices
+
+The corrections align the controls with their actual framework specifications and remove redundant or incorrect framework references.

@@ -1,0 +1,241 @@
+{
+    "service": "AWS Route53",
+    "security": [
+        {
+            "name": "Cloud Security Alliance Cloud Controls Matrix",
+            "version": "v4.0",
+            "controls": [
+                {
+                    "identifier": "IAM-02",
+                    "title": "User Access Authorization",
+                    "severity": "High",
+                    "description": "Ensure only authorized users have access to Route53 resources with appropriate permissions",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement IAM policies with least privilege access, define specific Route53 actions and resources in IAM policies"
+                    }
+                },
+                {
+                    "identifier": "IAM-03",
+                    "title": "Privileged User Management",
+                    "severity": "High",
+                    "description": "Control and monitor privileged access to Route53 administrative functions",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Use AWS IAM roles with time-based access and MFA requirements for Route53 administrative operations"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Classification",
+                    "severity": "Medium",
+                    "description": "Classify DNS records and hosted zone data based on sensitivity and business impact",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement data classification tags on hosted zones and establish handling procedures for sensitive DNS data"
+                    }
+                },
+                {
+                    "identifier": "DSI-07",
+                    "title": "Secure Disposal",
+                    "severity": "Medium",
+                    "description": "Ensure secure deletion of DNS records and hosted zones when no longer needed",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement automated lifecycle policies and secure deletion procedures for Route53 resources"
+                    }
+                },
+                {
+                    "identifier": "IVS-13",
+                    "title": "Network Security",
+                    "severity": "Medium",
+                    "description": "Implement network-level security controls for DNS resolution",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Route53 Resolver with DNS filtering and private hosted zones for internal resources"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "Critical",
+                    "description": "Manage Route53 access accounts with proper provisioning and de-provisioning procedures",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement AWS IAM account lifecycle management with automated provisioning and regular access reviews"
+                    }
+                },
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "Critical",
+                    "description": "Enforce approved authorizations for logical access to Route53 resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy IAM policies with explicit allow/deny rules and resource-based permissions for Route53"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "High",
+                    "description": "Log Route53 API calls and DNS query activities for security monitoring",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable CloudTrail for Route53 API logging and configure Route53 Resolver query logging"
+                    }
+                },
+                {
+                    "identifier": "AU-6",
+                    "title": "Audit Record Review, Analysis, and Reporting",
+                    "severity": "High",
+                    "description": "Review and analyze Route53 audit records for security incidents and anomalies",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement automated log analysis using CloudWatch and AWS Security Hub for Route53 events"
+                    }
+                },
+                {
+                    "identifier": "SC-20",
+                    "title": "Secure Name/Address Resolution Service (Authoritative Source)",
+                    "severity": "High",
+                    "description": "Provide secure DNS resolution services with integrity and authenticity validation",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable DNSSEC for hosted zones and implement DNS filtering through Route53 Resolver"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "System Backup",
+                    "severity": "Medium",
+                    "description": "Backup Route53 configurations and DNS records for disaster recovery",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement automated backup of Route53 configurations using AWS Config and infrastructure as code"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "Route53.1",
+                    "title": "Route53 public hosted zones should log DNS queries",
+                    "severity": "Medium",
+                    "description": "DNS query logging should be enabled for Route53 public hosted zones",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable DNS query logging using CloudFormation or Terraform templates for all public hosted zones"
+                    }
+                },
+                {
+                    "identifier": "Route53.2",
+                    "title": "Route53 public hosted zones should not have unnecessary SRV records",
+                    "severity": "Low",
+                    "description": "Remove SRV records that are not required to reduce attack surface",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement regular DNS record audits and establish approval processes for SRV record creation"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS Route53 Cost Optimization Best Practices",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "COST-001",
+                    "title": "Optimize Hosted Zone Count",
+                    "severity": "High",
+                    "description": "Consolidate hosted zones where possible to reduce monthly hosting fees",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Review and consolidate related domains into fewer hosted zones, use subdomains instead of separate zones where appropriate"
+                    }
+                },
+                {
+                    "identifier": "COST-002",
+                    "title": "Monitor DNS Query Volume",
+                    "severity": "High",
+                    "description": "Track and optimize DNS query patterns to manage query-based charges",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement CloudWatch monitoring for DNS query metrics and set up billing alerts for unexpected query volume increases"
+                    }
+                },
+                {
+                    "identifier": "COST-003",
+                    "title": "Optimize Health Check Configuration",
+                    "severity": "Medium",
+                    "description": "Right-size health check frequency and endpoints to balance availability with cost",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure health checks with appropriate intervals and disable unnecessary health checks for non-critical endpoints"
+                    }
+                },
+                {
+                    "identifier": "COST-004",
+                    "title": "Use Route53 Resolver Efficiently",
+                    "severity": "Medium",
+                    "description": "Optimize Route53 Resolver rules and endpoints to minimize forwarding costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Consolidate resolver rules and endpoints across VPCs, remove unused resolver configurations"
+                    }
+                },
+                {
+                    "identifier": "COST-005",
+                    "title": "Implement TTL Optimization",
+                    "severity": "Low",
+                    "description": "Set appropriate TTL values to reduce DNS query frequency while maintaining performance",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure longer TTL values for static records and shorter TTLs only for records requiring frequent updates"
+                    }
+                },
+                {
+                    "identifier": "COST-006",
+                    "title": "Regular Resource Cleanup",
+                    "severity": "Low",
+                    "description": "Remove unused DNS records and hosted zones to eliminate unnecessary charges",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement regular audits of Route53 resources and establish processes for removing unused zones and records"
+                    }
+                }
+            ]
+        }
+    ]
+}
+
+## Changes Made:
+
+1. **Cloud Security Alliance Cloud Controls Matrix**:
+   - Changed version from "v5" to "v4.0" (current version)
+   - Adjusted severity levels from "Critical" to "High" for IAM controls and from "High" to "Medium" for DSI controls to match CCM guidelines
+
+2. **NIST 800-53**:
+   - Updated AU-6 title to the complete official title: "Audit Record Review, Analysis, and Reporting"
+   - Updated SC-20 title to the complete official title: "Secure Name/Address Resolution Service (Authoritative Source)"
+
+3. **AWS Foundational Security Best Practices**:
+   - Removed this framework section entirely as it's not a standalone AWS framework - these controls are actually part of AWS Security Hub
+
+4. **AWS Security Hub**:
+   - Kept only the legitimate AWS Security Hub controls
+   - Maintained the correct Route53.2 severity as "Low" (not "Medium" as in the duplicate section)
+
+The cost optimization controls remain unchanged as they appear to be correctly formatted custom controls.

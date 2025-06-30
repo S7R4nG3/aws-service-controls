@@ -1,0 +1,298 @@
+{
+    "service": "AWS Data Firehose",
+    "security": [
+        {
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v5.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management",
+                    "severity": "Critical",
+                    "description": "Implement proper identity and access management controls for Firehose delivery streams",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Define IAM roles and policies with least privilege access to Firehose delivery streams using CloudFormation or Terraform"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "Critical",
+                    "description": "Ensure data encryption in transit and at rest for all Firehose delivery streams",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure server-side encryption using AWS KMS keys and enable SSL/TLS encryption for data in transit"
+                    }
+                },
+                {
+                    "identifier": "GRM-01",
+                    "title": "Governance and Risk Management",
+                    "severity": "High",
+                    "description": "Establish governance framework for Firehose stream management and data handling",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement AWS Config rules to monitor Firehose configuration compliance and AWS Organizations policies"
+                    }
+                },
+                {
+                    "identifier": "DSI-02",
+                    "title": "Data Classification",
+                    "severity": "High",
+                    "description": "Classify data flowing through Firehose streams and apply appropriate protection measures",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Tag Firehose delivery streams with data classification labels and implement data loss prevention measures"
+                    }
+                },
+                {
+                    "identifier": "AIS-01",
+                    "title": "Application and Interface Security",
+                    "severity": "Medium",
+                    "description": "Secure APIs and interfaces used to interact with Firehose",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement VPC endpoints for Firehose API calls and configure API throttling limits"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "Critical",
+                    "description": "Enforce approved authorizations for logical access to Firehose resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement resource-based policies and IAM policies with explicit deny statements for unauthorized access"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "Critical",
+                    "description": "Protect the confidentiality and integrity of transmitted information through Firehose",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable SSL/TLS encryption for all data transmission and configure encryption parameters in delivery stream settings"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "High",
+                    "description": "Ensure Firehose activities are logged and auditable",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable CloudTrail logging for all Firehose API calls and configure CloudWatch logging for delivery stream events"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "High",
+                    "description": "Protect information at rest in Firehose buffers and destination storage",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure KMS encryption for Firehose delivery streams and ensure destination storage encryption"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "High",
+                    "description": "Monitor Firehose delivery streams for security events and anomalies",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure CloudWatch alarms for delivery failures, data transformation errors, and unusual traffic patterns"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "System Backup",
+                    "severity": "Medium",
+                    "description": "Ensure backup capabilities for critical Firehose configurations",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Version control Firehose configurations in Infrastructure as Code templates and implement cross-region replication"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "Firehose.1",
+                    "title": "Firehose delivery streams should be encrypted at rest",
+                    "severity": "Critical",
+                    "description": "Ensure all Firehose delivery streams have server-side encryption enabled",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure SSEConfiguration with KMS encryption in delivery stream definition"
+                    }
+                },
+                {
+                    "identifier": "Firehose.2",
+                    "title": "Firehose delivery streams should have error logging enabled",
+                    "severity": "High",
+                    "description": "Enable error logging for Firehose delivery streams to CloudWatch Logs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure CloudWatchLoggingOptions in the delivery stream configuration"
+                    }
+                },
+                {
+                    "identifier": "Firehose.3",
+                    "title": "Firehose delivery streams should use VPC endpoints",
+                    "severity": "High",
+                    "description": "Use VPC endpoints for Firehose to keep traffic within AWS network",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create VPC endpoints for Firehose service and configure route tables appropriately"
+                    }
+                },
+                {
+                    "identifier": "Firehose.4",
+                    "title": "Firehose should have proper IAM roles and policies",
+                    "severity": "Medium",
+                    "description": "Configure least privilege IAM roles for Firehose service operations",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create dedicated IAM roles with minimal required permissions for Firehose delivery stream operations"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "2023.1",
+            "controls": [
+                {
+                    "identifier": "KinesisFirehose.1",
+                    "title": "Kinesis Data Firehose delivery streams should be encrypted at rest",
+                    "severity": "Critical",
+                    "description": "This control checks whether Amazon Kinesis Data Firehose delivery streams are encrypted at rest",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable server-side encryption using AWS KMS customer managed keys in delivery stream configuration"
+                    }
+                },
+                {
+                    "identifier": "KinesisFirehose.2",
+                    "title": "Kinesis Data Firehose delivery streams should have server access logging enabled",
+                    "severity": "High",
+                    "description": "Enable server access logging for S3 destinations of Firehose delivery streams",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure S3 bucket logging for destination buckets and enable CloudWatch Logs for delivery stream errors"
+                    }
+                },
+                {
+                    "identifier": "KinesisFirehose.3",
+                    "title": "Kinesis Data Firehose delivery streams should not be publicly accessible",
+                    "severity": "High",
+                    "description": "Ensure Firehose delivery streams are not accessible from public networks",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure VPC endpoints and security groups to restrict access to authorized networks only"
+                    }
+                },
+                {
+                    "identifier": "KinesisFirehose.4",
+                    "title": "Kinesis Data Firehose should have monitoring enabled",
+                    "severity": "Medium",
+                    "description": "Enable comprehensive monitoring for Firehose delivery streams",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure CloudWatch metrics and alarms for delivery success rates, error rates, and data freshness"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS Kinesis Data Firehose Cost Optimization",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "COST-001",
+                    "title": "Optimize buffer settings",
+                    "severity": "High",
+                    "description": "Configure appropriate buffer size and interval to minimize costs while meeting delivery requirements",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set buffer size to maximum (128 MB) and buffer interval to maximum (900 seconds) when latency requirements allow"
+                    }
+                },
+                {
+                    "identifier": "COST-002",
+                    "title": "Implement data compression",
+                    "severity": "High",
+                    "description": "Enable data compression to reduce data transfer and storage costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure GZIP compression in the delivery stream configuration for supported destinations"
+                    }
+                },
+                {
+                    "identifier": "COST-003",
+                    "title": "Optimize data transformation",
+                    "severity": "Medium",
+                    "description": "Minimize data transformation overhead and Lambda invocation costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Use efficient Lambda functions for data transformation and consider batch processing to reduce invocation frequency"
+                    }
+                },
+                {
+                    "identifier": "COST-004",
+                    "title": "Right-size delivery stream configuration",
+                    "severity": "Medium",
+                    "description": "Monitor and adjust delivery stream settings based on actual usage patterns",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Use CloudWatch metrics to analyze throughput patterns and adjust buffer settings and scaling accordingly"
+                    }
+                },
+                {
+                    "identifier": "COST-005",
+                    "title": "Implement data lifecycle policies",
+                    "severity": "Medium",
+                    "description": "Configure appropriate storage classes and lifecycle policies for destination storage",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure S3 Intelligent Tiering or lifecycle transitions for long-term data storage cost optimization"
+                    }
+                },
+                {
+                    "identifier": "COST-006",
+                    "title": "Monitor and alert on cost anomalies",
+                    "severity": "Low",
+                    "description": "Implement cost monitoring and alerting for Firehose usage",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Set up AWS Budgets and Cost Anomaly Detection for Firehose service costs with appropriate alert thresholds"
+                    }
+                },
+                {
+                    "identifier": "COST-007",
+                    "title": "Optimize error handling and retry logic",
+                    "severity": "Low",
+                    "description": "Implement efficient error handling to minimize retry costs and failed delivery charges",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure appropriate retry duration and error output prefix to minimize processing costs for failed records"
+                    }
+                }
+            ]
+        }
+    ]
+}

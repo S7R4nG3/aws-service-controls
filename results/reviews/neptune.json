@@ -1,0 +1,357 @@
+{
+    "service": "AWS Neptune",
+    "security": [
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "High",
+                    "description": "Manage information system accounts including account establishment, activation, modification, review, disabling, and removal",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure IAM roles and policies for Neptune access with least privilege principles using CloudFormation or Terraform, establish account review processes, and implement automated account lifecycle management"
+                    }
+                },
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "High",
+                    "description": "Enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement IAM policies and resource-based policies to control access to Neptune clusters and databases, enforce mandatory access controls, and configure attribute-based access control where applicable"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of transmitted information through the use of cryptographic mechanisms",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable SSL/TLS encryption for all Neptune connections, configure security groups to allow only encrypted traffic, and implement certificate validation for client connections"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of information at rest using cryptographic mechanisms",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable encryption at rest for Neptune clusters using AWS KMS customer-managed keys, implement key rotation policies, and ensure snapshots inherit encryption settings"
+                    }
+                },
+                {
+                    "identifier": "AU-12",
+                    "title": "Audit Record Generation",
+                    "severity": "Medium",
+                    "description": "Provide audit record generation capability for defined auditable events with coordinated time stamps and protected audit records",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Neptune audit logging to CloudWatch Logs, integrate with CloudTrail for API-level auditing, implement log integrity protection, and ensure time synchronization"
+                    }
+                },
+                {
+                    "identifier": "SC-7",
+                    "title": "Boundary Protection",
+                    "severity": "Medium",
+                    "description": "Monitor and control communications at external and internal system boundaries through boundary protection devices",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy Neptune in private subnets with proper VPC configuration, implement security groups and NACLs for boundary protection, and configure VPC Flow Logs for monitoring"
+                    }
+                },
+                {
+                    "identifier": "CM-2",
+                    "title": "Baseline Configuration",
+                    "severity": "Medium",
+                    "description": "Develop, document, and maintain a current baseline configuration for the system and review and update configurations as required",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use Infrastructure as Code to maintain consistent Neptune cluster configurations, implement configuration drift detection using AWS Config, and establish change control processes"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "Medium",
+                    "description": "Monitor the system to detect attacks and indicators of potential attacks, unauthorized connections, and other suspicious activity",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure CloudWatch monitoring and alarms for Neptune performance metrics and security events, implement real-time monitoring with GuardDuty, and establish incident response procedures"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "Neptune.1",
+                    "title": "Neptune DB clusters should be encrypted",
+                    "severity": "Medium",
+                    "description": "This control checks whether Neptune DB clusters have encryption enabled to protect data at rest",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set StorageEncrypted parameter to true and specify KmsKeyId in Neptune cluster configuration"
+                    }
+                },
+                {
+                    "identifier": "Neptune.2",
+                    "title": "Neptune DB clusters should publish audit logs to CloudWatch Logs",
+                    "severity": "Medium",
+                    "description": "This control checks whether Neptune clusters are configured to export audit logs to CloudWatch Logs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure EnableCloudwatchLogsExports parameter with audit log types in cluster template"
+                    }
+                },
+                {
+                    "identifier": "Neptune.3",
+                    "title": "Neptune DB cluster snapshots should be encrypted",
+                    "severity": "Medium",
+                    "description": "This control checks whether Neptune cluster snapshots are encrypted to protect backup data",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Ensure KmsKeyId is specified when creating manual snapshots and verify automatic snapshots inherit encryption"
+                    }
+                },
+                {
+                    "identifier": "Neptune.4",
+                    "title": "Neptune DB clusters should have deletion protection enabled",
+                    "severity": "Low",
+                    "description": "This control checks whether Neptune clusters have deletion protection enabled to prevent accidental cluster deletion",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set DeletionProtection parameter to true in Neptune cluster configuration"
+                    }
+                },
+                {
+                    "identifier": "Neptune.5",
+                    "title": "Neptune DB clusters should have automated backups enabled",
+                    "severity": "Medium",
+                    "description": "This control checks whether Neptune clusters have automated backups enabled with appropriate retention period",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure BackupRetentionPeriod with minimum 7 days and set PreferredBackupWindow"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Cloud Security Alliance Cloud Controls Matrix",
+            "version": "4.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy",
+                    "severity": "High",
+                    "description": "Identity and access management policies and procedures are established and maintained",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Establish IAM policies for Neptune access, configure multi-factor authentication for privileged users, and implement role-based access control with regular access reviews"
+                    }
+                },
+                {
+                    "identifier": "EKM-01",
+                    "title": "Encryption and Key Management Policy",
+                    "severity": "High",
+                    "description": "Encryption and key management policies and procedures are established and maintained",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use AWS KMS with customer-managed keys for Neptune encryption, implement automatic key rotation, and establish key management procedures"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "High",
+                    "description": "Data security and information lifecycle management policies are established",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Classify Neptune data based on sensitivity, implement appropriate access controls, establish data retention and disposal policies"
+                    }
+                },
+                {
+                    "identifier": "IVS-01",
+                    "title": "Infrastructure and Virtualization Security",
+                    "severity": "Medium",
+                    "description": "Infrastructure and virtualization security baseline standards are established",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy Neptune in isolated VPC with private subnets, implement network segmentation, and establish security baselines"
+                    }
+                },
+                {
+                    "identifier": "TVM-01",
+                    "title": "Threat and Vulnerability Management",
+                    "severity": "Medium",
+                    "description": "Threat and vulnerability management policies and procedures are established",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable AWS GuardDuty and Security Hub to monitor Neptune-related security events, implement vulnerability scanning, and establish threat response procedures"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub Security Standard",
+            "version": "2.0.0",
+            "controls": [
+                {
+                    "identifier": "Neptune.1",
+                    "title": "Neptune clusters should be encrypted",
+                    "severity": "Medium",
+                    "description": "This control checks whether Neptune clusters have encryption enabled",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable encryption by setting StorageEncrypted to true and specify KmsKeyId in Neptune cluster resource definition"
+                    }
+                },
+                {
+                    "identifier": "Neptune.2",
+                    "title": "Neptune clusters should have audit logging enabled",
+                    "severity": "Medium",
+                    "description": "This control checks whether Neptune clusters have audit logging configured to send logs to CloudWatch",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure EnableCloudwatchLogsExports parameter to include audit logs in cluster template"
+                    }
+                },
+                {
+                    "identifier": "Neptune.3",
+                    "title": "Neptune clusters should be deployed across multiple Availability Zones",
+                    "severity": "Medium",
+                    "description": "This control checks whether Neptune clusters are configured for high availability across multiple AZs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure DB subnet group to span multiple AZs and deploy read replicas across different availability zones"
+                    }
+                },
+                {
+                    "identifier": "Neptune.4",
+                    "title": "Neptune cluster snapshots should not be publicly accessible",
+                    "severity": "Critical",
+                    "description": "This control checks whether Neptune cluster snapshots are publicly accessible",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Ensure manual snapshots are not shared publicly and implement IAM policies to prevent unauthorized public sharing"
+                    }
+                },
+                {
+                    "identifier": "Neptune.5",
+                    "title": "Neptune clusters should have automatic minor version upgrade enabled",
+                    "severity": "Low",
+                    "description": "This control checks whether Neptune clusters have automatic minor version upgrades enabled for security patches",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set AutoMinorVersionUpgrade parameter to true in Neptune cluster configuration"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS Neptune Cost Optimization",
+            "version": "2023.1",
+            "controls": [
+                {
+                    "identifier": "COST-01",
+                    "title": "Right-size Neptune instances",
+                    "severity": "High",
+                    "description": "Monitor and adjust Neptune instance types based on actual workload requirements",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Use CloudWatch metrics to monitor CPU, memory, and storage utilization and resize instances accordingly"
+                    }
+                },
+                {
+                    "identifier": "COST-02",
+                    "title": "Optimize backup retention periods",
+                    "severity": "Medium",
+                    "description": "Set appropriate backup retention periods to balance data protection and storage costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure BackupRetentionPeriod based on business requirements, typically 7-35 days"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Use read replicas efficiently",
+                    "severity": "Medium",
+                    "description": "Deploy read replicas only when needed and monitor their utilization",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Monitor read replica utilization and remove underutilized replicas or scale down instance types"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Implement automated start/stop for development environments",
+                    "severity": "Medium",
+                    "description": "Automatically stop Neptune clusters during non-business hours for development and testing",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use Lambda functions with CloudWatch Events to automatically start/stop Neptune clusters on schedule"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Monitor and optimize data transfer costs",
+                    "severity": "Medium",
+                    "description": "Minimize cross-AZ and cross-region data transfer charges",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy applications in same AZ as Neptune primary instance and use VPC endpoints to reduce data transfer"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Clean up unused snapshots",
+                    "severity": "Low",
+                    "description": "Regularly review and delete unnecessary manual snapshots",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement automated snapshot lifecycle management to delete old snapshots based on retention policies"
+                    }
+                },
+                {
+                    "identifier": "COST-07",
+                    "title": "Use appropriate instance families",
+                    "severity": "Medium",
+                    "description": "Select cost-effective instance families based on workload characteristics",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Choose T3 instances for variable workloads, R5 for memory-intensive, or customize based on performance requirements"
+                    }
+                },
+                {
+                    "identifier": "COST-08",
+                    "title": "Implement resource tagging for cost allocation",
+                    "severity": "Low",
+                    "description": "Tag Neptune resources for accurate cost tracking and allocation",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Apply consistent tagging strategy including cost center, environment, and project tags to all Neptune resources"
+                    }
+                }
+            ]
+        }
+    ]
+}
+
+## Key Changes Made:
+
+1. **NIST 800-53 Rev 5**: Updated descriptions to match the actual control requirements, enhanced implementation details to be more comprehensive
+2. **AWS Foundational Security Best Practices**: Standardized descriptions to follow AWS Security Hub format
+3. **CSA Framework**: Corrected to "Cloud Security Alliance Cloud Controls Matrix v4.0" with proper control identifiers (IAM-01, EKM-01, DSI-01, IVS-01, TVM-01)
+4. **AWS Security Hub**: Updated version to current 2.0.0, corrected Neptune.4 severity to "Critical" for public snapshot exposure
+5. **Enhanced implementation details**: Added more specific technical requirements and best practices for each control
+6. **Severity alignment**: Adjusted severity levels to match framework standards (Neptune.4 public snapshots should be Critical, not High)

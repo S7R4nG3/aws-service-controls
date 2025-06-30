@@ -1,0 +1,258 @@
+{
+    "service": "AWS Certificate Manager (ACM)",
+    "security": [
+        {
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v5.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy and Procedures",
+                    "severity": "High",
+                    "description": "Establish formal identity and access management policies for ACM certificate lifecycle management",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement IAM policies through CloudFormation/Terraform templates defining least-privilege access to ACM operations including certificate request, validation, renewal, and deletion"
+                    }
+                },
+                {
+                    "identifier": "DSI-07",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "High",
+                    "description": "Ensure proper handling and protection of certificate private keys and sensitive certificate data",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "ACM automatically manages private key protection using AWS KMS encryption and HSMs, with no user access to private keys"
+                    }
+                },
+                {
+                    "identifier": "EKM-01",
+                    "title": "Encryption and Key Management",
+                    "severity": "High",
+                    "description": "Implement proper encryption key management for certificate private keys",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "ACM uses AWS managed HSMs and KMS for private key generation, storage, and protection with FIPS 140-2 Level 3 compliance"
+                    }
+                },
+                {
+                    "identifier": "LOG-01",
+                    "title": "Audit Logging / Audit Trails",
+                    "severity": "Medium",
+                    "description": "Enable comprehensive logging of certificate management activities",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure CloudTrail to log all ACM API calls and integrate with CloudWatch for monitoring certificate operations and lifecycle events"
+                    }
+                },
+                {
+                    "identifier": "TVM-01",
+                    "title": "Threat and Vulnerability Management",
+                    "severity": "Medium",
+                    "description": "Monitor for certificate vulnerabilities and ensure timely renewal",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Set up CloudWatch alarms for certificate expiration and implement automated renewal processes where possible"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST SP 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "High",
+                    "description": "Manage accounts with access to certificate management functions",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement IAM roles and policies with time-bound access and regular access reviews for ACM administrative functions"
+                    }
+                },
+                {
+                    "identifier": "AC-6",
+                    "title": "Least Privilege",
+                    "severity": "High",
+                    "description": "Enforce least privilege access to ACM certificate operations",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create granular IAM policies limiting ACM permissions to specific actions and resources based on job functions"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "High",
+                    "description": "Protect certificate data during transmission",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "ACM API calls are encrypted in transit using TLS 1.2+ and certificate deployment to AWS services maintains encryption"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "Medium",
+                    "description": "Log certificate management events for security monitoring",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable CloudTrail logging for ACM events and configure log retention policies in CloudWatch Logs"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "System Backup",
+                    "severity": "Medium",
+                    "description": "Ensure certificate configuration and metadata backup",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement automated backup of certificate metadata and configuration using AWS Config and maintain certificate documentation"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "Low",
+                    "description": "Monitor certificate usage and health",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure CloudWatch metrics and alarms for certificate status monitoring and expiration notifications"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "ACM.1",
+                    "title": "Imported and ACM-issued certificates should be renewed after a specified time period",
+                    "severity": "Medium",
+                    "description": "Ensure certificates are renewed before expiration to maintain service availability",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Set up automated renewal for ACM-managed certificates and establish renewal procedures for imported certificates with CloudWatch alarms"
+                    }
+                },
+                {
+                    "identifier": "ACM.2",
+                    "title": "RSA certificates managed by ACM should use a key length of at least 2048 bits",
+                    "severity": "Medium",
+                    "description": "Ensure adequate cryptographic strength for certificate keys",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure certificate requests to use RSA-2048 or higher key lengths, or use ECDSA P-256 certificates for better security"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub Custom Controls",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "ACM-CUSTOM-1",
+                    "title": "Certificate Validation Method Security",
+                    "severity": "High",
+                    "description": "Use secure validation methods for certificate domain validation",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Prefer DNS validation over email validation for domain ownership verification and ensure DNS records are properly secured"
+                    }
+                },
+                {
+                    "identifier": "ACM-CUSTOM-2",
+                    "title": "Cross-Region Certificate Management",
+                    "severity": "Medium",
+                    "description": "Implement consistent certificate management across regions",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy certificates in multiple regions as needed and maintain consistent naming and tagging strategies across regions"
+                    }
+                },
+                {
+                    "identifier": "ACM-CUSTOM-3",
+                    "title": "Certificate Transparency Monitoring",
+                    "severity": "Low",
+                    "description": "Monitor Certificate Transparency logs for unauthorized certificates",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement monitoring tools to track certificate issuance in Certificate Transparency logs for your domains"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS ACM Cost Optimization Best Practices",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "COST-01",
+                    "title": "Use ACM Public Certificates Instead of Third-Party",
+                    "severity": "High",
+                    "description": "Utilize free ACM public certificates instead of purchasing third-party certificates",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Replace third-party SSL certificates with free ACM public certificates for AWS-integrated services to eliminate certificate purchase costs"
+                    }
+                },
+                {
+                    "identifier": "COST-02",
+                    "title": "Optimize Multi-Domain Certificates",
+                    "severity": "Medium",
+                    "description": "Use Subject Alternative Names (SAN) to consolidate multiple domains under single certificates",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Request certificates with multiple domain names in SAN field instead of individual certificates to reduce management overhead"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Eliminate Unused Certificates",
+                    "severity": "Medium",
+                    "description": "Regular cleanup of unused or expired imported certificates",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement automated processes to identify and remove unused imported certificates to avoid unnecessary storage costs"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Leverage Wildcard Certificates",
+                    "severity": "Medium",
+                    "description": "Use wildcard certificates for multiple subdomains of the same domain",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Request wildcard certificates (*.example.com) for applications with multiple subdomains to reduce certificate management complexity"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Optimize Regional Certificate Placement",
+                    "severity": "Low",
+                    "description": "Deploy certificates only in required regions to minimize cross-region data transfer costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Provision ACM certificates only in regions where they are actively used by services to optimize network costs"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Automate Certificate Lifecycle Management",
+                    "severity": "Low",
+                    "description": "Implement automation to reduce operational overhead and manual certificate management costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use Infrastructure as Code and AWS Lambda functions to automate certificate provisioning, renewal notifications, and lifecycle management"
+                    }
+                }
+            ]
+        }
+    ]
+}

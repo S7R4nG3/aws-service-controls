@@ -1,15 +1,16 @@
-package main
+package docgen
 
 import (
 	"bufio"
+	"embed"
 	"encoding/json"
+	"fmt"
 	"io"
-	"io/fs"
-	"log"
 	"os"
-	"path/filepath"
-	"strings"
 	"text/template"
+
+	"github.com/S7R4nG3/aws-service-controls/internal/services"
+	"github.com/S7R4nG3/aws-service-controls/internal/utils"
 )
 
 type Controls struct {
@@ -61,39 +62,31 @@ type Controls struct {
 	} `json:"cost"`
 }
 
-func main() {
-	var tmplFileName = "table.tmpl"
-	var ctrlDir = "security/"
-	var mkdnFileName = "controls.md"
+//go:embed templates
+var templates embed.FS
 
+func Generate(service services.Service) {
+	fmt.Printf("Generating docs for %s -> ", service.Long)
+	var tmplFileName = "templates/table.tmpl"
+	var control = "results/controls/" + service.Short + ".json"
+	var mkdnFileName = "results/docs/" + service.Short + ".md"
 	file, err := os.Create(mkdnFileName)
-	if err != nil {
-		log.Fatal(err)
-	}
+	utils.Check(err, "Error creating markdown file...")
 	defer file.Close()
 	writer := bufio.NewWriter(file)
 
-	filepath.Walk(ctrlDir, func(path string, info fs.FileInfo, err error) error {
-		if strings.Contains(info.Name(), ".json") {
-			controls := Controls{}
-			ctrlFile, err := os.Open(path)
-			if err != nil {
-				panic(err)
-			}
-			defer ctrlFile.Close()
-			contents, err := io.ReadAll(ctrlFile)
-			json.Unmarshal(contents, &controls)
+	controls := Controls{}
+	ctrlFile, err := os.Open(control)
+	utils.Check(err, "Error opening control file...")
+	defer ctrlFile.Close()
+	contents, err := io.ReadAll(ctrlFile)
+	utils.Check(err, "Error reading control file contents...")
+	json.Unmarshal(contents, &controls)
 
-			tmpl, err := template.New(tmplFileName).ParseFiles(tmplFileName)
-			if err != nil {
-				panic(err)
-			}
-			err = tmpl.Execute(writer, controls)
-			if err != nil {
-				panic(err)
-			}
-		}
-		return nil
-	})
+	tmpl, err := template.ParseFS(templates, tmplFileName)
+	utils.Check(err, "Error templating control contents...")
+	err = tmpl.Execute(writer, controls)
+	utils.Check(err, "Error executing control contents...")
 	writer.Flush()
+	fmt.Print("DONE..")
 }

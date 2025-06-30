@@ -1,0 +1,338 @@
+{
+    "service": "AWS OpenSearch",
+    "security": [
+        {
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v5.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy and Procedures",
+                    "severity": "Critical",
+                    "description": "Establish comprehensive identity and access management policies for OpenSearch cluster access",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Define IAM policies and roles with least privilege access, implement fine-grained access control using OpenSearch security plugin"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "Critical",
+                    "description": "Implement encryption at rest and in transit for all OpenSearch data",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable encryption at rest using AWS KMS keys and enforce HTTPS/TLS for all communications"
+                    }
+                },
+                {
+                    "identifier": "IVS-01",
+                    "title": "Infrastructure and Virtualization Security",
+                    "severity": "High",
+                    "description": "Secure network infrastructure and implement network segmentation",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy OpenSearch in VPC with private subnets, configure security groups with minimal required ports"
+                    }
+                },
+                {
+                    "identifier": "LOG-01",
+                    "title": "Logging and Monitoring",
+                    "severity": "High",
+                    "description": "Enable comprehensive logging and monitoring for security events",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable CloudWatch logs, CloudTrail, and OpenSearch audit logs with appropriate retention policies"
+                    }
+                },
+                {
+                    "identifier": "BCR-01",
+                    "title": "Business Continuity Management",
+                    "severity": "Medium",
+                    "description": "Implement backup and disaster recovery procedures",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure automated snapshots to S3, implement multi-AZ deployment, define RTO/RPO requirements"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "Critical",
+                    "description": "Manage user accounts and access to OpenSearch resources",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement regular account reviews, disable unused accounts, use IAM roles for service access"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "Critical",
+                    "description": "Protect data in transit to and from OpenSearch",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enforce HTTPS/TLS 1.2+ for all client connections and inter-node communication"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "Critical",
+                    "description": "Encrypt sensitive data stored in OpenSearch",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable encryption at rest using customer-managed KMS keys with proper key rotation"
+                    }
+                },
+                {
+                    "identifier": "AU-3",
+                    "title": "Content of Audit Records",
+                    "severity": "High",
+                    "description": "Generate comprehensive audit logs for security monitoring",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure OpenSearch audit logging to capture authentication, authorization, and data access events"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "Information System Backup",
+                    "severity": "High",
+                    "description": "Implement regular backup procedures for OpenSearch data",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure automated daily snapshots with cross-region replication for disaster recovery"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "Information System Monitoring",
+                    "severity": "Medium",
+                    "description": "Monitor OpenSearch for security events and anomalies",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement CloudWatch monitoring with custom metrics and alerting for suspicious activities"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "OpenSearch.1",
+                    "title": "OpenSearch domains should have encryption at rest enabled",
+                    "severity": "Critical",
+                    "description": "Ensures OpenSearch domains encrypt data at rest to protect sensitive information",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set encryptionAtRestOptions.enabled to true in domain configuration with KMS key specification"
+                    }
+                },
+                {
+                    "identifier": "OpenSearch.2",
+                    "title": "OpenSearch domains should be in a VPC",
+                    "severity": "Critical",
+                    "description": "Deploy OpenSearch domains within VPC for network isolation and security",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure VPC options with private subnets and appropriate security groups in domain configuration"
+                    }
+                },
+                {
+                    "identifier": "OpenSearch.3",
+                    "title": "OpenSearch domains should encrypt data sent between nodes",
+                    "severity": "Critical",
+                    "description": "Enable node-to-node encryption for inter-cluster communication security",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set nodeToNodeEncryptionOptions.enabled to true in domain configuration"
+                    }
+                },
+                {
+                    "identifier": "OpenSearch.4",
+                    "title": "OpenSearch domain error logging to CloudWatch Logs should be enabled",
+                    "severity": "High",
+                    "description": "Enable error logging for troubleshooting and security monitoring",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure logPublishingOptions for ERROR_LOGS with appropriate CloudWatch log group"
+                    }
+                },
+                {
+                    "identifier": "OpenSearch.5",
+                    "title": "OpenSearch domains should have audit logging enabled",
+                    "severity": "High",
+                    "description": "Enable audit logging to track access and changes to OpenSearch resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure logPublishingOptions for AUDIT_LOGS with CloudWatch log group and appropriate retention"
+                    }
+                },
+                {
+                    "identifier": "OpenSearch.6",
+                    "title": "OpenSearch domains should have at least three data nodes",
+                    "severity": "Medium",
+                    "description": "Ensure high availability and fault tolerance with minimum three data nodes",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set clusterConfig.instanceCount to minimum of 3 with dedicatedMasterEnabled for production workloads"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "2023.1",
+            "controls": [
+                {
+                    "identifier": "OpenSearch.1",
+                    "title": "OpenSearch domains should have encryption at rest enabled",
+                    "severity": "Critical",
+                    "description": "Detects OpenSearch domains without encryption at rest enabled",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable automatic remediation through Security Hub or Config rules to enforce encryption settings"
+                    }
+                },
+                {
+                    "identifier": "OpenSearch.2",
+                    "title": "OpenSearch domains should be in a VPC",
+                    "severity": "Critical",
+                    "description": "Identifies OpenSearch domains not deployed within a VPC",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Ensure all OpenSearch domains are created with VPC configuration in CloudFormation/Terraform templates"
+                    }
+                },
+                {
+                    "identifier": "OpenSearch.7",
+                    "title": "OpenSearch domains should have fine-grained access control enabled",
+                    "severity": "High",
+                    "description": "Ensures fine-grained access control is enabled for enhanced security",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable advancedSecurityOptions with fine-grained access control and internal user database or SAML"
+                    }
+                },
+                {
+                    "identifier": "OpenSearch.8",
+                    "title": "OpenSearch domain connections should be encrypted using TLS 1.2",
+                    "severity": "High",
+                    "description": "Ensures all connections use minimum TLS 1.2 for secure communication",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure domainEndpointOptions with TLS security policy set to Policy-Min-TLS-1-2-2019-07 or later"
+                    }
+                },
+                {
+                    "identifier": "OpenSearch.9",
+                    "title": "OpenSearch domains should have automatic snapshots enabled",
+                    "severity": "Medium",
+                    "description": "Verifies automatic snapshot configuration for data backup and recovery",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure snapshotOptions with automated snapshot hour setting in domain configuration"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS OpenSearch Service Cost Optimization",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "COST-01",
+                    "title": "Right-size OpenSearch instances",
+                    "severity": "High",
+                    "description": "Monitor and optimize instance types and sizes based on actual usage patterns",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Use CloudWatch metrics to analyze CPU, memory, and storage utilization; downsize or switch to more cost-effective instance types"
+                    }
+                },
+                {
+                    "identifier": "COST-02",
+                    "title": "Implement data lifecycle management",
+                    "severity": "High",
+                    "description": "Use Index State Management policies to transition older data to cheaper storage tiers",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure ISM policies to move data from hot to warm to cold storage, and delete old indices automatically"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Optimize storage configuration",
+                    "severity": "High",
+                    "description": "Select appropriate EBS volume types and sizes based on performance requirements",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use gp3 volumes instead of gp2 for better price-performance ratio, implement storage monitoring and alerting"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Use Reserved Instances for predictable workloads",
+                    "severity": "Medium",
+                    "description": "Purchase Reserved Instances for stable, long-running OpenSearch clusters",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Analyze usage patterns and purchase 1-year or 3-year Reserved Instances for consistent workloads"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Implement cluster scaling policies",
+                    "severity": "Medium",
+                    "description": "Configure automatic scaling to match capacity with demand",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use Application Auto Scaling to automatically adjust cluster size based on metrics like CPU utilization or search latency"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Optimize index and shard configuration",
+                    "severity": "Medium",
+                    "description": "Configure optimal number of shards and replicas to minimize resource waste",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Monitor shard sizes and distribution, use index templates to set appropriate shard counts for new indices"
+                    }
+                },
+                {
+                    "identifier": "COST-07",
+                    "title": "Monitor and alert on cost anomalies",
+                    "severity": "Medium",
+                    "description": "Set up cost monitoring and alerting to detect unexpected spending increases",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure AWS Cost Anomaly Detection and Budgets with notifications for OpenSearch service spending"
+                    }
+                },
+                {
+                    "identifier": "COST-08",
+                    "title": "Use appropriate data compression",
+                    "severity": "Low",
+                    "description": "Enable compression to reduce storage costs and improve performance",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure index compression settings and use appropriate field mappings to minimize storage footprint"
+                    }
+                }
+            ]
+        }
+    ]
+}

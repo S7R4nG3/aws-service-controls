@@ -1,0 +1,378 @@
+{
+    "service": "AWS Relational Database Service (RDS)",
+    "security": [
+        {
+            "name": "Cloud Security Alliance (CSA) Cloud Controls Matrix",
+            "version": "v5.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy and Procedures",
+                    "severity": "Critical",
+                    "description": "Establish comprehensive identity and access management policies for RDS instances and related resources",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Configure IAM policies, roles, and database users through AWS IAM and RDS parameter groups with least privilege access principles"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "Critical",
+                    "description": "Implement data classification and lifecycle management for RDS databases",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Configure automated backups, retention policies, and data classification tags through RDS backup settings and AWS tags"
+                    }
+                },
+                {
+                    "identifier": "EKM-01",
+                    "title": "Encryption and Key Management",
+                    "severity": "Critical",
+                    "description": "Implement encryption at rest and in transit for RDS instances",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable RDS encryption using AWS KMS keys and enforce SSL/TLS connections through parameter groups"
+                    }
+                },
+                {
+                    "identifier": "BCR-01",
+                    "title": "Business Continuity Management and Operational Resilience",
+                    "severity": "High",
+                    "description": "Establish business continuity and disaster recovery procedures for RDS",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Configure Multi-AZ deployments, read replicas, and automated backup strategies with cross-region replication"
+                    }
+                },
+                {
+                    "identifier": "LOG-01",
+                    "title": "Audit Logging / Intrusion Detection",
+                    "severity": "High",
+                    "description": "Enable comprehensive logging and monitoring for RDS instances",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Enable RDS Performance Insights, CloudWatch monitoring, and database audit logs with integration to CloudTrail"
+                    }
+                },
+                {
+                    "identifier": "IVS-01",
+                    "title": "Vulnerability Management",
+                    "severity": "Medium",
+                    "description": "Implement vulnerability scanning and patch management for RDS instances",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable automatic minor version upgrades and configure maintenance windows for RDS instances"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST Special Publication 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "Critical",
+                    "description": "Enforce approved authorizations for logical access to RDS resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement IAM policies with resource-based permissions and database user management with role-based access control"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "Critical",
+                    "description": "Protect the confidentiality and integrity of transmitted information to and from RDS",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enforce SSL/TLS encryption for all database connections and configure security groups to restrict network access"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "Critical",
+                    "description": "Protect the confidentiality and integrity of information at rest in RDS",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable RDS encryption at rest using AWS KMS customer managed keys with appropriate key rotation policies"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "High",
+                    "description": "Identify the types of events to be logged by RDS and supporting infrastructure",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Configure database audit logging, CloudWatch logs, and CloudTrail for comprehensive event capture"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "System Backup",
+                    "severity": "High",
+                    "description": "Conduct backups of user-level and system-level information contained in RDS",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Configure automated backups with appropriate retention periods and cross-region backup replication"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "High",
+                    "description": "Monitor RDS instances to detect attacks and indicators of potential attacks",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Enable CloudWatch monitoring, RDS Performance Insights, and integrate with AWS GuardDuty for threat detection"
+                    }
+                },
+                {
+                    "identifier": "RA-5",
+                    "title": "Vulnerability Monitoring and Scanning",
+                    "severity": "Medium",
+                    "description": "Monitor and scan for vulnerabilities in RDS instances and supporting infrastructure",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable AWS Security Hub findings and implement regular security assessments of RDS configurations"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "RDS.1",
+                    "title": "RDS snapshots should be private",
+                    "severity": "Critical",
+                    "description": "RDS snapshots should not be public to prevent unauthorized access to sensitive data",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Ensure RDS snapshot sharing is restricted and automated checks prevent public snapshots"
+                    }
+                },
+                {
+                    "identifier": "RDS.3",
+                    "title": "RDS DB instances should have encryption at rest enabled",
+                    "severity": "Critical",
+                    "description": "RDS DB instances should be encrypted at rest to protect sensitive data",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable encryption at rest for all RDS instances using AWS KMS keys"
+                    }
+                },
+                {
+                    "identifier": "RDS.4",
+                    "title": "RDS cluster snapshots and database snapshots should be encrypted at rest",
+                    "severity": "Critical",
+                    "description": "RDS snapshots should be encrypted to protect backup data",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Ensure all RDS snapshots inherit encryption from the source database or are explicitly encrypted"
+                    }
+                },
+                {
+                    "identifier": "RDS.5",
+                    "title": "RDS DB instances should be configured with multiple Availability Zones",
+                    "severity": "High",
+                    "description": "RDS instances should use Multi-AZ for high availability and disaster recovery",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Multi-AZ deployment for production RDS instances to ensure high availability"
+                    }
+                },
+                {
+                    "identifier": "RDS.6",
+                    "title": "Enhanced monitoring should be configured for RDS DB instances",
+                    "severity": "High",
+                    "description": "Enhanced monitoring provides real-time metrics for the operating system of RDS instances",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable Enhanced Monitoring for RDS instances with appropriate granularity and retention"
+                    }
+                },
+                {
+                    "identifier": "RDS.8",
+                    "title": "RDS DB instances should have deletion protection enabled",
+                    "severity": "High",
+                    "description": "Deletion protection prevents accidental deletion of RDS instances",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable deletion protection for production RDS instances to prevent accidental deletion"
+                    }
+                },
+                {
+                    "identifier": "RDS.12",
+                    "title": "IAM authentication should be configured for RDS instances",
+                    "severity": "Medium",
+                    "description": "IAM database authentication provides secure access without embedding credentials",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable IAM database authentication where supported and configure appropriate IAM policies"
+                    }
+                },
+                {
+                    "identifier": "RDS.13",
+                    "title": "RDS automatic minor version upgrades should be enabled",
+                    "severity": "Medium",
+                    "description": "Automatic minor version upgrades ensure security patches are applied",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Enable automatic minor version upgrades and configure appropriate maintenance windows"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "2023.1.0",
+            "controls": [
+                {
+                    "identifier": "RDS.2",
+                    "title": "RDS DB instances should prohibit public read access",
+                    "severity": "Critical",
+                    "description": "RDS instances should not be publicly accessible to prevent unauthorized access",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure RDS instances with PubliclyAccessible set to false and place in private subnets"
+                    }
+                },
+                {
+                    "identifier": "RDS.7",
+                    "title": "RDS clusters should have deletion protection enabled",
+                    "severity": "High",
+                    "description": "RDS clusters should have deletion protection to prevent accidental deletion",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable deletion protection for RDS clusters in production environments"
+                    }
+                },
+                {
+                    "identifier": "RDS.9",
+                    "title": "Database logging should be enabled",
+                    "severity": "High",
+                    "description": "RDS instances should have appropriate database logs enabled for security monitoring",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable relevant database logs (error, general, slow query) and export to CloudWatch Logs"
+                    }
+                },
+                {
+                    "identifier": "RDS.10",
+                    "title": "IAM authentication should be configured for RDS instances",
+                    "severity": "Medium",
+                    "description": "RDS instances should use IAM authentication where possible",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable IAM database authentication for supported engine types and configure IAM policies"
+                    }
+                },
+                {
+                    "identifier": "RDS.11",
+                    "title": "RDS instances should have automatic backups enabled",
+                    "severity": "Medium",
+                    "description": "RDS instances should have automated backups configured for data protection",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure automated backups with appropriate backup retention periods and backup windows"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS RDS Cost Optimization Best Practices",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "COST-RDS-1",
+                    "title": "Right-size RDS instances based on utilization",
+                    "severity": "High",
+                    "description": "Monitor and adjust RDS instance sizes based on actual CPU, memory, and I/O utilization",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Use CloudWatch metrics and RDS Performance Insights to analyze utilization and resize instances appropriately"
+                    }
+                },
+                {
+                    "identifier": "COST-RDS-2",
+                    "title": "Implement Reserved Instance purchasing strategy",
+                    "severity": "High",
+                    "description": "Purchase Reserved Instances for predictable workloads to achieve significant cost savings",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Analyze usage patterns and purchase 1-year or 3-year Reserved Instances for stable workloads"
+                    }
+                },
+                {
+                    "identifier": "COST-RDS-3",
+                    "title": "Optimize storage type and provisioned IOPS",
+                    "severity": "High",
+                    "description": "Select appropriate storage types and avoid over-provisioning IOPS",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use gp3 storage where appropriate and monitor IOPS utilization to avoid over-provisioning"
+                    }
+                },
+                {
+                    "identifier": "COST-RDS-4",
+                    "title": "Implement automated start/stop scheduling for non-production environments",
+                    "severity": "Medium",
+                    "description": "Schedule RDS instances to stop during non-business hours for development and testing environments",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Use AWS Lambda and EventBridge to automate start/stop schedules for non-production RDS instances"
+                    }
+                },
+                {
+                    "identifier": "COST-RDS-5",
+                    "title": "Optimize backup retention and cross-region replication",
+                    "severity": "Medium",
+                    "description": "Set appropriate backup retention periods and minimize unnecessary cross-region backup copies",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure backup retention based on compliance requirements and evaluate cross-region backup necessity"
+                    }
+                },
+                {
+                    "identifier": "COST-RDS-6",
+                    "title": "Monitor and optimize data transfer costs",
+                    "severity": "Medium",
+                    "description": "Minimize data transfer costs by optimizing read replica placement and application architecture",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Place read replicas in the same region as applications and optimize query patterns to reduce data transfer"
+                    }
+                },
+                {
+                    "identifier": "COST-RDS-7",
+                    "title": "Implement database connection pooling",
+                    "severity": "Medium",
+                    "description": "Use RDS Proxy or application-level connection pooling to reduce the need for larger instance sizes",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure RDS Proxy to pool database connections and reduce connection overhead"
+                    }
+                },
+                {
+                    "identifier": "COST-RDS-8",
+                    "title": "Regular cleanup of unused snapshots and automated backups",
+                    "severity": "Low",
+                    "description": "Implement automated cleanup policies for old snapshots and manual backups",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Create automated processes to delete old manual snapshots and optimize automated backup retention"
+                    }
+                }
+            ]
+        }
+    ]
+}

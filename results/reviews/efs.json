@@ -1,0 +1,352 @@
+{
+    "service": "AWS Elastic File System (EFS)",
+    "security": [
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "HIGH",
+                    "description": "Enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure EFS file system policies, resource-based policies, and POSIX permissions to restrict access based on IAM roles, users, and access points with specific path restrictions"
+                    }
+                },
+                {
+                    "identifier": "AC-6",
+                    "title": "Least Privilege",
+                    "severity": "HIGH",
+                    "description": "Employ the principle of least privilege, allowing only authorized accesses for users (or processes acting on behalf of users) that are necessary to accomplish assigned organizational tasks",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Grant minimal required EFS permissions through IAM policies and file system access points with specific path restrictions"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "HIGH",
+                    "description": "Protect the confidentiality and integrity of transmitted information",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable encryption in transit for EFS mount targets using TLS and configure EFS utils with encryption parameters"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "HIGH",
+                    "description": "Protect the confidentiality and integrity of information at rest",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable EFS encryption at rest using AWS KMS keys and configure appropriate key policies for access control"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "MEDIUM",
+                    "description": "Identify the types of events that the system is capable of logging in support of the audit function",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable CloudTrail logging for EFS API calls and configure VPC Flow Logs for network traffic monitoring"
+                    }
+                },
+                {
+                    "identifier": "AU-6",
+                    "title": "Audit Record Review, Analysis, and Reporting",
+                    "severity": "MEDIUM",
+                    "description": "Review and analyze system audit records for indications of inappropriate or unusual activity and the potential impact of the inappropriate or unusual activity",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure CloudWatch alarms and AWS Config rules to monitor EFS access patterns and configuration changes"
+                    }
+                },
+                {
+                    "identifier": "SC-7",
+                    "title": "Boundary Protection",
+                    "severity": "MEDIUM",
+                    "description": "Monitor and control communications at the external interfaces to the system and at key internal interfaces within the system",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure VPC security groups and NACLs to restrict EFS mount target access to authorized subnets and ports"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "System Backup",
+                    "severity": "MEDIUM",
+                    "description": "Conduct backups of user-level information contained in the system",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable EFS automatic backups using AWS Backup service and configure backup retention policies"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "CSA CCM",
+            "version": "v4.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy and Procedures",
+                    "severity": "HIGH",
+                    "description": "Policies and procedures shall be established, and supporting business processes and technical measures implemented, for identity and access management systems, applications and infrastructure network and systems components.",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Establish and document EFS access management procedures including role-based access controls and regular access reviews"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "HIGH",
+                    "description": "Policies and procedures shall be established, and supporting business processes and technical measures implemented, for maintaining a complete data lifecycle management and data security controls.",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement data classification policies for EFS stored data and establish lifecycle management procedures"
+                    }
+                },
+                {
+                    "identifier": "EKM-01",
+                    "title": "Encryption and Key Management",
+                    "severity": "HIGH",
+                    "description": "Policies and procedures shall be established, and supporting business processes and technical measures implemented, to protect data through appropriate encryption or other cryptographic means.",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement AWS KMS key management for EFS encryption with proper key rotation and access policies"
+                    }
+                },
+                {
+                    "identifier": "IVS-01",
+                    "title": "Infrastructure and Virtualization Security",
+                    "severity": "MEDIUM",
+                    "description": "Policies and procedures shall be established, and supporting business processes and technical measures implemented, for infrastructure and virtualization security baseline configuration and monitoring.",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure EFS mount targets within secure VPC subnets with appropriate network segmentation"
+                    }
+                },
+                {
+                    "identifier": "BCR-01",
+                    "title": "Business Continuity Management and Operational Resilience",
+                    "severity": "MEDIUM",
+                    "description": "Policies and procedures shall be established, and supporting business processes and technical measures implemented, for business continuity and operational resilience planning.",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Establish business continuity plans that include EFS backup and recovery procedures across multiple AZs"
+                    }
+                },
+                {
+                    "identifier": "LOG-01",
+                    "title": "Audit Logging / Intrusion Detection",
+                    "severity": "MEDIUM",
+                    "description": "Policies and procedures shall be established, and supporting business processes and technical measures implemented, to ensure suitable audit logs are generated, maintained, and reviewed.",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure comprehensive logging for EFS access through CloudTrail and implement monitoring for suspicious activities"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "v1.0.0",
+            "controls": [
+                {
+                    "identifier": "EFS.1",
+                    "title": "Amazon EFS should be configured to encrypt file data at rest using AWS KMS",
+                    "severity": "MEDIUM",
+                    "description": "This control checks whether Amazon EFS file systems are configured to encrypt file data using AWS KMS.",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable encryption at rest during EFS creation using AWS KMS keys"
+                    }
+                },
+                {
+                    "identifier": "EFS.2",
+                    "title": "Amazon EFS volumes should be in backup plans",
+                    "severity": "MEDIUM",
+                    "description": "This control checks whether Amazon EFS file systems are added to backup plans in AWS Backup.",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create AWS Backup plans that include EFS file systems and configure appropriate backup schedules"
+                    }
+                },
+                {
+                    "identifier": "EFS.3",
+                    "title": "EFS access points should enforce a user identity",
+                    "severity": "MEDIUM",
+                    "description": "This control checks whether Amazon EFS access points are configured to enforce a POSIX user identity.",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure EFS access points with CreationInfo to enforce specific POSIX user and group identities"
+                    }
+                },
+                {
+                    "identifier": "EFS.4",
+                    "title": "EFS access points should enforce a root directory",
+                    "severity": "MEDIUM",
+                    "description": "This control checks whether Amazon EFS access points are configured to enforce a root directory.",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure EFS access points with RootDirectory to restrict access to specific file system paths"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "Latest",
+            "controls": [
+                {
+                    "identifier": "EFS.1",
+                    "title": "EFS file systems should encrypt data at rest",
+                    "severity": "MEDIUM",
+                    "description": "Checks whether Amazon EFS file systems are encrypted at rest",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable encryption at rest for EFS file systems using AWS managed or customer managed KMS keys"
+                    }
+                },
+                {
+                    "identifier": "EFS.2",
+                    "title": "EFS file systems should be in a backup plan",
+                    "severity": "MEDIUM",
+                    "description": "Checks whether EFS file systems are added to AWS Backup plans",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Include EFS file systems in AWS Backup plans with appropriate backup frequency and retention"
+                    }
+                },
+                {
+                    "identifier": "EFS.3",
+                    "title": "EFS access points should enforce a user identity",
+                    "severity": "MEDIUM",
+                    "description": "Checks whether EFS access points are configured to enforce a user identity",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure EFS access points with POSIX user information to enforce specific user identities"
+                    }
+                },
+                {
+                    "identifier": "EFS.4",
+                    "title": "EFS access points should enforce a root directory",
+                    "severity": "MEDIUM",
+                    "description": "Checks whether EFS access points enforce a root directory",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure EFS access points with root directory settings to limit file system access scope"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS EFS Cost Optimization Best Practices",
+            "version": "2024",
+            "controls": [
+                {
+                    "identifier": "COST-1",
+                    "title": "Implement EFS Intelligent Tiering",
+                    "severity": "HIGH",
+                    "description": "Enable Intelligent Tiering to automatically move files to lower-cost storage classes",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure EFS lifecycle policies to automatically transition files to Infrequent Access (IA) storage class based on access patterns"
+                    }
+                },
+                {
+                    "identifier": "COST-2",
+                    "title": "Use Provisioned Throughput Only When Necessary",
+                    "severity": "HIGH",
+                    "description": "Avoid provisioned throughput mode unless burst throughput is insufficient",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Monitor EFS performance metrics and only enable provisioned throughput when burst mode limits are consistently exceeded"
+                    }
+                },
+                {
+                    "identifier": "COST-3",
+                    "title": "Monitor and Optimize EFS Usage",
+                    "severity": "MEDIUM",
+                    "description": "Regularly monitor EFS usage patterns and optimize storage allocation",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Use CloudWatch metrics to track EFS usage, identify unused files, and implement data cleanup policies"
+                    }
+                },
+                {
+                    "identifier": "COST-4",
+                    "title": "Right-size EFS Performance Mode",
+                    "severity": "MEDIUM",
+                    "description": "Choose appropriate performance mode based on actual requirements",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use General Purpose mode for most workloads and only use Max I/O mode when higher IOPS are required"
+                    }
+                },
+                {
+                    "identifier": "COST-5",
+                    "title": "Implement Data Lifecycle Management",
+                    "severity": "MEDIUM",
+                    "description": "Establish policies for data retention and deletion to minimize storage costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Create automated processes to identify and remove obsolete data from EFS file systems"
+                    }
+                },
+                {
+                    "identifier": "COST-6",
+                    "title": "Use Regional Storage Classes Appropriately",
+                    "severity": "LOW",
+                    "description": "Choose between Standard and One Zone storage classes based on availability requirements",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use EFS One Zone storage class for workloads that don't require multi-AZ resilience to reduce costs"
+                    }
+                },
+                {
+                    "identifier": "COST-7",
+                    "title": "Optimize Mount Target Configuration",
+                    "severity": "LOW",
+                    "description": "Configure mount targets efficiently to minimize network costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Place mount targets in the same AZ as compute resources to minimize cross-AZ data transfer charges"
+                    }
+                }
+            ]
+        }
+    ]
+}
+
+## Summary of Changes Made:
+
+### NIST 800-53 Controls:
+1. **AC-3**: Updated description to include the complete official description with "in accordance with applicable access control policies"
+2. **AC-6**: Expanded description to include the full official wording about authorized accesses and organizational tasks
+3. **AU-2**: Added "in support of the audit function" to match official control description
+4. **AU-6**: Expanded description to include "potential impact of inappropriate or unusual activity"
+5. **SC-7**: Added "and at key internal interfaces within the system" to match official control
+6. **CP-9**: Updated to focus on "user-level information" as per official control definition
+
+### CSA CCM Controls:
+1. **Framework version**: Changed from "v5.0" to "v4.0" (v5.0 is not yet released)
+2. **All control descriptions**: Updated to match the actual CSA CCM v4.0 format which includes "Policies and procedures shall be established, and supporting business processes and technical measures implemented"
+
+### AWS Foundational Security Best Practices:
+1. **EFS.1**: Updated title to include "using AWS KMS" and improved description specificity
+2. **EFS.3 & EFS.4**: Changed severity from "LOW" to "MEDIUM" to match actual AWS standards
+3. **All descriptions**: Enhanced to be more specific about what the controls actually check
+
+### AWS Security Hub:
+1. **EFS.3 & EFS.4**: Updated severity from "LOW" to "MEDIUM" to align with current AWS Security Hub findings classification
+
+These changes ensure that all control descriptions, titles, and severities accurately reflect the official framework documentation and current AWS standards.

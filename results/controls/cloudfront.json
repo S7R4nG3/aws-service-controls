@@ -1,0 +1,318 @@
+{
+    "service": "AWS CloudFront",
+    "security": [
+        {
+            "name": "CSA CCM",
+            "version": "v5.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management",
+                    "severity": "High",
+                    "description": "Ensure proper identity and access management controls are implemented for CloudFront distributions",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure IAM policies with least privilege access for CloudFront operations and implement origin access control (OAC) for S3 origins"
+                    }
+                },
+                {
+                    "identifier": "EKM-02",
+                    "title": "Encryption Key Management",
+                    "severity": "High",
+                    "description": "Implement proper encryption key management for data in transit and at rest",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure SSL/TLS certificates using AWS Certificate Manager and enforce HTTPS-only connections with security headers"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "High",
+                    "description": "Protect sensitive data through proper classification and handling",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement field-level encryption for sensitive data and configure appropriate cache behaviors based on data classification"
+                    }
+                },
+                {
+                    "identifier": "TVM-01",
+                    "title": "Threat and Vulnerability Management",
+                    "severity": "Medium",
+                    "description": "Implement security monitoring and threat detection capabilities",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable AWS WAF integration and configure security monitoring through CloudWatch and Security Hub"
+                    }
+                },
+                {
+                    "identifier": "LOG-01",
+                    "title": "Audit Assurance and Compliance",
+                    "severity": "Medium",
+                    "description": "Ensure comprehensive logging and monitoring of CloudFront activities",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable CloudFront access logs, real-time logs, and integrate with CloudTrail for API logging"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "High",
+                    "description": "Enforce approved authorizations for logical access to information and system resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Origin Access Control (OAC) and implement signed URLs/cookies for restricted content access"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of transmitted information",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enforce TLS 1.2 or higher, implement HSTS headers, and configure secure cipher suites"
+                    }
+                },
+                {
+                    "identifier": "SC-7",
+                    "title": "Boundary Protection",
+                    "severity": "High",
+                    "description": "Monitor and control communications at external boundaries and key internal boundaries",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Integrate AWS WAF with CloudFront and configure geo-blocking and rate limiting as needed"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "Medium",
+                    "description": "Ensure system logs capture appropriate information for security monitoring",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure CloudFront standard and real-time logs with appropriate log fields for security analysis"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "Medium",
+                    "description": "Monitor system events and analyze for indicators of inappropriate or unusual activity",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Set up CloudWatch alarms for CloudFront metrics and integrate with AWS Security Hub for centralized monitoring"
+                    }
+                },
+                {
+                    "identifier": "CP-2",
+                    "title": "Contingency Plan",
+                    "severity": "Low",
+                    "description": "Develop and maintain contingency plans for system operations",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Document CloudFront disaster recovery procedures and maintain multiple origin configurations where appropriate"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "CloudFront.1",
+                    "title": "CloudFront distributions should have a default root object configured",
+                    "severity": "Medium",
+                    "description": "CloudFront distributions should be configured with a default root object to prevent directory browsing",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure default root object (e.g., index.html) in CloudFront distribution settings"
+                    }
+                },
+                {
+                    "identifier": "CloudFront.2",
+                    "title": "CloudFront distributions should have origin access identity enabled",
+                    "severity": "High",
+                    "description": "CloudFront distributions should use Origin Access Control (OAC) to restrict direct access to S3 origins",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create and associate Origin Access Control with CloudFront distribution and update S3 bucket policy accordingly"
+                    }
+                },
+                {
+                    "identifier": "CloudFront.3",
+                    "title": "CloudFront distributions should require encryption in transit",
+                    "severity": "High",
+                    "description": "CloudFront distributions should be configured to redirect HTTP requests to HTTPS",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set viewer protocol policy to 'redirect-to-https' or 'https-only' for all cache behaviors"
+                    }
+                },
+                {
+                    "identifier": "CloudFront.4",
+                    "title": "CloudFront distributions should have origin failover configured",
+                    "severity": "Medium",
+                    "description": "CloudFront distributions should be configured with origin failover to improve availability",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure origin groups with primary and secondary origins for automatic failover"
+                    }
+                },
+                {
+                    "identifier": "CloudFront.5",
+                    "title": "CloudFront distributions should have logging enabled",
+                    "severity": "Medium",
+                    "description": "CloudFront distributions should have access logging enabled for security monitoring and analysis",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable standard access logs and configure S3 bucket for log storage with appropriate retention policies"
+                    }
+                },
+                {
+                    "identifier": "CloudFront.6",
+                    "title": "CloudFront distributions should have AWS WAF enabled",
+                    "severity": "Medium",
+                    "description": "CloudFront distributions should be associated with AWS WAF for additional security protection",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create and associate AWS WAF web ACL with CloudFront distribution, configure appropriate rules for protection"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "2023.1",
+            "controls": [
+                {
+                    "identifier": "CloudFront.7",
+                    "title": "CloudFront distributions should use custom SSL/TLS certificates",
+                    "severity": "Medium",
+                    "description": "CloudFront distributions should use custom SSL certificates instead of default CloudFront certificates",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Request or import SSL/TLS certificates in AWS Certificate Manager and associate with CloudFront distribution"
+                    }
+                },
+                {
+                    "identifier": "CloudFront.8",
+                    "title": "CloudFront distributions should not use deprecated SSL protocols",
+                    "severity": "High",
+                    "description": "CloudFront distributions should be configured to use only secure SSL/TLS protocol versions",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure minimum protocol version to TLSv1.2 or higher in the CloudFront distribution viewer certificate settings"
+                    }
+                },
+                {
+                    "identifier": "CloudFront.9",
+                    "title": "CloudFront distributions should have field-level encryption enabled for sensitive data",
+                    "severity": "Medium",
+                    "description": "CloudFront distributions handling sensitive data should implement field-level encryption",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure field-level encryption profiles and associate with cache behaviors that handle sensitive form data"
+                    }
+                },
+                {
+                    "identifier": "CloudFront.10",
+                    "title": "CloudFront distributions should have security headers configured",
+                    "severity": "Low",
+                    "description": "CloudFront distributions should implement security headers for enhanced browser security",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use CloudFront Functions or Lambda@Edge to add security headers like HSTS, CSP, X-Frame-Options, and X-Content-Type-Options"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS CloudFront Cost Optimization",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "COST-01",
+                    "title": "Optimize CloudFront Price Class Selection",
+                    "severity": "High",
+                    "description": "Select appropriate price class based on geographic distribution of users to minimize costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure price class (Price Class 100, 200, or All) based on target audience geography to balance cost and performance"
+                    }
+                },
+                {
+                    "identifier": "COST-02",
+                    "title": "Implement Efficient Cache Behaviors",
+                    "severity": "High",
+                    "description": "Configure cache behaviors to maximize cache hit ratios and reduce origin requests",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set appropriate TTL values, configure cache key normalization, and implement cache policies to increase cache efficiency"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Optimize Origin Request Patterns",
+                    "severity": "Medium",
+                    "description": "Minimize data transfer costs by optimizing requests between CloudFront and origins",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable origin request policies to forward only necessary headers, cookies, and query strings to reduce origin load"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Implement Content Compression",
+                    "severity": "Medium",
+                    "description": "Enable automatic compression to reduce data transfer costs and improve performance",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable automatic compression in cache behaviors for text-based content types to reduce bandwidth costs"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Monitor and Analyze Usage Patterns",
+                    "severity": "Medium",
+                    "description": "Regularly monitor CloudFront usage and costs to identify optimization opportunities",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Set up CloudWatch dashboards and cost alerts to monitor data transfer, requests, and cache hit ratios"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Optimize Log Storage Costs",
+                    "severity": "Low",
+                    "description": "Implement cost-effective logging strategies to balance compliance and cost requirements",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure S3 lifecycle policies for log storage, use appropriate storage classes, and consider log sampling for high-volume distributions"
+                    }
+                },
+                {
+                    "identifier": "COST-07",
+                    "title": "Implement Reserved Capacity for Predictable Workloads",
+                    "severity": "Low",
+                    "description": "Consider CloudFront security savings bundle for predictable WAF usage patterns",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Evaluate and purchase CloudFront security savings bundle if using AWS WAF consistently across distributions"
+                    }
+                }
+            ]
+        }
+    ]
+}

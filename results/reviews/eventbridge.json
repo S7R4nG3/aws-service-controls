@@ -1,0 +1,270 @@
+{
+    "service": "AWS EventBridge",
+    "security": [
+        {
+            "name": "Cloud Security Alliance Cloud Controls Matrix",
+            "version": "v4.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policies and Procedures",
+                    "severity": "Critical",
+                    "description": "Implement strong identity and access management controls for EventBridge resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure IAM policies with least privilege principles, use resource-based policies for event buses, and implement cross-account access controls"
+                    }
+                },
+                {
+                    "identifier": "EKM-01",
+                    "title": "Encryption Key Management Policies and Procedures",
+                    "severity": "High",
+                    "description": "Implement proper encryption key management for EventBridge data protection",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure customer-managed KMS keys for EventBridge encryption at rest and in transit"
+                    }
+                },
+                {
+                    "identifier": "AIS-01",
+                    "title": "Audit Independent Assurance",
+                    "severity": "High",
+                    "description": "Enable comprehensive audit logging for all EventBridge operations",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable CloudTrail logging for EventBridge API calls and configure log retention policies"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "Medium",
+                    "description": "Implement data classification and lifecycle management for event data",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Classify event data based on sensitivity and implement appropriate retention policies"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "Critical",
+                    "description": "Enforce approved authorizations for logical access to EventBridge resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement resource-based policies and IAM roles with condition-based access controls"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "Critical",
+                    "description": "Protect the confidentiality and integrity of transmitted information",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Ensure all EventBridge communications use TLS encryption and configure VPC endpoints where required"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Auditable Events",
+                    "severity": "High",
+                    "description": "Determine which events are to be logged by EventBridge",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure comprehensive CloudTrail logging and enable EventBridge rule execution logging"
+                    }
+                },
+                {
+                    "identifier": "SC-7",
+                    "title": "Boundary Protection",
+                    "severity": "High",
+                    "description": "Monitor and control communications at external boundaries",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement VPC endpoints for EventBridge and configure security groups for target services"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "Information System Backup",
+                    "severity": "Medium",
+                    "description": "Conduct backups of EventBridge configurations and rules",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement automated backup of EventBridge rules and configurations using infrastructure as code"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "v1.0.0",
+            "controls": [
+                {
+                    "identifier": "EventBridge.1",
+                    "title": "EventBridge custom event buses should have resource-based policy attached",
+                    "severity": "Medium",
+                    "description": "Custom event buses should have resource-based policies to control access",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Attach resource-based policies to custom event buses defining allowed principals and actions"
+                    }
+                },
+                {
+                    "identifier": "EventBridge.3",
+                    "title": "EventBridge custom event buses should be encrypted",
+                    "severity": "Medium",
+                    "description": "Custom event buses should use encryption at rest",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure KMS encryption for custom event buses using customer-managed keys"
+                    }
+                },
+                {
+                    "identifier": "EventBridge.4",
+                    "title": "EventBridge should not allow public access",
+                    "severity": "Medium",
+                    "description": "EventBridge resources should not be publicly accessible",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Review and restrict resource-based policies to prevent public access"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "2023.04.0",
+            "controls": [
+                {
+                    "identifier": "EventBridge.1",
+                    "title": "EventBridge custom event buses should have a resource-based policy attached",
+                    "severity": "Medium",
+                    "description": "This control checks whether EventBridge custom event buses have resource-based policies attached",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create and attach resource-based policies to custom event buses with appropriate access controls"
+                    }
+                },
+                {
+                    "identifier": "EventBridge.3",
+                    "title": "EventBridge custom event buses should be encrypted",
+                    "severity": "Medium",
+                    "description": "This control checks whether EventBridge custom event buses are encrypted",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable encryption for custom event buses using AWS KMS customer-managed keys"
+                    }
+                },
+                {
+                    "identifier": "EventBridge.4",
+                    "title": "EventBridge should not allow public access",
+                    "severity": "Medium",
+                    "description": "This control checks whether EventBridge resources are publicly accessible",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Review and restrict resource-based policies to prevent public access"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS EventBridge Cost Optimization Best Practices",
+            "version": "2024",
+            "controls": [
+                {
+                    "identifier": "COST-01",
+                    "title": "Optimize Event Pattern Matching",
+                    "severity": "High",
+                    "description": "Use specific event patterns to reduce unnecessary rule evaluations and processing costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Design event patterns with specific filters to minimize rule evaluations and avoid broad pattern matching"
+                    }
+                },
+                {
+                    "identifier": "COST-02",
+                    "title": "Implement Event Deduplication",
+                    "severity": "High",
+                    "description": "Prevent duplicate events to reduce processing costs and downstream resource consumption",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement event deduplication logic and use idempotency tokens where applicable"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Monitor and Remove Unused Rules",
+                    "severity": "Medium",
+                    "description": "Regularly audit and remove unused EventBridge rules to reduce costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement automated monitoring to identify and remove unused rules and event buses"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Optimize Cross-Region Replication",
+                    "severity": "Medium",
+                    "description": "Minimize unnecessary cross-region event replication to reduce data transfer costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure replication rules to replicate only necessary events across regions"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Use Event Batching",
+                    "severity": "Medium",
+                    "description": "Implement event batching for high-volume scenarios to reduce per-event costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure target services to process events in batches where supported"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Implement Event Filtering at Source",
+                    "severity": "Low",
+                    "description": "Filter events at the source to reduce the number of events sent to EventBridge",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure event sources to filter events before sending to EventBridge"
+                    }
+                },
+                {
+                    "identifier": "COST-07",
+                    "title": "Monitor Event Processing Costs",
+                    "severity": "Low",
+                    "description": "Implement cost monitoring and alerting for EventBridge usage",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Set up CloudWatch billing alarms and cost budgets for EventBridge service usage"
+                    }
+                }
+            ]
+        }
+    ]
+}
+
+**Analysis of Discrepancies Found:**
+
+1. **CSA CCM Version**: Changed from v5.0 to v4.0 (current published version)
+2. **CSA CCM LOG-01**: Changed identifier from "LOG-01" to "AIS-01" (correct audit control identifier)
+3. **NIST 800-53 Titles**: Corrected AU-2 title from "Event Logging" to "Auditable Events" and CP-9 from "System Backup" to "Information System Backup"
+4. **AWS Foundational Security Best Practices**: Removed EventBridge.2 control (rules should have targets) as this is not an actual control in the framework
+5. **AWS Security Hub**: 
+   - Removed EventBridge.2 control (not a real Security Hub control)
+   - Removed EventBridge.4 control about global endpoints encryption (not a current control)
+   - Added EventBridge.4 control about public access (actual control)
+   - Corrected severities from Critical/High to Medium (actual severities in Security Hub)
