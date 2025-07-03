@@ -3,314 +3,204 @@
     "security": [
         {
             "name": "CSA Cloud Controls Matrix",
-            "version": "v5.0",
+            "version": "v4.0",
             "controls": [
                 {
-                    "identifier": "IAM-01",
-                    "title": "Identity and Access Management",
+                    "identifier": "IAM-02",
+                    "title": "User ID Credentials",
                     "severity": "HIGH",
-                    "description": "Implement strong identity and access management controls for EventBridge Scheduler resources",
+                    "description": "Ensure proper identity and access management controls for EventBridge Scheduler resources",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure IAM policies with least privilege access, implement role-based access control for schedule creation, modification, and deletion operations"
+                        "description": "Implement IAM policies with least privilege access using resource-based policies and condition keys for EventBridge Scheduler"
                     }
                 },
                 {
-                    "identifier": "IAM-02",
-                    "title": "User Access Provisioning",
+                    "identifier": "EKM-01",
+                    "title": "Encryption & Key Management",
                     "severity": "HIGH",
-                    "description": "Ensure proper user access provisioning and deprovisioning for EventBridge Scheduler",
+                    "description": "Ensure encryption of EventBridge Scheduler data at rest and in transit",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Implement automated user lifecycle management with regular access reviews and time-based access controls"
+                        "type": "IaC",
+                        "description": "Configure KMS encryption for EventBridge Scheduler using customer-managed keys and enable encryption for all schedule data"
+                    }
+                },
+                {
+                    "identifier": "AIS-01",
+                    "title": "Application & Interface Security",
+                    "severity": "MEDIUM",
+                    "description": "Secure application interfaces and APIs for EventBridge Scheduler",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement API authentication and authorization controls, use HTTPS endpoints, and validate all inputs to EventBridge Scheduler APIs"
                     }
                 },
                 {
                     "identifier": "DSI-01",
-                    "title": "Data Security and Information Lifecycle Management",
-                    "severity": "HIGH",
-                    "description": "Protect schedule data and configuration information throughout its lifecycle",
+                    "title": "Data Security & Information Lifecycle Management",
+                    "severity": "MEDIUM",
+                    "description": "Implement data classification and lifecycle management for EventBridge Scheduler",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure data retention policies and implement data classification tags for EventBridge Scheduler schedules and metadata"
+                    }
+                },
+                {
+                    "identifier": "SEF-01",
+                    "title": "Security Incident Management, E-Discovery & Cloud Forensics",
+                    "severity": "LOW",
+                    "description": "Enable comprehensive logging and monitoring for EventBridge Scheduler",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable encryption at rest and in transit for schedule data, implement data classification and retention policies"
-                    }
-                },
-                {
-                    "identifier": "CEK-01",
-                    "title": "Cryptography, Encryption & Key Management",
-                    "severity": "HIGH",
-                    "description": "Implement proper encryption and key management for EventBridge Scheduler",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Use AWS KMS for encryption keys, implement key rotation policies, and ensure proper key access controls"
-                    }
-                },
-                {
-                    "identifier": "IVS-01",
-                    "title": "Infrastructure & Virtualization Security",
-                    "severity": "MEDIUM",
-                    "description": "Secure the underlying infrastructure supporting EventBridge Scheduler",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Implement network security controls, VPC endpoints, and secure communication channels"
-                    }
-                },
-                {
-                    "identifier": "STA-01",
-                    "title": "Security Testing & Audit",
-                    "severity": "MEDIUM",
-                    "description": "Regular security testing and auditing of EventBridge Scheduler configurations",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Conduct regular security assessments, penetration testing, and configuration audits"
+                        "description": "Enable CloudTrail logging, CloudWatch monitoring, and configure log retention for EventBridge Scheduler activities"
                     }
                 }
             ]
         },
         {
-            "name": "NIST 800-53",
+            "name": "NIST SP 800-53",
             "version": "Rev 5",
             "controls": [
                 {
                     "identifier": "AC-2",
                     "title": "Account Management",
                     "severity": "HIGH",
-                    "description": "Manage user accounts with access to EventBridge Scheduler",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Implement centralized account management with automated provisioning and deprovisioning processes"
-                    }
-                },
-                {
-                    "identifier": "AC-3",
-                    "title": "Access Enforcement",
-                    "severity": "HIGH",
-                    "description": "Enforce approved authorizations for logical access to EventBridge Scheduler",
+                    "description": "Implement proper account management for EventBridge Scheduler access",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure IAM policies with explicit deny statements and resource-based policies for granular access control"
-                    }
-                },
-                {
-                    "identifier": "AC-6",
-                    "title": "Least Privilege",
-                    "severity": "HIGH",
-                    "description": "Employ the principle of least privilege for EventBridge Scheduler access",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Implement minimal necessary permissions for schedule operations and regular privilege reviews"
-                    }
-                },
-                {
-                    "identifier": "AU-2",
-                    "title": "Event Logging",
-                    "severity": "HIGH",
-                    "description": "Log security-relevant events for EventBridge Scheduler",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Enable CloudTrail logging for all EventBridge Scheduler API calls and configuration changes"
-                    }
-                },
-                {
-                    "identifier": "AU-6",
-                    "title": "Audit Record Review",
-                    "severity": "HIGH",
-                    "description": "Review and analyze audit records for EventBridge Scheduler",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Implement automated log analysis and regular manual review of audit logs for anomalies"
-                    }
-                },
-                {
-                    "identifier": "SC-7",
-                    "title": "Boundary Protection",
-                    "severity": "HIGH",
-                    "description": "Implement network boundary protection for EventBridge Scheduler",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure VPC endpoints, security groups, and NACLs to control network access"
+                        "description": "Create dedicated service accounts with minimal permissions and implement automated account lifecycle management for EventBridge Scheduler"
                     }
                 },
                 {
                     "identifier": "SC-8",
                     "title": "Transmission Confidentiality and Integrity",
                     "severity": "HIGH",
-                    "description": "Protect the confidentiality and integrity of transmitted information",
+                    "description": "Protect data transmission to and from EventBridge Scheduler",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Enforce TLS encryption for all API communications and data in transit"
+                        "description": "Ensure all EventBridge Scheduler API calls use TLS 1.2 or higher and implement VPC endpoints for secure communication"
                     }
                 },
                 {
-                    "identifier": "SC-13",
-                    "title": "Cryptographic Protection",
-                    "severity": "HIGH",
-                    "description": "Implement cryptographic protection for EventBridge Scheduler data",
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "MEDIUM",
+                    "description": "Configure comprehensive event logging for EventBridge Scheduler",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure AWS KMS encryption for schedule data and implement proper key management"
+                        "description": "Enable CloudTrail data events for EventBridge Scheduler and configure CloudWatch Logs for all scheduler activities"
                     }
                 },
                 {
                     "identifier": "SI-4",
                     "title": "System Monitoring",
                     "severity": "MEDIUM",
-                    "description": "Monitor the EventBridge Scheduler system for security events",
+                    "description": "Implement continuous monitoring for EventBridge Scheduler",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Implement CloudWatch monitoring and alerting for suspicious activities and performance anomalies"
+                        "type": "IaC",
+                        "description": "Configure CloudWatch alarms for EventBridge Scheduler metrics and implement automated response to security events"
                     }
                 },
                 {
                     "identifier": "CP-9",
                     "title": "System Backup",
-                    "severity": "MEDIUM",
-                    "description": "Conduct backups of EventBridge Scheduler configurations",
+                    "severity": "LOW",
+                    "description": "Implement backup and recovery procedures for EventBridge Scheduler configurations",
                     "implementation": {
                         "type": "User",
-                        "description": "Implement automated backup procedures for schedule configurations and maintain recovery documentation"
+                        "description": "Implement automated backup of EventBridge Scheduler configurations and maintain recovery procedures documentation"
                     }
                 }
             ]
         },
         {
-            "name": "AWS Foundational Security Best Practices",
-            "version": "1.0",
+            "name": "AWS Foundational Security Standard",
+            "version": "v1.0.0",
             "controls": [
                 {
-                    "identifier": "EventBridge.1",
-                    "title": "EventBridge custom bus should have a resource-based policy attached",
+                    "identifier": "CloudTrail.1",
+                    "title": "CloudTrail should be enabled and configured with at least one multi-Region trail",
                     "severity": "HIGH",
-                    "description": "EventBridge custom buses should have resource-based policies to control access",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Implement resource-based policies on EventBridge custom buses to restrict cross-account access and define allowed principals"
-                    }
-                },
-                {
-                    "identifier": "EventBridge.2",
-                    "title": "EventBridge custom bus should have a dead letter queue configured",
-                    "severity": "MEDIUM",
-                    "description": "Configure dead letter queues for EventBridge Scheduler to handle failed invocations",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure SQS dead letter queues for EventBridge Scheduler targets to capture failed invocations and enable retry mechanisms"
-                    }
-                },
-                {
-                    "identifier": "IAM.1",
-                    "title": "IAM policies should not allow full administrative privileges",
-                    "severity": "HIGH",
-                    "description": "Avoid granting full administrative privileges for EventBridge Scheduler operations",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Create specific IAM policies for EventBridge Scheduler operations with granular permissions instead of using wildcard actions"
-                    }
-                },
-                {
-                    "identifier": "IAM.2",
-                    "title": "IAM users should not have IAM policies attached",
-                    "severity": "MEDIUM",
-                    "description": "Use IAM roles and groups instead of attaching policies directly to users",
+                    "description": "Enable CloudTrail logging for EventBridge Scheduler API calls",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Implement role-based access management and group-based policy assignment for EventBridge Scheduler access"
+                        "description": "Configure multi-region CloudTrail to capture all EventBridge Scheduler API calls and management events"
                     }
                 },
                 {
                     "identifier": "IAM.3",
                     "title": "IAM users' access keys should be rotated every 90 days or less",
                     "severity": "MEDIUM",
-                    "description": "Regularly rotate access keys used for EventBridge Scheduler API access",
+                    "description": "Implement access key rotation for EventBridge Scheduler service accounts",
                     "implementation": {
                         "type": "User",
-                        "description": "Implement automated access key rotation policies and use temporary credentials where possible"
+                        "description": "Implement automated access key rotation for service accounts accessing EventBridge Scheduler and use IAM roles where possible"
                     }
                 },
                 {
-                    "identifier": "CloudTrail.1",
-                    "title": "CloudTrail should be enabled and configured with at least one multi-Region trail",
-                    "severity": "HIGH",
-                    "description": "Enable CloudTrail to log EventBridge Scheduler API calls across all regions",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Configure multi-region CloudTrail with S3 bucket logging and log file validation for comprehensive audit trails"
-                    }
-                },
-                {
-                    "identifier": "CloudWatch.1",
-                    "title": "CloudWatch should have a log group retention policy set",
-                    "severity": "LOW",
-                    "description": "Set appropriate retention policies for EventBridge Scheduler CloudWatch logs",
+                    "identifier": "KMS.1",
+                    "title": "IAM customer managed policies should not allow decryption actions on all KMS keys",
+                    "severity": "MEDIUM",
+                    "description": "Restrict KMS key access for EventBridge Scheduler encryption",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure log group retention policies based on compliance requirements and cost considerations"
+                        "description": "Create specific KMS key policies for EventBridge Scheduler encryption and limit decrypt permissions to specific keys"
+                    }
+                },
+                {
+                    "identifier": "Config.1",
+                    "title": "AWS Config should be enabled",
+                    "severity": "LOW",
+                    "description": "Enable AWS Config to track EventBridge Scheduler configuration changes",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable AWS Config in all regions to track configuration changes to EventBridge Scheduler resources"
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "2023.1",
+            "version": "v2.0",
             "controls": [
                 {
                     "identifier": "EventBridge.4",
-                    "title": "EventBridge Scheduler should use customer managed KMS keys",
+                    "title": "EventBridge should be encrypted",
                     "severity": "HIGH",
-                    "description": "Use customer managed KMS keys for EventBridge Scheduler encryption",
+                    "description": "EventBridge Scheduler data should be encrypted at rest and in transit",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure EventBridge Scheduler to use customer managed KMS keys with proper key policies and rotation"
+                        "description": "Configure KMS encryption for EventBridge Scheduler and ensure all data is encrypted using customer-managed keys"
                     }
                 },
                 {
-                    "identifier": "EventBridge.5",
-                    "title": "EventBridge Scheduler should have cross-region replication enabled",
+                    "identifier": "CloudWatch.1",
+                    "title": "CloudWatch should have log group retention set",
                     "severity": "MEDIUM",
-                    "description": "Enable cross-region replication for EventBridge Scheduler for disaster recovery",
+                    "description": "Configure log retention for EventBridge Scheduler CloudWatch logs",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement cross-region schedule replication and failover mechanisms for business continuity"
-                    }
-                },
-                {
-                    "identifier": "Config.1",
-                    "title": "AWS Config should be enabled",
-                    "severity": "HIGH",
-                    "description": "Enable AWS Config to track EventBridge Scheduler configuration changes",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Configure AWS Config to monitor EventBridge Scheduler resources and maintain configuration history"
-                    }
-                },
-                {
-                    "identifier": "GuardDuty.1",
-                    "title": "GuardDuty should be enabled",
-                    "severity": "HIGH",
-                    "description": "Enable GuardDuty to detect threats related to EventBridge Scheduler",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Enable GuardDuty across all regions where EventBridge Scheduler is deployed"
-                    }
-                },
-                {
-                    "identifier": "Lambda.1",
-                    "title": "Lambda functions should prohibit public access",
-                    "severity": "HIGH",
-                    "description": "Ensure Lambda functions invoked by EventBridge Scheduler are not publicly accessible",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure Lambda function policies to restrict public access and implement proper resource-based policies"
+                        "description": "Set appropriate log retention periods for EventBridge Scheduler CloudWatch log groups based on compliance requirements"
                     }
                 },
                 {
                     "identifier": "Lambda.2",
-                    "title": "Lambda functions should use supported runtimes",
-                    "severity": "MEDIUM",
-                    "description": "Use supported Lambda runtimes for functions invoked by EventBridge Scheduler",
+                    "title": "Lambda functions should have a dead letter queue configured",
+                    "severity": "LOW",
+                    "description": "Configure dead letter queues for Lambda functions triggered by EventBridge Scheduler",
                     "implementation": {
-                        "type": "User",
-                        "description": "Regularly update Lambda functions to use supported runtimes and implement runtime upgrade policies"
+                        "type": "IaC",
+                        "description": "Configure DLQ for Lambda functions invoked by EventBridge Scheduler to handle failed executions"
+                    }
+                },
+                {
+                    "identifier": "SNS.1",
+                    "title": "SNS topics should be encrypted at rest",
+                    "severity": "LOW",
+                    "description": "Encrypt SNS topics used with EventBridge Scheduler",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable KMS encryption for SNS topics that receive notifications from EventBridge Scheduler"
                     }
                 }
             ]
@@ -320,86 +210,56 @@
     "cost": [
         {
             "name": "AWS EventBridge Scheduler Cost Optimization",
-            "version": "2023",
+            "version": "2024",
             "controls": [
                 {
                     "identifier": "COST-01",
                     "title": "Optimize Schedule Frequency",
                     "severity": "HIGH",
-                    "description": "Reduce unnecessary schedule invocations to minimize costs",
+                    "description": "Right-size schedule frequency to avoid unnecessary invocations",
                     "implementation": {
                         "type": "User",
-                        "description": "Review schedule frequencies and consolidate similar schedules, use appropriate time intervals based on business requirements"
+                        "description": "Review and optimize schedule frequencies, use cron expressions efficiently, and avoid over-scheduling to minimize request charges"
                     }
                 },
                 {
                     "identifier": "COST-02",
                     "title": "Implement Schedule Lifecycle Management",
                     "severity": "HIGH",
-                    "description": "Automatically delete or disable unused schedules to reduce costs",
+                    "description": "Remove unused or obsolete schedules to reduce ongoing costs",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement automated lifecycle policies to identify and remove inactive schedules, use tagging for schedule management"
+                        "description": "Implement automated cleanup of unused schedules using tags and lifecycle policies, and regularly audit active schedules"
                     }
                 },
                 {
                     "identifier": "COST-03",
                     "title": "Use Flexible Time Windows",
                     "severity": "MEDIUM",
-                    "description": "Implement flexible time windows for non-critical schedules to optimize resource usage",
+                    "description": "Implement flexible time windows to optimize resource utilization",
                     "implementation": {
                         "type": "User",
-                        "description": "Configure flexible time windows for schedules that don't require exact timing to allow for cost optimization"
+                        "description": "Configure flexible time windows for non-critical schedules to allow AWS to optimize execution timing and reduce costs"
                     }
                 },
                 {
                     "identifier": "COST-04",
-                    "title": "Monitor and Alert on Usage Patterns",
+                    "title": "Monitor and Alert on Usage",
                     "severity": "MEDIUM",
-                    "description": "Implement monitoring and alerting for EventBridge Scheduler usage and costs",
+                    "description": "Implement cost monitoring and alerting for EventBridge Scheduler usage",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Set up CloudWatch dashboards and billing alerts to monitor EventBridge Scheduler usage patterns and costs"
+                        "type": "IaC",
+                        "description": "Set up CloudWatch billing alarms and AWS Budgets to monitor EventBridge Scheduler costs and usage patterns"
                     }
                 },
                 {
                     "identifier": "COST-05",
-                    "title": "Optimize Target Selection",
-                    "severity": "MEDIUM",
-                    "description": "Choose cost-effective target services for EventBridge Scheduler invocations",
+                    "title": "Optimize Target Service Costs",
+                    "severity": "LOW",
+                    "description": "Optimize costs of services invoked by EventBridge Scheduler",
                     "implementation": {
                         "type": "User",
-                        "description": "Evaluate target service costs and choose appropriate compute options (Lambda vs ECS vs Step Functions) based on workload requirements"
-                    }
-                },
-                {
-                    "identifier": "COST-06",
-                    "title": "Implement Batch Processing",
-                    "severity": "MEDIUM",
-                    "description": "Batch similar operations to reduce the number of individual schedule invocations",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Group related tasks into batch operations and reduce schedule frequency by processing multiple items per invocation"
-                    }
-                },
-                {
-                    "identifier": "COST-07",
-                    "title": "Use Appropriate Retry Policies",
-                    "severity": "LOW",
-                    "description": "Configure optimal retry policies to avoid unnecessary costs from excessive retries",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure appropriate retry counts and backoff strategies to minimize costs while maintaining reliability"
-                    }
-                },
-                {
-                    "identifier": "COST-08",
-                    "title": "Implement Resource Tagging",
-                    "severity": "LOW",
-                    "description": "Use consistent tagging for cost allocation and tracking of EventBridge Scheduler resources",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Implement comprehensive tagging strategy for schedules and related resources to enable cost tracking and optimization"
+                        "description": "Review and optimize the cost of target services (Lambda, SNS, SQS) invoked by EventBridge Scheduler schedules"
                     }
                 }
             ]

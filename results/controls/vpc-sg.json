@@ -2,265 +2,215 @@
     "service": "AWS VPC Security Group",
     "security": [
         {
-            "name": "CSA Cloud Controls Matrix",
-            "version": "v5.0",
+            "name": "CSA CCM",
+            "version": "v4.0.10",
             "controls": [
                 {
                     "identifier": "IAM-01",
-                    "title": "Identity and Access Management Policy",
-                    "severity": "Critical",
-                    "description": "Establish comprehensive identity and access management policies for security group management",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Configure IAM policies with principle of least privilege for security group operations, implement resource-based policies and conditions"
-                    }
-                },
-                {
-                    "identifier": "IAM-02",
-                    "title": "User Access Provisioning",
+                    "title": "Identity and Access Management Policy and Procedures",
                     "severity": "High",
-                    "description": "Implement proper user access provisioning and deprovisioning procedures",
+                    "description": "Establish formal identity and access management policies for security group management",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Use IAM roles and groups for security group access, implement automated provisioning workflows"
+                        "description": "Configure IAM policies with least privilege principles for security group creation, modification, and deletion. Use IAM roles and groups to manage access to security group operations."
                     }
                 },
                 {
                     "identifier": "IVS-01",
                     "title": "Network Architecture",
-                    "severity": "Critical",
-                    "description": "Design secure network architecture with proper segmentation",
+                    "severity": "High",
+                    "description": "Implement secure network architecture through proper security group configuration",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Define security groups in IaC templates with proper rule definitions and network segmentation patterns"
+                        "description": "Define security groups in Infrastructure as Code templates with explicit ingress and egress rules, avoiding overly permissive configurations like 0.0.0.0/0 for sensitive services."
                     }
                 },
                 {
-                    "identifier": "IVS-02",
-                    "title": "Network Controls",
+                    "identifier": "IVS-06",
+                    "title": "Network Security",
                     "severity": "High",
-                    "description": "Implement network security controls including firewalls and access controls",
+                    "description": "Ensure network security controls are properly implemented and monitored",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Configure security group rules to deny by default, allow only necessary traffic, implement layered security"
+                        "type": "Platform",
+                        "description": "Configure security groups with deny-by-default stance, implement rule-based access controls, and regularly audit security group configurations for compliance."
                     }
                 },
                 {
                     "identifier": "LOG-01",
-                    "title": "Logging and Monitoring",
-                    "severity": "High",
-                    "description": "Implement comprehensive logging and monitoring for security events",
+                    "title": "Audit Logging Policy and Procedures",
+                    "severity": "Medium",
+                    "description": "Establish comprehensive logging for security group changes and access",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Enable CloudTrail for security group changes, implement VPC Flow Logs, configure monitoring dashboards"
+                        "description": "Enable AWS CloudTrail to log all security group API calls, configure VPC Flow Logs to monitor traffic patterns, and establish log retention policies."
                     }
                 },
                 {
                     "identifier": "BCR-01",
-                    "title": "Business Continuity Management",
+                    "title": "Business Continuity Management and Operational Resilience",
                     "severity": "Medium",
-                    "description": "Ensure business continuity through proper backup and recovery procedures",
+                    "description": "Ensure security group configurations support business continuity requirements",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement security group configurations in version-controlled IaC templates for disaster recovery"
+                        "description": "Implement cross-region security group template replication, automate security group backup and restoration procedures, and document recovery processes."
                     }
                 }
             ]
         },
         {
-            "name": "NIST SP 800-53",
+            "name": "NIST 800-53",
             "version": "Rev 5",
             "controls": [
                 {
                     "identifier": "AC-3",
                     "title": "Access Enforcement",
-                    "severity": "Critical",
-                    "description": "Enforce approved authorizations for logical access to information and system resources",
+                    "severity": "High",
+                    "description": "Enforce approved authorizations for logical access to security group management",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Configure IAM policies to enforce least privilege access to security group management functions"
-                    }
-                },
-                {
-                    "identifier": "AC-4",
-                    "title": "Information Flow Enforcement",
-                    "severity": "Critical",
-                    "description": "Control information flows within the system and between interconnected systems",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Design security group rules to enforce information flow policies between network segments"
-                    }
-                },
-                {
-                    "identifier": "AU-2",
-                    "title": "Event Logging",
-                    "severity": "High",
-                    "description": "Identify the types of events that the system is capable of logging",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Enable CloudTrail logging for all security group API calls and configuration changes"
-                    }
-                },
-                {
-                    "identifier": "AU-6",
-                    "title": "Audit Record Review, Analysis, and Reporting",
-                    "severity": "High",
-                    "description": "Review and analyze information system audit records for indications of inappropriate or unusual activity",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Implement regular review processes for security group changes and access patterns using CloudWatch and Security Hub"
+                        "description": "Implement IAM policies that restrict security group management to authorized personnel only, using condition keys to limit actions based on source IP, time, and MFA requirements."
                     }
                 },
                 {
                     "identifier": "CM-2",
                     "title": "Baseline Configuration",
                     "severity": "High",
-                    "description": "Develop, document, and maintain a current baseline configuration",
+                    "description": "Develop, document, and maintain baseline configurations for security groups",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Maintain baseline security group configurations in version-controlled IaC templates"
+                        "description": "Create standardized security group templates in Infrastructure as Code, implement configuration management processes, and establish approved baseline configurations for different workload types."
                     }
                 },
                 {
-                    "identifier": "CM-6",
-                    "title": "Configuration Settings",
-                    "severity": "Medium",
-                    "description": "Establish and document configuration settings for system components",
+                    "identifier": "SC-7",
+                    "title": "Boundary Protection",
+                    "severity": "High",
+                    "description": "Monitor and control communications at external boundaries and key internal boundaries",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Document and standardize security group configuration settings in organizational templates"
+                        "description": "Configure security groups as stateful firewalls with explicit allow rules, implement layered security with both security groups and NACLs, and establish clear network segmentation boundaries."
                     }
                 },
                 {
-                    "identifier": "CP-9",
-                    "title": "System Backup",
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
                     "severity": "Medium",
-                    "description": "Conduct backups of user-level information contained in the system",
+                    "description": "Identify events for logging and auditing of security group activities",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Implement automated backup of security group configurations using AWS Config and IaC state management"
+                        "description": "Configure comprehensive logging of security group changes through CloudTrail, implement VPC Flow Logs for traffic analysis, and establish event correlation mechanisms."
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "Medium",
+                    "description": "Monitor the system to detect attacks and indicators of potential attacks on security groups",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement automated monitoring for security group configuration changes, set up alerts for unauthorized modifications, and establish baseline traffic patterns for anomaly detection."
+                    }
+                },
+                {
+                    "identifier": "CP-1",
+                    "title": "Contingency Planning Policy and Procedures",
+                    "severity": "Low",
+                    "description": "Develop contingency planning policy and procedures for security group management",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Document security group backup and recovery procedures, establish incident response plans for security group misconfigurations, and create operational runbooks."
                     }
                 }
             ]
         },
         {
-            "name": "AWS Foundational Security Best Practices",
-            "version": "1.0",
+            "name": "AWS Foundational Security Standard",
+            "version": "1.0.0",
             "controls": [
                 {
-                    "identifier": "EC2.1",
-                    "title": "Amazon EBS snapshots should not be public",
-                    "severity": "Critical",
-                    "description": "Ensure EBS snapshots are not publicly accessible",
+                    "identifier": "EC2.2",
+                    "title": "The VPC default security group should not allow inbound and outbound traffic",
+                    "severity": "High",
+                    "description": "Ensure the default security group restricts all traffic",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Configure security groups to restrict access to EBS resources and implement proper snapshot policies"
-                    }
-                },
-                {
-                    "identifier": "EC2.2",
-                    "title": "VPC default security group should not allow inbound and outbound traffic",
-                    "severity": "Critical",
-                    "description": "Default security groups should restrict all traffic",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Remove all inbound and outbound rules from default security groups, create custom security groups for specific needs"
+                        "description": "Remove all inbound and outbound rules from the default security group, and ensure no resources are associated with the default security group."
                     }
                 },
                 {
                     "identifier": "EC2.19",
                     "title": "Security groups should not allow unrestricted access to ports with high risk",
-                    "severity": "Critical",
-                    "description": "Restrict access to high-risk ports like SSH, RDP, and database ports",
+                    "severity": "High",
+                    "description": "Restrict inbound access to high-risk ports (22, 3389, etc.) in security groups",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure security group rules to allow access only from specific IP ranges or security groups for high-risk ports"
+                        "description": "Configure security groups to restrict SSH (22), RDP (3389), and other administrative ports to specific IP ranges or security groups rather than 0.0.0.0/0."
                     }
                 },
                 {
                     "identifier": "EC2.20",
-                    "title": "Both VPC default security groups should not allow inbound and outbound traffic",
-                    "severity": "High",
+                    "title": "Both VPC default security groups should prohibit inbound and outbound traffic",
+                    "severity": "Medium",
                     "description": "Ensure both default security groups in VPC restrict all traffic",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Systematically review and remove all rules from default security groups across all VPCs"
+                        "type": "Platform",
+                        "description": "Audit and remediate default security groups across all VPCs to ensure they have no active rules and no associated resources."
                     }
                 },
                 {
                     "identifier": "EC2.21",
-                    "title": "Network ACLs should not allow ingress from 0.0.0.0/0 to port 22 or 3389",
-                    "severity": "High",
-                    "description": "Restrict SSH and RDP access in network ACLs",
+                    "title": "Network ACLs should not allow ingress from 0.0.0.0/0 to port 22 or port 3389",
+                    "severity": "Medium",
+                    "description": "Coordinate security group rules with NACL configurations for layered security",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure security groups to complement NACL restrictions for administrative access ports"
-                    }
-                },
-                {
-                    "identifier": "Config.1",
-                    "title": "AWS Config should be enabled",
-                    "severity": "Medium",
-                    "description": "Enable AWS Config to track security group configuration changes",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Enable AWS Config in all regions to monitor security group configuration compliance"
+                        "description": "Ensure security group configurations align with NACL restrictions, implementing defense-in-depth for administrative access ports."
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "Current",
+            "version": "2023",
             "controls": [
                 {
-                    "identifier": "SecurityHub.EC2.1",
-                    "title": "Security groups should not allow unrestricted inbound traffic",
-                    "severity": "Critical",
-                    "description": "Security groups should not have inbound rules that allow unrestricted traffic",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Review and restrict security group rules to allow only necessary traffic from specific sources"
-                    }
-                },
-                {
-                    "identifier": "SecurityHub.EC2.2",
-                    "title": "Security groups should not allow unrestricted outbound traffic",
+                    "identifier": "EC2.2",
+                    "title": "The VPC default security group should not allow inbound and outbound traffic",
                     "severity": "High",
-                    "description": "Security groups should have restrictive outbound rules",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure explicit outbound rules instead of allowing all outbound traffic"
-                    }
-                },
-                {
-                    "identifier": "SecurityHub.CloudTrail.1",
-                    "title": "CloudTrail should be enabled",
-                    "severity": "High",
-                    "description": "Enable CloudTrail to log security group API calls",
+                    "description": "Default security groups should be configured to deny all traffic",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Enable CloudTrail across all regions to capture security group management activities"
+                        "description": "Implement automated compliance checking to ensure default security groups remain empty of rules and associations."
                     }
                 },
                 {
-                    "identifier": "SecurityHub.Config.1",
-                    "title": "AWS Config should be enabled",
+                    "identifier": "EC2.19",
+                    "title": "Security groups should not allow unrestricted access to ports with high risk",
                     "severity": "Medium",
-                    "description": "Enable AWS Config for compliance monitoring",
+                    "description": "Prevent security groups from allowing unrestricted inbound access to high-risk ports",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Configure AWS Config rules to monitor security group compliance with organizational policies"
+                        "type": "IaC",
+                        "description": "Implement automated scanning of security group rules to identify and remediate overly permissive configurations for high-risk ports."
                     }
                 },
                 {
-                    "identifier": "SecurityHub.IAM.1",
-                    "title": "IAM policies should not allow full administrative privileges",
-                    "severity": "High",
-                    "description": "Restrict IAM policies for security group management to necessary permissions only",
+                    "identifier": "VPC.1",
+                    "title": "Security groups should not allow ingress from 0.0.0.0/0 to port 80",
+                    "severity": "Medium",
+                    "description": "Restrict HTTP access through security groups to prevent unauthorized web access",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Create specific IAM policies for security group management with least privilege principles"
+                        "type": "User",
+                        "description": "Review and justify any security group rules allowing public HTTP access, implementing Application Load Balancer or CloudFront for public web services instead."
+                    }
+                },
+                {
+                    "identifier": "VPC.2",
+                    "title": "Security groups should not allow ingress from 0.0.0.0/0 to port 443",
+                    "severity": "Low",
+                    "description": "Review HTTPS access permissions in security groups",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Regularly audit security groups allowing public HTTPS access and ensure appropriate web application firewall and load balancer configurations are in place."
                     }
                 }
             ]
@@ -270,56 +220,66 @@
     "cost": [
         {
             "name": "AWS VPC Security Group Cost Optimization",
-            "version": "Best Practices",
+            "version": "2023",
             "controls": [
                 {
                     "identifier": "COST-01",
-                    "title": "Optimize Security Group Usage",
+                    "title": "Eliminate Unused Security Groups",
                     "severity": "High",
-                    "description": "Eliminate unused and redundant security groups to reduce management overhead",
+                    "description": "Remove security groups that are not associated with any resources to reduce management overhead",
                     "implementation": {
-                        "type": "User",
-                        "description": "Regularly audit and remove unused security groups, consolidate similar security groups where appropriate"
+                        "type": "Platform",
+                        "description": "Implement automated scanning to identify and remove unused security groups, establish regular cleanup procedures, and maintain inventory of active security groups."
                     }
                 },
                 {
                     "identifier": "COST-02",
-                    "title": "Implement Efficient Rule Management",
+                    "title": "Consolidate Similar Security Groups",
                     "severity": "Medium",
-                    "description": "Optimize security group rules to reduce complexity and management costs",
+                    "description": "Merge security groups with identical or similar rule sets to reduce complexity and management costs",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Use security group references instead of IP addresses where possible, implement rule consolidation strategies"
+                        "description": "Analyze security group rule patterns, create standardized templates for common use cases, and consolidate redundant security groups through Infrastructure as Code."
                     }
                 },
                 {
                     "identifier": "COST-03",
-                    "title": "Automate Security Group Management",
+                    "title": "Optimize Security Group Rules",
                     "severity": "Medium",
-                    "description": "Reduce operational costs through automation of security group lifecycle management",
+                    "description": "Reduce the number of security group rules through efficient rule design and port range optimization",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Implement automated security group provisioning and deprovisioning using IaC and AWS Lambda functions"
+                        "type": "User",
+                        "description": "Review and optimize security group rules by using port ranges instead of individual ports, consolidating similar rules, and removing redundant or overlapping rules."
                     }
                 },
                 {
                     "identifier": "COST-04",
-                    "title": "Monitor Security Group Utilization",
-                    "severity": "Low",
-                    "description": "Track security group usage to identify cost optimization opportunities",
+                    "title": "Use Referenced Security Groups",
+                    "severity": "Medium",
+                    "description": "Reference security groups in rules instead of IP addresses to reduce rule proliferation",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Use AWS Cost Explorer and custom CloudWatch metrics to monitor security group-related costs and usage patterns"
+                        "type": "IaC",
+                        "description": "Design security group architectures using security group references rather than IP-based rules to enable dynamic scaling without rule multiplication."
                     }
                 },
                 {
                     "identifier": "COST-05",
-                    "title": "Implement Tagging Strategy",
+                    "title": "Implement Automated Security Group Management",
                     "severity": "Low",
-                    "description": "Use consistent tagging for cost allocation and management",
+                    "description": "Reduce operational costs through automation of security group lifecycle management",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Apply consistent cost allocation tags to security groups for better cost tracking and chargeback processes"
+                        "type": "Platform",
+                        "description": "Implement automated tools for security group provisioning, monitoring, and cleanup to reduce manual management overhead and associated operational costs."
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Regular Security Group Auditing",
+                    "severity": "Low",
+                    "description": "Establish regular auditing processes to maintain optimal security group configurations",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Schedule periodic reviews of security group configurations, document justifications for complex rule sets, and maintain updated documentation to reduce troubleshooting time."
                     }
                 }
             ]

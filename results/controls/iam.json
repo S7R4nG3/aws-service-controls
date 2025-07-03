@@ -2,255 +2,245 @@
     "service": "AWS Identity and Access Management (IAM)",
     "security": [
         {
-            "name": "CSA Cloud Controls Matrix",
-            "version": "v5.0",
-            "controls": [
-                {
-                    "identifier": "IAM-01",
-                    "title": "Identity and Access Management Policy",
-                    "severity": "High",
-                    "description": "Establish comprehensive identity and access management policies with role-based access controls",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Define IAM policies, roles, and groups using CloudFormation or Terraform templates with least privilege principles"
-                    }
-                },
-                {
-                    "identifier": "IAM-02",
-                    "title": "Multi-Factor Authentication",
-                    "severity": "High",
-                    "description": "Enforce multi-factor authentication for all privileged accounts and sensitive operations",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Configure MFA devices for root and IAM users through AWS Console or CLI, enforce via IAM policies"
-                    }
-                },
-                {
-                    "identifier": "IAM-03",
-                    "title": "Privileged Account Management",
-                    "severity": "High",
-                    "description": "Implement strict controls and monitoring for privileged administrative accounts",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Use AWS Organizations SCPs and IAM Access Analyzer to monitor and restrict privileged access"
-                    }
-                },
-                {
-                    "identifier": "IAM-04",
-                    "title": "Access Reviews and Certification",
-                    "severity": "Medium",
-                    "description": "Conduct regular access reviews and certifications to ensure appropriate permissions",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Implement automated access reviews using AWS Access Analyzer and IAM credential reports"
-                    }
-                },
-                {
-                    "identifier": "IAM-05",
-                    "title": "Identity Federation",
-                    "severity": "Medium",
-                    "description": "Implement federated identity management for centralized authentication",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure SAML 2.0 or OIDC identity providers and IAM roles for federated access"
-                    }
-                }
-            ]
-        },
-        {
-            "name": "NIST SP 800-53",
+            "name": "NIST 800-53",
             "version": "Rev 5",
             "controls": [
                 {
                     "identifier": "AC-2",
                     "title": "Account Management",
                     "severity": "High",
-                    "description": "Implement comprehensive account management procedures including creation, modification, and deletion",
+                    "description": "Manage information system accounts including account creation, enabling, modification, disabling, and removal",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Use AWS Organizations and CloudTrail to track account lifecycle events and implement automated account provisioning"
+                        "type": "IaC",
+                        "description": "Implement automated account provisioning and deprovisioning using IAM roles, policies, and AWS Organizations SCPs"
                     }
                 },
                 {
                     "identifier": "AC-3",
                     "title": "Access Enforcement",
                     "severity": "High",
-                    "description": "Enforce approved authorizations for logical access to information and system resources",
+                    "description": "Enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement IAM policies with explicit deny statements and service control policies to enforce access boundaries"
+                        "description": "Define and enforce least privilege access through IAM policies, resource-based policies, and permission boundaries"
                     }
                 },
                 {
                     "identifier": "AC-6",
                     "title": "Least Privilege",
                     "severity": "High",
-                    "description": "Employ the principle of least privilege for specific security functions and privileged accounts",
+                    "description": "Employ the principle of least privilege, allowing only authorized accesses for users which are necessary to accomplish assigned organizational tasks",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Create granular IAM policies with minimal required permissions and use IAM Access Analyzer for policy validation"
+                        "description": "Implement fine-grained IAM policies with minimal required permissions and regular access reviews"
                     }
                 },
                 {
                     "identifier": "IA-2",
-                    "title": "Identification and Authentication",
+                    "title": "Identification and Authentication (Organizational Users)",
                     "severity": "High",
-                    "description": "Uniquely identify and authenticate organizational users and associate with accounts",
+                    "description": "Uniquely identify and authenticate organizational users and associate that identity with processes acting on behalf of those users",
                     "implementation": {
-                        "type": "User",
-                        "description": "Implement strong password policies and MFA requirements through IAM password policy and MFA enforcement"
+                        "type": "Platform",
+                        "description": "Configure multi-factor authentication (MFA) for all IAM users and enforce strong password policies"
+                    }
+                },
+                {
+                    "identifier": "AC-4",
+                    "title": "Information Flow Enforcement",
+                    "severity": "Medium",
+                    "description": "Control information flows within the system and between interconnected systems in accordance with applicable policy",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement IAM condition keys and resource-based policies to control cross-account access"
                     }
                 },
                 {
                     "identifier": "AU-2",
                     "title": "Event Logging",
                     "severity": "Medium",
-                    "description": "Identify the types of events that the system is capable of logging",
+                    "description": "Identify the types of events that the system is capable of logging in support of the audit function",
                     "implementation": {
-                        "type": "Platform",
+                        "type": "IaC",
                         "description": "Enable CloudTrail logging for all IAM API calls and integrate with CloudWatch for monitoring"
-                    }
-                },
-                {
-                    "identifier": "SC-23",
-                    "title": "Session Authenticity",
-                    "severity": "Medium",
-                    "description": "Protect the authenticity of communications sessions",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Use AWS STS temporary credentials and implement session duration limits in IAM roles"
                     }
                 }
             ]
         },
         {
-            "name": "AWS Foundational Security Best Practices Standard",
-            "version": "1.0.0",
+            "name": "CSA CCM",
+            "version": "v4.0.6",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy and Procedures",
+                    "severity": "High",
+                    "description": "Policies and procedures shall be established to manage privileged user access rights and entitlements for cloud service customers, business partners, and third parties",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Establish IAM governance procedures including regular access reviews and privileged access management"
+                    }
+                },
+                {
+                    "identifier": "IAM-02",
+                    "title": "Credential Lifecycle/Provision Management",
+                    "severity": "High",
+                    "description": "User access credentials shall be provisioned and managed through their entire lifecycle",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement automatic credential rotation using AWS Secrets Manager and IAM access key rotation policies"
+                    }
+                },
+                {
+                    "identifier": "IAM-03",
+                    "title": "Multi-Factor Authentication",
+                    "severity": "High",
+                    "description": "Multi-factor authentication shall be implemented where technically feasible for user access to the organization's systems and/or applications",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable MFA for all IAM users and enforce MFA requirements through IAM policies"
+                    }
+                },
+                {
+                    "identifier": "IAM-11",
+                    "title": "Segregation of Duties",
+                    "severity": "Medium",
+                    "description": "User-access policies and procedures shall be designed to support segregation of duties",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Design IAM roles and policies that enforce separation of duties between development, staging, and production environments"
+                    }
+                },
+                {
+                    "identifier": "LOG-02",
+                    "title": "Audit Log Monitoring and Alerting",
+                    "severity": "Medium",
+                    "description": "Audit logs shall be reviewed and security events shall be monitored on an ongoing basis",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure CloudWatch alarms for suspicious IAM activities and implement automated incident response"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "v1.0.0",
             "controls": [
                 {
                     "identifier": "IAM.1",
                     "title": "IAM policies should not allow full '*' administrative privileges",
                     "severity": "High",
-                    "description": "Avoid granting full administrative privileges using wildcard permissions",
+                    "description": "Checks whether the default version of AWS managed policies do not have administrator access with a statement having Effect Allow with Action of * over Resource of *",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Review and remediate IAM policies to remove wildcard permissions and implement specific resource-based permissions"
-                    }
-                },
-                {
-                    "identifier": "IAM.2",
-                    "title": "IAM users should not have IAM policies attached",
-                    "severity": "High",
-                    "description": "Avoid attaching policies directly to IAM users, use groups or roles instead",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Migrate user-attached policies to IAM groups and implement role-based access patterns"
-                    }
-                },
-                {
-                    "identifier": "IAM.3",
-                    "title": "IAM users' access keys should be rotated every 90 days or less",
-                    "severity": "High",
-                    "description": "Regularly rotate IAM user access keys to reduce security risks",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Implement automated access key rotation using AWS Secrets Manager or custom Lambda functions"
+                        "description": "Review and restrict IAM policies to follow least privilege principle, avoiding wildcard permissions"
                     }
                 },
                 {
                     "identifier": "IAM.4",
                     "title": "IAM root access key should not exist",
-                    "severity": "Critical",
-                    "description": "Remove and do not create access keys for the root account",
+                    "severity": "High",
+                    "description": "Checks whether users have access keys associated with the root user of their AWS account",
                     "implementation": {
                         "type": "User",
-                        "description": "Delete existing root access keys and implement IAM users with appropriate permissions for administrative tasks"
+                        "description": "Remove or disable root access keys and use IAM users or roles for programmatic access"
+                    }
+                },
+                {
+                    "identifier": "IAM.2",
+                    "title": "IAM users should not have IAM policies attached",
+                    "severity": "Medium",
+                    "description": "Checks that none of your IAM users have policies attached directly to them",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Attach policies to IAM groups or roles instead of individual users to improve manageability"
+                    }
+                },
+                {
+                    "identifier": "IAM.3",
+                    "title": "IAM users' access keys should be rotated every 90 days or less",
+                    "severity": "Medium",
+                    "description": "Checks whether the active access keys are rotated within the number of days specified in maxAccessKeyAge",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement regular access key rotation schedule and automate key rotation where possible"
                     }
                 },
                 {
                     "identifier": "IAM.5",
                     "title": "MFA should be enabled for all IAM users that have a console password",
-                    "severity": "High",
-                    "description": "Enable multi-factor authentication for console access to enhance security",
+                    "severity": "Medium",
+                    "description": "Checks whether AWS Multi-Factor Authentication (MFA) is enabled for all IAM users that have a console password",
                     "implementation": {
-                        "type": "User",
-                        "description": "Configure virtual or hardware MFA devices for all console users and enforce through IAM policies"
+                        "type": "Platform",
+                        "description": "Enable MFA for all IAM users with console access and enforce through IAM policies"
                     }
                 },
                 {
                     "identifier": "IAM.6",
                     "title": "Hardware MFA should be enabled for the root user",
-                    "severity": "Critical",
-                    "description": "Enable hardware-based MFA for the root account for maximum security",
+                    "severity": "High",
+                    "description": "Checks whether your AWS account is enabled to use multi-factor authentication (MFA) hardware device to sign in with root credentials",
                     "implementation": {
                         "type": "User",
-                        "description": "Configure hardware MFA device for root account through AWS Console account settings"
-                    }
-                },
-                {
-                    "identifier": "IAM.7",
-                    "title": "Password policies for IAM users should have strong configurations",
-                    "severity": "Medium",
-                    "description": "Implement strong password policies including length, complexity, and rotation requirements",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure IAM account password policy with minimum length, complexity requirements, and rotation policies"
-                    }
-                },
-                {
-                    "identifier": "IAM.8",
-                    "title": "Unused IAM user credentials should be removed",
-                    "severity": "Medium",
-                    "description": "Identify and remove unused IAM user credentials to reduce attack surface",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Use IAM credential reports and Access Analyzer to identify and remove unused credentials automatically"
+                        "description": "Enable hardware MFA device for root account and secure the device appropriately"
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "2023.04.04",
+            "version": "2023.1",
             "controls": [
                 {
-                    "identifier": "IAM.21",
-                    "title": "IAM customer managed policies should not allow decryption actions on all KMS keys",
+                    "identifier": "IAM.9",
+                    "title": "Virtual MFA should be enabled for the root user",
                     "severity": "High",
-                    "description": "Restrict IAM policies from allowing broad KMS decryption permissions",
+                    "description": "Checks whether users have a virtual multi-factor authentication (MFA) device enabled",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Enable virtual MFA for root user if hardware MFA is not available"
+                    }
+                },
+                {
+                    "identifier": "IAM.7",
+                    "title": "Password policies for IAM users should have strong configurations",
+                    "severity": "Medium",
+                    "description": "Checks whether the account password policy for IAM users meets the specified requirements",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure IAM password policy with minimum length, complexity requirements, and password expiration"
+                    }
+                },
+                {
+                    "identifier": "IAM.8",
+                    "title": "Unused IAM user credentials should be removed",
+                    "severity": "Medium",
+                    "description": "Checks whether your IAM users have passwords or active access keys that have not been used within the specified number of days",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Regularly review and remove unused IAM credentials and implement automated cleanup processes"
+                    }
+                },
+                {
+                    "identifier": "IAM.21",
+                    "title": "IAM customer managed policies should not allow wildcard actions for services",
+                    "severity": "Medium",
+                    "description": "Checks whether AWS Identity and Access Management (IAM) customer managed policies allow wildcard actions for services",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Review and update IAM policies to specify explicit KMS key ARNs instead of wildcard permissions for KMS actions"
+                        "description": "Review and refine IAM policies to specify explicit actions instead of using wildcard permissions"
                     }
                 },
                 {
                     "identifier": "IAM.22",
                     "title": "IAM user credentials unused for 45 days should be removed",
-                    "severity": "Medium",
-                    "description": "Remove IAM user credentials that have not been used for 45 days or more",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Implement automated credential cleanup using Lambda functions triggered by CloudWatch Events based on credential reports"
-                    }
-                },
-                {
-                    "identifier": "Account.1",
-                    "title": "Security contact information should be provided for an AWS account",
-                    "severity": "Medium",
-                    "description": "Ensure security contact information is configured for incident response",
+                    "severity": "Low",
+                    "description": "Checks whether IAM user credentials (passwords and access keys) that have not been used for 45 days or greater exist",
                     "implementation": {
                         "type": "User",
-                        "description": "Configure security contact information in AWS account settings through the AWS Console"
-                    }
-                },
-                {
-                    "identifier": "Account.2",
-                    "title": "AWS accounts should be part of an AWS Organizations organization",
-                    "severity": "Medium",
-                    "description": "Use AWS Organizations for centralized account management and governance",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Create or join an AWS Organizations structure and implement service control policies for governance"
+                        "description": "Implement automated processes to identify and remove unused IAM credentials after 45 days"
                     }
                 }
             ]
@@ -263,63 +253,63 @@
             "version": "2023",
             "controls": [
                 {
-                    "identifier": "COST-IAM-01",
-                    "title": "Eliminate Unused IAM Users and Roles",
-                    "severity": "High",
-                    "description": "Regularly identify and remove unused IAM users, roles, and policies to reduce management overhead",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Use IAM Access Analyzer and credential reports to identify unused identities and implement automated cleanup processes"
-                    }
-                },
-                {
-                    "identifier": "COST-IAM-02",
-                    "title": "Optimize Cross-Account Role Usage",
+                    "identifier": "COST-1",
+                    "title": "Minimize IAM Users and Prefer Roles",
                     "severity": "Medium",
-                    "description": "Use cross-account IAM roles instead of creating duplicate users across multiple accounts",
+                    "description": "Reduce the number of IAM users by using roles for applications and federated access",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement cross-account trust relationships and assume role patterns to reduce user proliferation"
+                        "description": "Implement IAM roles for EC2 instances, Lambda functions, and cross-account access instead of creating individual IAM users"
                     }
                 },
                 {
-                    "identifier": "COST-IAM-03",
-                    "title": "Leverage AWS SSO for User Management",
+                    "identifier": "COST-3",
+                    "title": "Use AWS Organizations for Centralized IAM Management",
                     "severity": "Medium",
-                    "description": "Use AWS IAM Identity Center (SSO) to reduce IAM user management overhead and costs",
+                    "description": "Leverage AWS Organizations and SCPs to reduce IAM management complexity across accounts",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Migrate from individual IAM users to AWS SSO for centralized identity management and reduced operational costs"
+                        "description": "Implement centralized identity management using AWS Organizations, reducing per-account IAM administrative overhead"
                     }
                 },
                 {
-                    "identifier": "COST-IAM-04",
-                    "title": "Implement Policy Consolidation",
+                    "identifier": "COST-4",
+                    "title": "Implement IAM Identity Center for SSO",
                     "severity": "Medium",
-                    "description": "Consolidate similar IAM policies to reduce management complexity and overhead",
+                    "description": "Use AWS IAM Identity Center to reduce the need for multiple IAM users across accounts",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Review and merge similar IAM policies using IAM Access Analyzer policy validation and optimization recommendations"
+                        "type": "Platform",
+                        "description": "Deploy AWS IAM Identity Center for single sign-on to reduce IAM user provisioning and management costs"
                     }
                 },
                 {
-                    "identifier": "COST-IAM-05",
-                    "title": "Use Service-Linked Roles",
+                    "identifier": "COST-2",
+                    "title": "Implement Access Key Lifecycle Management",
                     "severity": "Low",
-                    "description": "Utilize AWS service-linked roles instead of custom roles where possible to reduce management overhead",
+                    "description": "Regularly rotate and remove unused access keys to reduce security overhead",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Replace custom service roles with AWS-managed service-linked roles when supported by the service"
+                        "type": "User",
+                        "description": "Establish automated processes for access key rotation and removal of unused keys to reduce management overhead"
                     }
                 },
                 {
-                    "identifier": "COST-IAM-06",
-                    "title": "Implement Automated Access Reviews",
-                    "severity": "Medium",
-                    "description": "Automate access reviews to reduce manual effort and operational costs",
+                    "identifier": "COST-5",
+                    "title": "Regular IAM Policy Cleanup",
+                    "severity": "Low",
+                    "description": "Remove unused IAM policies, roles, and groups to reduce management overhead",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Use AWS Config rules and Lambda functions to automate access certification and policy compliance checks"
+                        "type": "User",
+                        "description": "Implement regular reviews and cleanup of unused IAM resources using AWS IAM Access Analyzer"
+                    }
+                },
+                {
+                    "identifier": "COST-6",
+                    "title": "Automate IAM Compliance Monitoring",
+                    "severity": "Low",
+                    "description": "Use AWS Config and Security Hub to automate IAM compliance monitoring and reduce manual effort",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy automated compliance monitoring using AWS Config rules and Security Hub to reduce manual IAM auditing costs"
                     }
                 }
             ]

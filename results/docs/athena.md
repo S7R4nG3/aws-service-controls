@@ -1,43 +1,26 @@
 # AWS Athena
 ---
 
-
-### CSA CCM v5.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Identity and Access Management Policy and Procedures | IAM-01 | Establish comprehensive identity and access management policies for Athena service access | **Platform** - Configure IAM policies with least privilege access to Athena resources, implement role-based access control (RBAC) for query execution and data access |  |
-| **Critical** | Data Security and Information Lifecycle Management | DSI-07 | Implement data classification and lifecycle management for data accessed through Athena | **IaC** - Define data classification schemas in S3 bucket policies and implement lifecycle rules for query results stored in result buckets |  |
-| **High** | Encryption and Key Management | EKM-01 | Ensure encryption at rest and in transit for all Athena operations | **IaC** - Configure S3 bucket encryption for data sources and result locations, enable SSL/TLS for Athena API calls and JDBC/ODBC connections |  |
-| **High** | Information Security Monitoring | IVS-01 | Implement comprehensive monitoring and logging for Athena service usage | **Platform** - Enable CloudTrail logging for Athena API calls, configure CloudWatch metrics for query performance and cost monitoring |  |
-| Medium | Threat and Vulnerability Management | TVM-01 | Implement vulnerability scanning and threat detection for Athena workloads | **Platform** - Use AWS Security Hub and GuardDuty to monitor for suspicious query patterns and unauthorized access attempts |  |
-
-### NIST 800-53 Rev 5
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Access Enforcement | AC-3 | Enforce approved authorizations for logical access to Athena resources | **IaC** - Implement fine-grained IAM policies with resource-level permissions for databases, tables, and workgroups in Athena |  |
-| **Critical** | Transmission Confidentiality and Integrity | SC-8 | Protect the confidentiality and integrity of transmitted information | **Platform** - Enforce HTTPS/TLS 1.2+ for all Athena API communications and client connections |  |
-| **High** | Event Logging | AU-2 | Ensure auditable events are defined and logged appropriately | **IaC** - Configure CloudTrail to log all Athena API calls including StartQueryExecution, GetQueryResults, and workgroup management activities |  |
-| **High** | Boundary Protection | SC-7 | Monitor and control communications at external boundaries of the system | **IaC** - Configure VPC endpoints for Athena service access and implement network ACLs to restrict access to authorized networks |  |
-| Medium | System Backup | CP-9 | Conduct backups of system-level information contained in the system | **User** - Implement backup strategies for Athena metadata catalogs and ensure S3 data sources have appropriate backup and versioning enabled |  |
-
-### AWS Foundational Security Best Practices v1.0.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Athena workgroups should be encrypted at rest | Athena.1 | Athena workgroups should have encryption at rest enabled for query results | **IaC** - Configure workgroups with ResultConfiguration encryption using SSE-S3, SSE-KMS, or CSE-KMS encryption |  |
-| **Critical** | S3 Block Public Access setting should be enabled | S3.1 | S3 buckets used by Athena should have Block Public Access enabled | **IaC** - Enable S3 Block Public Access settings on all buckets used for Athena data sources and query results |  |
-| **High** | IAM policies should not allow full administrative privileges | IAM.1 | IAM policies for Athena access should follow principle of least privilege | **IaC** - Create specific IAM policies for Athena that grant only necessary permissions for query execution and data access |  |
-| **High** | CloudTrail should be enabled and configured with at least one multi-Region trail | CloudTrail.1 | Enable CloudTrail logging to capture Athena API calls across all regions | **Platform** - Configure multi-region CloudTrail with S3 bucket logging and log file validation for Athena service events |  |
-| Medium | AWS Config should be enabled | Config.1 | AWS Config should be enabled to track configuration changes to Athena resources | **Platform** - Enable AWS Config to monitor changes to Athena workgroups, data catalogs, and associated IAM policies |  |
-
-### AWS Security Hub 2023.1.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Athena workgroups should encrypt query results | Athena.1 | Athena workgroups must encrypt query results to protect sensitive data | **IaC** - Configure workgroup ResultConfiguration with EncryptionConfiguration using appropriate KMS keys |  |
-| **Critical** | S3 buckets should block public access | S3.8 | S3 buckets used with Athena should have public access blocked | **IaC** - Apply bucket policies and Block Public Access settings to prevent unauthorized access to Athena data sources |  |
-| **High** | IAM customer managed policies should not allow decryption actions on all KMS keys | IAM.21 | Restrict KMS key access in IAM policies used for Athena encryption | **IaC** - Create specific IAM policies that grant decrypt permissions only for KMS keys used by Athena workgroups |  |
-| **High** | A log metric filter and alarm should exist for usage of root user | CloudWatch.1 | Monitor root user access to Athena services through CloudWatch alarms | **Platform** - Create CloudWatch metric filters and alarms to detect root user access to Athena resources |  |
-| Medium | VPC flow logs should be enabled | VPC.7 | Enable VPC flow logs to monitor network traffic to Athena VPC endpoints | **IaC** - Configure VPC flow logs for subnets containing Athena VPC endpoints to monitor network access patterns |  |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **High** | AC-2 | NIST 800-53 Rev 5 | Account Management | Manage information system accounts, including establishing, activating, modifying, reviewing, disabling, and removing accounts | **Platform/IaC** - Implement IAM policies and roles with least privilege access to Athena resources, regularly review and audit user accounts |  |
+| **High** | AC-3 | NIST 800-53 Rev 5 | Access Enforcement | Enforce approved authorizations for logical access to information and system resources | **IaC** - Configure IAM policies to control access to specific databases, tables, and S3 locations used by Athena |  |
+| **High** | SC-8 | NIST 800-53 Rev 5 | Transmission Confidentiality and Integrity | Protect the confidentiality and integrity of transmitted information | **Platform** - Enable TLS encryption for all Athena API calls and query results in transit |  |
+| **High** | SC-28 | NIST 800-53 Rev 5 | Protection of Information at Rest | Protect the confidentiality and integrity of information at rest | **IaC** - Enable S3 encryption for Athena query results and source data using KMS keys |  |
+| Medium | AU-2 | NIST 800-53 Rev 5 | Audit Events | Identify the types of events that the system is capable of logging in support of the audit function | **IaC** - Enable CloudTrail logging for all Athena API calls and configure VPC Flow Logs if using VPC endpoints |  |
+| Medium | AU-12 | NIST 800-53 Rev 5 | Audit Record Generation | Provide audit record generation capability for defined auditable events | **IaC** - Configure CloudWatch logging for Athena query execution and performance metrics |  |
+| Medium | SI-4 | NIST 800-53 Rev 5 | System Monitoring | Monitor the system to detect attacks and indicators of potential attacks | **IaC** - Set up CloudWatch alarms for unusual query patterns, failed queries, and resource consumption |  |
+| **High** | IAM-01 | CSA CCM v4.0 | Identity and Access Management Policy and Procedures | Establish and maintain identity and access management policies and procedures | **User/IaC** - Document and implement IAM policies for Athena access with role-based permissions and regular reviews |  |
+| **High** | IAM-02 | CSA CCM v4.0 | User Access Provisioning | User access is provisioned, de-provisioned, and reviewed | **User** - Implement automated provisioning and de-provisioning of Athena access through IAM roles and groups |  |
+| **High** | EKM-02 | CSA CCM v4.0 | Encryption Key Management | Encryption keys are managed throughout their lifecycle | **IaC** - Use AWS KMS for managing encryption keys for Athena query results and implement key rotation policies |  |
+| Medium | DSI-01 | CSA CCM v4.0 | Data Security and Information Lifecycle Management | Data and objects are protected throughout their lifecycle | **IaC** - Implement data classification and retention policies for Athena query results and underlying S3 data |  |
+| Medium | DSI-07 | CSA CCM v4.0 | Secure Disposal | Secure disposal of data when no longer required | **IaC** - Configure S3 lifecycle policies for Athena result buckets to automatically delete old query results |  |
+| **High** | IAM.1 | AWS Foundational Security Best Practices 1.0.0 | IAM policies should not allow full administrative privileges | This control checks whether IAM policies grant full administrative privileges | **IaC** - Apply principle of least privilege for Athena IAM policies, avoiding wildcard permissions |  |
+| **High** | S3.1 | AWS Foundational Security Best Practices 1.0.0 | S3 Block Public Access setting should be enabled | This control checks whether S3 Block Public Access settings are configured for S3 buckets used by Athena | **IaC** - Enable S3 Block Public Access settings on buckets containing Athena data sources and results |  |
+| Medium | Athena.1 | AWS Foundational Security Best Practices 1.0.0 | Athena workgroups should encrypt query results | This control checks whether an Amazon Athena workgroup encrypts query results | **IaC** - Configure workgroup settings to enforce encryption of query results using S3 server-side encryption |  |
+| **High** | CloudTrail.1 | AWS Security Hub Current | CloudTrail should be enabled and configured with at least one multi-Region trail | This control checks that there is at least one multi-region CloudTrail trail | **Platform** - Enable multi-region CloudTrail to capture all Athena API calls across regions |  |
+| Medium | CloudWatch.1 | AWS Security Hub Current | A log metric filter and alarm should exist for usage of root user | This control checks whether a log metric filter and alarm exist for root user usage | **IaC** - Create CloudWatch alarms for root user access to Athena resources |  |
+| Medium | EC2.2 | AWS Security Hub Current | VPC default security groups should not allow inbound or outbound traffic | This control checks that the default security group restricts all traffic | **IaC** - Configure restrictive security groups for VPC endpoints used with Athena |  |
 
 ## Operational Controls
 ---
@@ -47,17 +30,14 @@
 ## Cost Controls
 ---
 
-
-### AWS Athena Cost Optimization Best Practices 2023
-| Severity | Title | Identifier | Description | Implementation |
-| - | - | - | - | - |
-| **High** | Implement Query Result Caching | COST-001 | Enable query result caching to avoid re-running identical queries and reduce data scanning costs | **Platform** - Configure workgroups to enable query result reuse and set appropriate cache TTL values based on data refresh patterns |
-| **High** | Optimize Data Storage Format | COST-002 | Use columnar storage formats like Parquet or ORC to reduce data scanning and improve query performance | **User** - Convert data sources to Parquet or ORC format with appropriate compression algorithms (SNAPPY, GZIP) to minimize storage costs and query execution time |
-| **High** | Implement Data Partitioning | COST-003 | Partition data to limit the amount of data scanned during query execution | **User** - Design partition schemes based on common query patterns (date, region, department) and ensure queries include partition predicates to limit scanning |
-| Medium | Configure Workgroup Query Limits | COST-004 | Set data usage controls and query limits to prevent runaway queries and unexpected costs | **IaC** - Configure workgroup settings with BytesScannedCutoffPerQuery limits and enable query result location enforcement to control costs |
-| Medium | Optimize Query Performance | COST-005 | Write efficient queries to minimize data scanning and execution time | **User** - Use specific column selection instead of SELECT *, implement appropriate WHERE clauses, and utilize LIMIT clauses for exploratory queries |
-| Medium | Implement S3 Lifecycle Policies | COST-006 | Configure lifecycle policies for query results and temporary data to reduce storage costs | **IaC** - Set up S3 lifecycle rules to automatically transition query results to cheaper storage classes (IA, Glacier) or delete them after defined retention periods |
-| Medium | Monitor and Alert on Query Costs | COST-007 | Implement cost monitoring and alerting to track Athena usage and spending patterns | **Platform** - Configure CloudWatch metrics and billing alerts for Athena data scanning costs, and use AWS Cost Explorer to analyze usage patterns by workgroup and user |
-| Low | Use Approximate Functions When Appropriate | COST-008 | Utilize approximate aggregate functions for large datasets when exact precision is not required | **User** - Replace exact functions like COUNT DISTINCT with approximate functions like approx_distinct() for large dataset analysis to reduce query execution time and costs |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **High** | COST-01 | AWS Athena Cost Optimization Best Practices Current | Optimize Data Storage Format | Use columnar storage formats like Parquet or ORC to reduce data scanned and improve query performance | **User** - Convert data to Parquet or ORC format and partition data appropriately to minimize data scanned per query |  |
+| **High** | COST-02 | AWS Athena Cost Optimization Best Practices Current | Implement Data Partitioning | Partition data by commonly queried fields to reduce the amount of data scanned | **User** - Design partition schemes based on query patterns and use partition projection where applicable |  |
+| **High** | COST-03 | AWS Athena Cost Optimization Best Practices Current | Use Data Compression | Compress data to reduce storage costs and improve query performance | **User** - Apply appropriate compression algorithms (GZIP, Snappy, LZO) based on data type and access patterns |  |
+| Medium | COST-04 | AWS Athena Cost Optimization Best Practices Current | Configure Query Result Location Lifecycle | Set up S3 lifecycle policies for query result locations to automatically delete old results | **IaC** - Configure S3 lifecycle rules to transition old query results to cheaper storage classes or delete them |  |
+| Medium | COST-05 | AWS Athena Cost Optimization Best Practices Current | Implement Workgroup Query Controls | Use workgroups to set query limits and control resource usage | **IaC** - Configure workgroups with data usage controls, query timeout limits, and result encryption requirements |  |
+| Medium | COST-07 | AWS Athena Cost Optimization Best Practices Current | Monitor and Alert on Usage | Set up monitoring and alerting for Athena usage and costs | **IaC** - Create CloudWatch alarms for data processed, query costs, and set up AWS Budgets for cost control |  |
+| Medium | COST-06 | AWS Athena Cost Optimization Best Practices Current | Optimize Query Performance | Write efficient queries to minimize data processing and reduce costs | **User** - Use LIMIT clauses, specific column selection, predicate pushdown, and avoid SELECT * statements |  |
+| Low | COST-08 | AWS Athena Cost Optimization Best Practices Current | Use Approximation Functions | Use approximation functions for large datasets when exact results are not required | **User** - Utilize functions like approx_distinct() and approx_percentile() for faster, cost-effective analytics |  |
 

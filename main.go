@@ -14,15 +14,17 @@ import (
 const frameworks string = "CSA v5, NIST 800-53, AWS Foundational Security Best Practices, and AWS Security Hub"
 
 func main() {
+	servicesFile := flag.String("services-json", "services.json", "A JSON file of services to generate and review controls.")
 	generation := flag.Bool("generate", false, "Toggle to enable generation of service controls.")
 	reviewEnabled := flag.Bool("review", false, "Toggle to enable review of generated service controls.")
 	docgenEnabled := flag.Bool("docs", true, "Toggle to enable Markdown doc generation of controls.")
 	flag.Parse()
 
-	initServices := make(chan services.Service, len(services.ModuleServices))
-	controls := make(chan services.Service, len(services.ModuleServices))
-	reviews := make(chan string, len(services.ModuleServices))
-	// workerCount := len(services.ModuleServices)
+	moduleServices := services.LoadServices(*servicesFile)
+	initServices := make(chan services.Service, len(moduleServices))
+	controls := make(chan services.Service, len(moduleServices))
+	reviews := make(chan string, len(moduleServices))
+	// workerCount := len(moduleServices)
 	controlWorkers := 2
 	reviewWorkers := 2
 	var wg sync.WaitGroup
@@ -32,11 +34,11 @@ func main() {
 	}
 
 	for t := 0; t < reviewWorkers; t++ {
-		go reviewControls(controls, reviews, *reviewEnabled)
+		go reviewControls(controls, reviews, *reviewEnabled, *docgenEnabled)
 	}
 
-	wg.Add(len(services.ModuleServices))
-	for _, s := range services.ModuleServices {
+	wg.Add(len(moduleServices))
+	for _, s := range moduleServices {
 		fmt.Printf("Loading %s\n", s.Short)
 		s.ControlPrompt.Outfile = "results/controls/" + s.Short + ".json"
 		s.ReviewPrompt.Outfile = "results/reviews/" + s.Short + ".json"
@@ -45,7 +47,7 @@ func main() {
 	close(initServices)
 	wg.Wait()
 
-	for r := 0; r < len(services.ModuleServices); r++ {
+	for r := 0; r < len(moduleServices); r++ {
 		fmt.Println(<-reviews)
 	}
 }
@@ -71,14 +73,14 @@ func generateControls(services chan services.Service, controls chan services.Ser
 	}
 }
 
-func reviewControls(controls chan services.Service, reviews chan string, enabled bool) {
+func reviewControls(controls chan services.Service, reviews chan string, enabled bool, docsEnabled bool) {
 	for c := range controls {
 		if enabled {
 			p := llm.NewLlmPrompt(
 				llm.WithText(
 					prompts.GenerateReviewText(c.ControlPrompt.Outfile),
 				),
-				llm.WithOutfile(c.ReviewPrompt.Outfile),
+				llm.WithOutfile(c.ControlPrompt.Outfile),
 				llm.WithPrefill("{"),
 			)
 			fmt.Printf("Reviewing controls for %s", c.Short)
@@ -86,6 +88,9 @@ func reviewControls(controls chan services.Service, reviews chan string, enabled
 			reviews <- c.ReviewPrompt.Response
 		} else {
 			reviews <- "DONE"
+		}
+		if docsEnabled {
+			docgen.Generate(c)
 		}
 	}
 }

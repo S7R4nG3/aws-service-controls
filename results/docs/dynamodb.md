@@ -1,40 +1,27 @@
 # AWS DynamoDB
 ---
 
-
-### CSA Cloud Controls Matrix v5.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Identity and Access Management Policy and Procedures | IAM-01 | Establish formal identity and access management policies for DynamoDB resources including user provisioning, authentication, and authorization procedures. | **Platform/IaC** - Configure IAM policies, roles, and resource-based policies for DynamoDB tables. Implement least privilege access using IAM policy conditions and attribute-based access control. |  |
-| **Critical** | Data Security and Information Lifecycle Management | DSI-01 | Implement encryption for data at rest and in transit, establish data classification schemes, and manage data lifecycle for DynamoDB tables. | **IaC** - Enable DynamoDB encryption at rest using AWS KMS customer-managed keys, configure encryption in transit using TLS, implement Point-in-Time Recovery and backup policies. |  |
-| **High** | Governance and Risk Management | GRM-01 | Establish governance frameworks for DynamoDB usage including risk assessment, compliance monitoring, and security controls validation. | **Platform** - Use AWS Config rules to monitor DynamoDB compliance, implement AWS Security Hub for centralized security findings, establish tagging strategies for governance. |  |
-| Medium | Interoperability and Portability | IVS-01 | Ensure secure data exchange and API security for DynamoDB integrations with other services and applications. | **User/IaC** - Implement VPC endpoints for DynamoDB, configure API Gateway with proper authentication for DynamoDB access, use secure SDK configurations. |  |
-
-### NIST SP 800-53 Rev 5
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Access Enforcement | AC-3 | Enforce approved authorizations for logical access to DynamoDB resources in accordance with applicable access control policies. | **IaC** - Configure IAM policies with explicit deny statements, implement resource-based policies, use condition keys for fine-grained access control, enable DynamoDB resource-level permissions. |  |
-| **Critical** | Transmission Confidentiality and Integrity | SC-8 | Protect the confidentiality and integrity of transmitted information between clients and DynamoDB service. | **User/IaC** - Configure DynamoDB client SDKs to use HTTPS/TLS encryption, implement VPC endpoints to keep traffic within AWS network, validate SSL certificates in applications. |  |
-| **Critical** | Protection of Information at Rest | SC-28 | Protect the confidentiality and integrity of information at rest in DynamoDB tables and backups. | **IaC** - Enable DynamoDB encryption at rest using AWS managed or customer-managed KMS keys, encrypt DynamoDB backups, implement proper key management policies. |  |
-| **High** | Event Logging | AU-2 | Identify the types of events to be logged for DynamoDB operations and maintain audit logs. | **Platform/IaC** - Enable AWS CloudTrail for DynamoDB API logging, configure DynamoDB Streams for data-level events, implement CloudWatch logging for application-level events. |  |
-| **High** | System Monitoring | SI-4 | Monitor DynamoDB for attacks and indicators of potential attacks in accordance with monitoring objectives. | **Platform/IaC** - Configure CloudWatch metrics and alarms for DynamoDB performance and security events, implement GuardDuty for threat detection, use AWS Security Hub for centralized monitoring. |  |
-| **High** | System Backup | CP-9 | Conduct backups of DynamoDB data and system-level information contained in the system. | **IaC** - Enable DynamoDB Point-in-Time Recovery, configure automated backups, implement cross-region backup replication, establish backup retention policies. |  |
-| Medium | Vulnerability Monitoring and Scanning | RA-5 | Monitor and scan for vulnerabilities in DynamoDB configurations and access patterns. | **Platform** - Use AWS Config rules for DynamoDB security configuration compliance, implement AWS Security Hub findings review, conduct regular access reviews and policy audits. |  |
-
-### AWS Foundational Security Best Practices 1.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| Medium | DynamoDB tables should automatically scale capacity with demand | DynamoDB.1 | DynamoDB tables should use on-demand billing mode or have auto scaling enabled to prevent throttling and potential denial of service. | **IaC** - Configure DynamoDB tables with on-demand billing mode or enable auto scaling for read and write capacity units with appropriate scaling policies. |  |
-| **High** | DynamoDB tables should have point-in-time recovery enabled | DynamoDB.2 | Enable point-in-time recovery to protect against accidental writes or deletes to DynamoDB tables. | **IaC** - Enable Point-in-Time Recovery (PITR) on DynamoDB tables through CloudFormation, Terraform, or AWS CLI with appropriate retention settings. |  |
-| **High** | DynamoDB Accelerator (DAX) clusters should be encrypted at rest | DynamoDB.3 | Enable encryption at rest for DynamoDB Accelerator clusters to protect cached data. | **IaC** - Configure DAX clusters with encryption at rest enabled using AWS managed or customer-managed KMS keys during cluster creation. |  |
-
-### AWS Security Hub 2023
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | DynamoDB tables should be encrypted at rest | DynamoDB.4 | Ensure DynamoDB tables have encryption at rest enabled to protect sensitive data from unauthorized access. | **IaC** - Configure server-side encryption for DynamoDB tables using AWS managed keys (SSE-S3) or customer-managed KMS keys (SSE-KMS) based on data sensitivity requirements. |  |
-| **High** | DynamoDB tables should have deletion protection enabled | DynamoDB.5 | Enable deletion protection on DynamoDB tables to prevent accidental deletion of critical data. | **IaC** - Set the DeletionProtectionEnabled attribute to true when creating or updating DynamoDB tables through infrastructure as code templates. |  |
-| **High** | DynamoDB should have AWS CloudTrail logging configured | DynamoDB.6 | Configure CloudTrail to log DynamoDB API calls for security monitoring and compliance auditing. | **Platform** - Ensure CloudTrail is enabled with data events configured for DynamoDB tables, store logs in encrypted S3 buckets with appropriate retention policies. |  |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **Critical** | IAM-01 | CSA Cloud Controls Matrix v4.0.10 | Entitlement | Policies and procedures shall be established to govern the entitlement or access rights granted to customer/tenant access to data and functions within the cloud service | **Platform** - Implement IAM policies with least privilege access, use IAM roles for applications, and enforce MFA for administrative access |  |
+| **Critical** | EKM-02 | CSA Cloud Controls Matrix v4.0.10 | Key Generation | Encryption keys shall be generated using approved algorithms and key sizes as defined in recognized standards | **IaC** - Configure DynamoDB encryption at rest using AWS KMS keys, implement customer-managed keys for sensitive data |  |
+| **High** | AIS-01 | CSA Cloud Controls Matrix v4.0.10 | Anti-Virus / Malicious Software | Comprehensive logging and monitoring for security events and malicious activities | **IaC** - Enable AWS CloudTrail for API logging, configure DynamoDB Streams for data change monitoring |  |
+| **High** | DSI-01 | CSA Cloud Controls Matrix v4.0.10 | Classification | Data and objects containing data shall be assigned a classification by the data owner based on data type, jurisdiction, applicable regulation and sensitivity | **User** - Classify DynamoDB data based on sensitivity, implement data retention policies using TTL features |  |
+| Medium | IVS-01 | CSA Cloud Controls Matrix v4.0.10 | Baseline Requirements | Baseline security requirements shall be applied to networks based on their classification and taking into account zone concept implementations | **IaC** - Configure VPC endpoints for private access, implement security groups and NACLs |  |
+| **Critical** | AC-2 | NIST 800-53 Rev 5 | Account Management | Manage DynamoDB access accounts and credentials with proper lifecycle management | **Platform** - Use IAM service accounts and roles, implement automated account provisioning and deprovisioning |  |
+| **Critical** | SC-8 | NIST 800-53 Rev 5 | Transmission Confidentiality and Integrity | Protect data transmission to and from DynamoDB using encryption | **IaC** - Enforce HTTPS/TLS 1.2+ for all DynamoDB connections, configure SDK with SSL/TLS settings |  |
+| **Critical** | SC-28 | NIST 800-53 Rev 5 | Protection of Information at Rest | Encrypt sensitive data stored in DynamoDB tables | **IaC** - Enable DynamoDB encryption at rest using AWS managed or customer managed KMS keys |  |
+| **High** | AU-2 | NIST 800-53 Rev 5 | Event Logging | Generate audit logs for all DynamoDB operations and access attempts | **IaC** - Configure CloudTrail data events for DynamoDB, enable VPC Flow Logs for network monitoring |  |
+| **High** | CP-9 | NIST 800-53 Rev 5 | Information System Backup | Implement backup and recovery procedures for DynamoDB data | **IaC** - Enable DynamoDB point-in-time recovery, configure automated backups and cross-region replication |  |
+| Medium | SI-4 | NIST 800-53 Rev 5 | Information System Monitoring | Monitor DynamoDB for unauthorized access and anomalous activity | **Platform** - Configure CloudWatch alarms for DynamoDB metrics, implement GuardDuty for threat detection |  |
+| Medium | DynamoDB.1 | AWS Foundational Security Best Practices 1.0.0 | DynamoDB tables should automatically scale capacity with demand | Configure DynamoDB tables with on-demand billing or auto-scaling to handle traffic spikes securely | **IaC** - Enable DynamoDB on-demand billing mode or configure auto-scaling for provisioned capacity |  |
+| Medium | DynamoDB.2 | AWS Foundational Security Best Practices 1.0.0 | DynamoDB tables should have point-in-time recovery enabled | Enable point-in-time recovery to protect against accidental data loss or corruption | **IaC** - Enable point-in-time recovery on all DynamoDB tables containing critical business data |  |
+| Medium | DynamoDB.3 | AWS Foundational Security Best Practices 1.0.0 | DynamoDB Accelerator (DAX) clusters should be encrypted at rest | Encrypt DAX clusters to protect cached data at rest | **IaC** - Configure DAX clusters with encryption at rest using AWS managed keys |  |
+| Low | DynamoDB.4 | AWS Foundational Security Best Practices 1.0.0 | DynamoDB tables should be present in a backup plan | Include DynamoDB tables in AWS Backup plans for centralized backup management | **IaC** - Create AWS Backup plans that include DynamoDB tables with appropriate retention policies |  |
+| Medium | DynamoDB.1 | AWS Security Hub 2023.04 | DynamoDB tables should automatically scale capacity with demand | Ensure DynamoDB tables can handle unexpected load without service disruption | **IaC** - Configure auto-scaling policies or use on-demand billing mode for DynamoDB tables |  |
+| Medium | DynamoDB.2 | AWS Security Hub 2023.04 | DynamoDB tables should have point-in-time recovery enabled | Enable continuous backups to recover from data corruption or accidental deletion | **IaC** - Enable PITR on production DynamoDB tables and configure appropriate retention periods |  |
+| Medium | DynamoDB.3 | AWS Security Hub 2023.04 | DynamoDB Accelerator clusters should be encrypted at rest | Protect sensitive data cached in DAX clusters through encryption | **IaC** - Enable server-side encryption for DAX clusters using AWS KMS keys |  |
+| Low | DynamoDB.6 | AWS Security Hub 2023.04 | DynamoDB tables should have deletion protection enabled | Prevent accidental deletion of critical DynamoDB tables | **IaC** - Enable deletion protection on production DynamoDB tables through table configuration |  |
 
 ## Operational Controls
 ---
@@ -44,16 +31,14 @@
 ## Cost Controls
 ---
 
-
-### AWS DynamoDB Cost Optimization Best Practices 2023
-| Severity | Title | Identifier | Description | Implementation |
-| - | - | - | - | - |
-| **High** | Choose the Right Billing Mode | COST-1 | Select between On-Demand and Provisioned billing modes based on traffic patterns to optimize costs. | **IaC** - Analyze traffic patterns and choose On-Demand for unpredictable workloads or Provisioned mode with auto-scaling for predictable workloads. Monitor and adjust based on CloudWatch metrics. |
-| **High** | Implement Table and Index Design Optimization | COST-2 | Design efficient table structures and indexes to minimize read/write capacity requirements and storage costs. | **User** - Use single-table design patterns, optimize partition key distribution, minimize Global Secondary Index usage, and compress large attribute values. Regularly review access patterns. |
-| Medium | Enable Auto Scaling for Provisioned Tables | COST-3 | Configure auto scaling to automatically adjust capacity based on actual usage patterns and avoid over-provisioning. | **IaC** - Enable DynamoDB auto scaling with appropriate target utilization percentages (70-80%), set minimum and maximum capacity limits, and configure scaling policies for tables and indexes. |
-| Medium | Optimize Data Storage and Lifecycle | COST-4 | Implement data archiving strategies and use appropriate data types to minimize storage costs. | **User/IaC** - Use TTL (Time To Live) for automatic data expiration, archive old data to S3, compress large items, and use efficient data types. Implement data lifecycle policies. |
-| Medium | Monitor and Analyze Cost Usage | COST-5 | Implement comprehensive cost monitoring and alerting to identify optimization opportunities. | **Platform** - Use AWS Cost Explorer, set up billing alerts, implement detailed tagging strategies, monitor DynamoDB Contributor Insights, and regularly review AWS Trusted Advisor recommendations. |
-| Low | Use Reserved Capacity for Predictable Workloads | COST-6 | Purchase DynamoDB Reserved Capacity for stable, predictable workloads to achieve significant cost savings. | **Platform** - Analyze historical usage patterns and purchase one-year or three-year Reserved Capacity commitments for baseline capacity requirements. Monitor utilization to ensure optimal ROI. |
-| Low | Optimize Global Tables and Cross-Region Replication | COST-7 | Carefully plan Global Tables deployment to minimize cross-region data transfer and replication costs. | **IaC** - Deploy Global Tables only in required regions, optimize data synchronization patterns, monitor cross-region transfer costs, and consider regional data locality requirements. |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **High** | COST-001 | AWS DynamoDB Cost Optimization Best Practices 2023 | Choose Appropriate Billing Mode | Select the most cost-effective billing mode based on traffic patterns | **IaC** - Analyze traffic patterns and choose between on-demand and provisioned capacity modes, switch to on-demand for unpredictable workloads |  |
+| **High** | COST-002 | AWS DynamoDB Cost Optimization Best Practices 2023 | Implement Data Lifecycle Management | Use TTL to automatically delete expired data and reduce storage costs | **User** - Configure Time To Live (TTL) attributes on DynamoDB items to automatically expire and delete old data |  |
+| **High** | COST-003 | AWS DynamoDB Cost Optimization Best Practices 2023 | Optimize Table Design for Cost Efficiency | Design tables with efficient partition keys and minimal secondary indexes | **User** - Use composite partition keys for even data distribution, minimize Global Secondary Indexes, and avoid hot partitions |  |
+| Medium | COST-004 | AWS DynamoDB Cost Optimization Best Practices 2023 | Enable Auto Scaling | Configure auto-scaling to automatically adjust capacity based on demand | **IaC** - Enable DynamoDB auto-scaling with appropriate target utilization percentages and scaling policies |  |
+| Medium | COST-005 | AWS DynamoDB Cost Optimization Best Practices 2023 | Monitor and Optimize Reserved Capacity | Purchase reserved capacity for predictable workloads to reduce costs | **Platform** - Analyze usage patterns and purchase DynamoDB reserved capacity for consistent workloads to achieve up to 76% cost savings |  |
+| Medium | COST-006 | AWS DynamoDB Cost Optimization Best Practices 2023 | Implement Efficient Query Patterns | Use efficient query and scan operations to minimize consumed capacity units | **User** - Use Query instead of Scan operations, implement pagination, use projection expressions to limit returned attributes |  |
+| Medium | COST-007 | AWS DynamoDB Cost Optimization Best Practices 2023 | Archive Cold Data | Move infrequently accessed data to more cost-effective storage solutions | **User** - Export old data to S3 using DynamoDB export features, implement data archiving strategies for cold data |  |
+| Low | COST-008 | AWS DynamoDB Cost Optimization Best Practices 2023 | Monitor Cost and Usage | Implement comprehensive cost monitoring and alerting for DynamoDB usage | **Platform** - Set up CloudWatch billing alarms, use AWS Cost Explorer to analyze DynamoDB costs, implement cost allocation tags |  |
 

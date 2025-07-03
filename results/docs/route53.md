@@ -1,38 +1,30 @@
-# AWS Route53
+# AWS Route 53
 ---
 
-
-### Cloud Security Alliance Cloud Controls Matrix v5
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | User Access Authorization | IAM-02 | Ensure only authorized users have access to Route53 resources with appropriate permissions | **IaC** - Implement IAM policies with least privilege access, define specific Route53 actions and resources in IAM policies |  |
-| **Critical** | Privileged User Management | IAM-03 | Control and monitor privileged access to Route53 administrative functions | **Platform** - Use AWS IAM roles with time-based access and MFA requirements for Route53 administrative operations |  |
-| **High** | Data Classification | DSI-01 | Classify DNS records and hosted zone data based on sensitivity and business impact | **User** - Implement data classification tags on hosted zones and establish handling procedures for sensitive DNS data |  |
-| **High** | Secure Disposal | DSI-07 | Ensure secure deletion of DNS records and hosted zones when no longer needed | **IaC** - Implement automated lifecycle policies and secure deletion procedures for Route53 resources |  |
-| Medium | Network Security | IVS-13 | Implement network-level security controls for DNS resolution | **IaC** - Configure Route53 Resolver with DNS filtering and private hosted zones for internal resources |  |
-
-### NIST 800-53 Rev 5
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Account Management | AC-2 | Manage Route53 access accounts with proper provisioning and de-provisioning procedures | **Platform** - Implement AWS IAM account lifecycle management with automated provisioning and regular access reviews |  |
-| **Critical** | Access Enforcement | AC-3 | Enforce approved authorizations for logical access to Route53 resources | **IaC** - Deploy IAM policies with explicit allow/deny rules and resource-based permissions for Route53 |  |
-| **High** | Event Logging | AU-2 | Log Route53 API calls and DNS query activities for security monitoring | **Platform** - Enable CloudTrail for Route53 API logging and configure Route53 Resolver query logging |  |
-| **High** | Audit Record Review | AU-6 | Review and analyze Route53 audit records for security incidents and anomalies | **Platform** - Implement automated log analysis using CloudWatch and AWS Security Hub for Route53 events |  |
-| **High** | Secure Name/Address Resolution Service | SC-20 | Provide secure DNS resolution services with integrity and authenticity validation | **IaC** - Enable DNSSEC for hosted zones and implement DNS filtering through Route53 Resolver |  |
-| Medium | System Backup | CP-9 | Backup Route53 configurations and DNS records for disaster recovery | **IaC** - Implement automated backup of Route53 configurations using AWS Config and infrastructure as code |  |
-
-### AWS Foundational Security Best Practices 1.0.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| Medium | Route53 public hosted zones should log DNS queries | Route53.1 | Enable query logging for Route53 public hosted zones to monitor DNS resolution requests | **IaC** - Configure Route53 query logging to CloudWatch Logs for all public hosted zones |  |
-| Medium | Route53 public hosted zones should not have unnecessary SRV records | Route53.2 | Review and remove unnecessary SRV records that may expose internal services | **User** - Regularly audit DNS records and remove unused or unnecessary SRV records from public zones |  |
-
-### AWS Security Hub 2023
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| Medium | Route53 public hosted zones should log DNS queries | Route53.1 | DNS query logging should be enabled for Route53 public hosted zones | **IaC** - Enable DNS query logging using CloudFormation or Terraform templates for all public hosted zones |  |
-| Low | Route53 public hosted zones should not have unnecessary SRV records | Route53.2 | Remove SRV records that are not required to reduce attack surface | **User** - Implement regular DNS record audits and establish approval processes for SRV record creation |  |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **Critical** | IAM-02 | Cloud Security Alliance (CSA) Cloud Controls Matrix v4.0 | User Access Management | Implement proper user access management and authentication controls for Route 53 resources | **IaC** - Configure IAM policies with least privilege access, implement MFA requirements, and use service-linked roles for Route 53 operations |  |
+| **High** | DCS-07 | Cloud Security Alliance (CSA) Cloud Controls Matrix v4.0 | Data Classification | Classify DNS data and hosted zone information according to organizational requirements | **User** - Implement resource tagging strategy to classify hosted zones and DNS records based on data sensitivity and business criticality |  |
+| **High** | AIS-01 | Cloud Security Alliance (CSA) Cloud Controls Matrix v4.0 | Audit Independent Reviews | Enable comprehensive logging and monitoring of all Route 53 activities and configuration changes | **Platform** - Enable CloudTrail logging for Route 53 API calls and configure query logging for DNS queries |  |
+| **High** | BCR-02 | Cloud Security Alliance (CSA) Cloud Controls Matrix v4.0 | Business Continuity Management & Operational Resilience | Implement disaster recovery procedures for DNS infrastructure and ensure high availability | **IaC** - Configure multi-region DNS failover, implement health checks, and maintain backup DNS configurations |  |
+| Medium | EKM-02 | Cloud Security Alliance (CSA) Cloud Controls Matrix v4.0 | Key Generation | Implement proper key management for DNS security mechanisms | **Platform** - Enable DNSSEC for hosted zones and use AWS KMS for key management where applicable |  |
+| **Critical** | AC-2 | NIST Special Publication 800-53 Rev 5 | Account Management | Establish and maintain user accounts with appropriate access privileges for Route 53 management | **IaC** - Implement automated account provisioning and deprovisioning with role-based access control for Route 53 resources |  |
+| **Critical** | AC-6 | NIST Special Publication 800-53 Rev 5 | Least Privilege | Employ the principle of least privilege for Route 53 access permissions | **IaC** - Create granular IAM policies that grant minimum necessary permissions for specific Route 53 operations |  |
+| **High** | AU-2 | NIST Special Publication 800-53 Rev 5 | Event Logging | Ensure auditable events for Route 53 are defined and logged appropriately | **Platform** - Configure CloudTrail to capture all Route 53 API calls and enable query logging for DNS resolution events |  |
+| **High** | AU-6 | NIST Special Publication 800-53 Rev 5 | Audit Record Review, Analysis, and Reporting | Review and analyze Route 53 audit records for security-relevant information | **User** - Implement automated analysis of Route 53 logs using CloudWatch and set up alerts for suspicious DNS activities |  |
+| **High** | SC-8 | NIST Special Publication 800-53 Rev 5 | Transmission Confidentiality and Integrity | Protect the confidentiality and integrity of DNS transmissions | **Platform** - Enable DNSSEC for hosted zones and implement DNS over HTTPS (DoH) where supported |  |
+| Medium | CP-9 | NIST Special Publication 800-53 Rev 5 | System Backup | Conduct backups of Route 53 configuration and DNS records | **IaC** - Implement automated backup procedures for hosted zone configurations and maintain version control of DNS records |  |
+| Medium | SI-4 | NIST Special Publication 800-53 Rev 5 | System Monitoring | Monitor Route 53 for security-relevant events and potential attacks | **Platform** - Configure CloudWatch monitoring for Route 53 metrics and implement GuardDuty DNS monitoring |  |
+| **Critical** | Route53.1 | AWS Foundational Security Standard 1.0.0 | Route 53 public hosted zones should log DNS queries | Public hosted zones should have query logging enabled to monitor DNS resolution requests | **IaC** - Configure query logging for all public hosted zones and send logs to CloudWatch Logs for analysis |  |
+| **High** | Route53.2 | AWS Foundational Security Standard 1.0.0 | Route 53 public hosted zones should not have unnecessary wildcard records | Avoid using wildcard DNS records that could lead to security vulnerabilities | **User** - Review and remove unnecessary wildcard records, implement specific DNS records instead of broad wildcards |  |
+| **High** | Route53.3 | AWS Foundational Security Standard 1.0.0 | Route 53 hosted zones should use DNSSEC | Enable DNSSEC signing for hosted zones to protect against DNS spoofing attacks | **IaC** - Enable DNSSEC signing for hosted zones and configure key-signing keys (KSK) and zone-signing keys (ZSK) |  |
+| Medium | Route53.4 | AWS Foundational Security Standard 1.0.0 | Route 53 resolver query logging should be enabled | Enable resolver query logging to monitor DNS queries from VPC resources | **Platform** - Configure Route 53 Resolver query logging for VPCs and send logs to CloudWatch or S3 |  |
+| Medium | Route53.5 | AWS Foundational Security Standard 1.0.0 | Route 53 health checks should be configured with appropriate failure thresholds | Configure health checks with appropriate failure thresholds to ensure reliable failover | **IaC** - Set appropriate failure thresholds and request intervals for health checks based on application requirements |  |
+| **Critical** | Route53.1 | AWS Security Hub 2024.1.0 | Route 53 public hosted zones should log DNS queries | Ensure DNS query logging is enabled for all public hosted zones to maintain audit trails | **IaC** - Enable query logging configuration for hosted zones and integrate with CloudWatch Logs |  |
+| **High** | Route53.2 | AWS Security Hub 2024.1.0 | Route 53 public hosted zones should not have unnecessary MX records pointing to localhost | Remove MX records pointing to localhost or other inappropriate destinations | **User** - Review and validate all MX records to ensure they point to legitimate mail servers |  |
+| **High** | IAM.Route53 | AWS Security Hub 2024.1.0 | Route 53 should use appropriate IAM policies | Implement proper IAM policies for Route 53 access with least privilege principles | **IaC** - Create specific IAM policies for Route 53 operations and avoid using overly permissive policies |  |
+| Medium | CloudTrail.Route53 | AWS Security Hub 2024.1.0 | CloudTrail should be enabled for Route 53 API logging | Ensure CloudTrail captures all Route 53 API calls for audit and compliance purposes | **Platform** - Configure CloudTrail to log Route 53 API events and store logs in a secure S3 bucket |  |
+| Medium | Config.Route53 | AWS Security Hub 2024.1.0 | AWS Config should monitor Route 53 configuration changes | Use AWS Config to track configuration changes to Route 53 resources | **Platform** - Enable AWS Config rules for Route 53 resources to monitor configuration drift and compliance |  |
 
 ## Operational Controls
 ---
@@ -42,15 +34,14 @@
 ## Cost Controls
 ---
 
-
-### AWS Route53 Cost Optimization Best Practices 2023
-| Severity | Title | Identifier | Description | Implementation |
-| - | - | - | - | - |
-| **High** | Optimize Hosted Zone Count | COST-001 | Consolidate hosted zones where possible to reduce monthly hosting fees | **User** - Review and consolidate related domains into fewer hosted zones, use subdomains instead of separate zones where appropriate |
-| **High** | Monitor DNS Query Volume | COST-002 | Track and optimize DNS query patterns to manage query-based charges | **Platform** - Implement CloudWatch monitoring for DNS query metrics and set up billing alerts for unexpected query volume increases |
-| Medium | Optimize Health Check Configuration | COST-003 | Right-size health check frequency and endpoints to balance availability with cost | **IaC** - Configure health checks with appropriate intervals and disable unnecessary health checks for non-critical endpoints |
-| Medium | Use Route53 Resolver Efficiently | COST-004 | Optimize Route53 Resolver rules and endpoints to minimize forwarding costs | **IaC** - Consolidate resolver rules and endpoints across VPCs, remove unused resolver configurations |
-| Low | Implement TTL Optimization | COST-005 | Set appropriate TTL values to reduce DNS query frequency while maintaining performance | **User** - Configure longer TTL values for static records and shorter TTLs only for records requiring frequent updates |
-| Low | Regular Resource Cleanup | COST-006 | Remove unused DNS records and hosted zones to eliminate unnecessary charges | **User** - Implement regular audits of Route53 resources and establish processes for removing unused zones and records |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **High** | COST-001 | AWS Route 53 Cost Optimization Best Practices 2023 | Optimize Hosted Zone Usage | Consolidate DNS records into fewer hosted zones where possible to reduce monthly hosted zone charges | **User** - Review hosted zone structure and consolidate related domains into single hosted zones using subdomains instead of separate zones |  |
+| **High** | COST-002 | AWS Route 53 Cost Optimization Best Practices 2023 | Monitor DNS Query Volume | Monitor and optimize DNS query patterns to manage query-based pricing effectively | **Platform** - Use CloudWatch metrics to track query volumes and identify opportunities to reduce unnecessary DNS queries |  |
+| Medium | COST-003 | AWS Route 53 Cost Optimization Best Practices 2023 | Optimize Health Check Configuration | Configure health checks efficiently to minimize costs while maintaining reliability | **IaC** - Optimize health check frequency and regions based on actual requirements, remove unused health checks |  |
+| Medium | COST-004 | AWS Route 53 Cost Optimization Best Practices 2023 | Implement DNS Caching Strategies | Configure appropriate TTL values to reduce DNS query frequency and associated costs | **User** - Set optimal TTL values for DNS records based on change frequency - longer TTLs for static records |  |
+| Medium | COST-005 | AWS Route 53 Cost Optimization Best Practices 2023 | Review Geographic Routing Policies | Optimize geographic and latency-based routing policies to reduce unnecessary complexity and costs | **IaC** - Review routing policies regularly and simplify where possible, remove unused routing configurations |  |
+| Medium | COST-006 | AWS Route 53 Cost Optimization Best Practices 2023 | Manage Resolver Endpoints Efficiently | Optimize Route 53 Resolver endpoint usage to minimize hourly charges for inbound and outbound endpoints | **IaC** - Consolidate resolver endpoints where possible and remove unused endpoints, optimize endpoint placement |  |
+| Low | COST-007 | AWS Route 53 Cost Optimization Best Practices 2023 | Optimize Query Logging Configuration | Configure query logging efficiently to balance security requirements with storage costs | **Platform** - Implement log retention policies and consider using S3 lifecycle policies for log archival to reduce storage costs |  |
+| Low | COST-008 | AWS Route 53 Cost Optimization Best Practices 2023 | Regular Cost Review and Cleanup | Perform regular reviews of Route 53 resources to identify and remove unused components | **User** - Establish monthly reviews of hosted zones, health checks, and DNS records to identify and clean up unused resources |  |
 

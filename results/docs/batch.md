@@ -1,43 +1,24 @@
 # AWS Batch
 ---
 
-
-### CSA Cloud Controls Matrix v5.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **High** | Identity and Access Management | IAM-01 | Implement strong identity and access management controls for AWS Batch resources | **IaC** - Define IAM roles and policies in CloudFormation/Terraform templates with least privilege access to Batch resources |  |
-| **High** | Data Security and Information Lifecycle Management | DSI-01 | Ensure proper data classification and protection for data processed in Batch jobs | **User** - Implement data encryption at rest and in transit, classify data sensitivity levels, and apply appropriate security controls |  |
-| **High** | Encryption and Key Management | EKM-01 | Implement proper encryption key management for Batch resources | **Platform** - Use AWS KMS for encryption key management and enable encryption for EBS volumes and S3 buckets used by Batch |  |
-| Medium | Infrastructure and Virtualization Security | IVS-01 | Secure the underlying infrastructure and compute environments for Batch | **IaC** - Configure secure compute environments with proper security groups, subnets, and instance types in infrastructure templates |  |
-| Medium | Logging and Monitoring | LOG-01 | Implement comprehensive logging and monitoring for Batch activities | **Platform** - Enable CloudTrail logging, CloudWatch monitoring, and configure log aggregation for Batch job execution |  |
-
-### NIST 800-53 Rev 5
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **High** | Account Management | AC-2 | Manage AWS Batch service accounts and access permissions | **IaC** - Implement automated account provisioning and deprovisioning through IAM roles and policies defined in infrastructure code |  |
-| **High** | Transmission Confidentiality and Integrity | SC-8 | Protect data transmission to and from Batch compute environments | **Platform** - Enable TLS/SSL encryption for all API communications and data transfers to/from Batch resources |  |
-| **High** | Protection of Information at Rest | SC-28 | Encrypt data at rest in Batch storage systems | **IaC** - Configure EBS volume encryption and S3 bucket encryption in infrastructure templates for Batch storage |  |
-| Medium | Event Logging | AU-2 | Log security-relevant events in AWS Batch | **Platform** - Enable CloudTrail for API logging and CloudWatch for operational logging of Batch activities |  |
-| Medium | System Monitoring | SI-4 | Monitor AWS Batch systems for security events and anomalies | **Platform** - Implement CloudWatch monitoring, AWS Security Hub, and GuardDuty for continuous security monitoring |  |
-| Low | Baseline Configuration | CM-2 | Maintain baseline configurations for Batch compute environments | **IaC** - Define and maintain standardized compute environment configurations using infrastructure as code templates |  |
-
-### AWS Foundational Security Standard v1.0.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **High** | Batch compute environments should use EC2 instances with IMDSv2 | Batch.1 | Configure Batch compute environments to use EC2 instances with Instance Metadata Service version 2 | **IaC** - Set httpTokens to 'required' and httpPutResponseHopLimit appropriately in launch templates used by Batch compute environments |  |
-| **High** | Batch job definitions should not have privileged mode enabled | Batch.2 | Ensure Batch job definitions do not run containers in privileged mode | **User** - Set privileged parameter to false in containerProperties of job definitions |  |
-| Medium | Batch compute environments should be in a VPC | Batch.3 | Deploy Batch compute environments within a VPC for network isolation | **IaC** - Configure subnets parameter in compute environment definitions to deploy instances in private subnets |  |
-| Medium | Batch job queues should have logging enabled | Batch.4 | Enable logging for Batch job queues to track job execution | **Platform** - Configure CloudWatch Logs integration and enable container logging in job definitions |  |
-| Low | Batch compute environments should use managed scaling | Batch.5 | Use AWS managed scaling for Batch compute environments | **IaC** - Set type to 'MANAGED' in compute environment configuration for automatic scaling management |  |
-
-### AWS Security Hub 2023.1
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **High** | Batch job definitions should not have elevated privileges | Batch.1 | Job definitions should not grant unnecessary elevated privileges to containers | **User** - Configure job definitions with minimal required privileges and avoid privileged mode, readonlyRootFilesystem should be true |  |
-| Medium | Batch compute environments should have detailed monitoring enabled | Batch.2 | Enable detailed monitoring for Batch compute environments | **IaC** - Set instanceRole and enable detailed monitoring in compute environment launch templates |  |
-| Medium | Batch job definitions should specify resource limits | Batch.3 | Define appropriate CPU and memory limits for Batch jobs | **User** - Specify vcpus and memory parameters in job definition containerProperties to prevent resource exhaustion |  |
-| Low | Batch compute environments should use encryption for EBS volumes | Batch.4 | Enable EBS encryption for compute environment storage | **IaC** - Configure encrypted EBS volumes in launch templates used by Batch compute environments |  |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **Critical** | IAM-01 | Cloud Security Alliance (CSA) Cloud Controls Matrix 4.0.10 | Entitlement | Implement strong identity and access management controls for AWS Batch resources including compute environments, job queues, and job definitions | **IaC** - Define IAM roles, policies, and service-linked roles in CloudFormation/Terraform templates with least privilege access principles |  |
+| **Critical** | DSI-07 | Cloud Security Alliance (CSA) Cloud Controls Matrix 4.0.10 | Secure Disposal or Re-use of Equipment | Ensure secure disposal and data sanitization of compute resources used by AWS Batch when decommissioned | **Platform** - Leverage AWS managed disposal processes and implement data encryption to ensure secure decommissioning of Batch compute resources |  |
+| **High** | BCR-01 | Cloud Security Alliance (CSA) Cloud Controls Matrix 4.0.10 | Business Continuity Planning | Ensure Batch workloads can recover from failures and maintain operational continuity | **IaC** - Deploy Batch resources across multiple AZs and implement automated retry mechanisms in job definitions |  |
+| **High** | AIS-01 | Cloud Security Alliance (CSA) Cloud Controls Matrix 4.0.10 | Audit Logging / Intrusion Detection | Enable comprehensive logging and monitoring for all Batch operations and API calls | **Platform** - Configure CloudTrail, CloudWatch Logs, and AWS Config to monitor Batch API calls and resource changes |  |
+| Medium | TVM-01 | Cloud Security Alliance (CSA) Cloud Controls Matrix 4.0.10 | Vulnerability Management | Regularly scan and update container images and underlying infrastructure for security vulnerabilities | **User** - Implement container image scanning in CI/CD pipelines and regularly update AMIs used in compute environments |  |
+| **Critical** | AC-2 | NIST 800-53 Rev 5 | Account Management | Manage AWS accounts and user access for Batch services with proper provisioning and deprovisioning procedures | **Platform** - Implement AWS Organizations, SSO, and automated account lifecycle management for Batch access |  |
+| **Critical** | SC-8 | NIST 800-53 Rev 5 | Transmission Confidentiality and Integrity | Protect data transmission between Batch components and external systems using encryption | **IaC** - Configure VPC endpoints, security groups, and TLS encryption for all Batch communications |  |
+| **High** | AC-3 | NIST 800-53 Rev 5 | Access Enforcement | Enforce approved authorizations for logical access to Batch resources and job execution | **IaC** - Implement resource-based policies and IAM conditions to restrict Batch resource access |  |
+| **High** | AU-2 | NIST 800-53 Rev 5 | Event Logging | Generate audit logs for Batch job submissions, state changes, and administrative actions | **Platform** - Enable CloudWatch Events for Batch state changes and CloudTrail for API logging |  |
+| **High** | SI-4 | NIST 800-53 Rev 5 | System Monitoring | Monitor Batch infrastructure and workloads for security events and anomalous behavior | **Platform** - Deploy GuardDuty, Security Hub, and custom CloudWatch alarms for Batch monitoring |  |
+| Medium | CP-9 | NIST 800-53 Rev 5 | System Backup | Implement backup procedures for Batch job definitions, configurations, and critical data | **IaC** - Use AWS Backup or custom solutions to backup Batch configurations and associated data |  |
+| **Critical** | Batch.1 | AWS Foundational Security Standard 1.0 | AWS Batch compute environments should use EC2 launch templates | Ensure Batch compute environments use EC2 launch templates for consistent and secure instance configuration | **IaC** - Define EC2 launch templates with security groups, IAM instance profiles, and encrypted EBS volumes in infrastructure code |  |
+| **Critical** | Batch.2 | AWS Foundational Security Standard 1.0 | AWS Batch job definitions should not have privileged or root access | Prevent Batch job definitions from running with privileged access or as root user | **IaC** - Configure job definitions with non-privileged user contexts and avoid privileged flags in container parameters |  |
+| **High** | Batch.3 | AWS Foundational Security Standard 1.0 | AWS Batch compute environments should be placed in private subnets | Deploy Batch compute environments in private subnets to reduce attack surface | **IaC** - Configure compute environments to use private subnet IDs and ensure NAT Gateway for outbound connectivity |  |
+| **High** | Batch.4 | AWS Foundational Security Standard 1.0 | AWS Batch should use encrypted EBS volumes | Enable EBS encryption for all volumes used by Batch compute environments | **IaC** - Configure launch templates with encrypted EBS volumes using AWS KMS keys |  |
+| Medium | Batch.5 | AWS Foundational Security Standard 1.0 | AWS Batch job queues should have logging enabled | Enable logging for Batch job queues to track job execution and performance | **Platform** - Configure CloudWatch Logs integration and enable job queue event logging |  |
 
 ## Operational Controls
 ---
@@ -47,16 +28,15 @@
 ## Cost Controls
 ---
 
-
-### AWS Batch Cost Optimization 2023
-| Severity | Title | Identifier | Description | Implementation |
-| - | - | - | - | - |
-| **High** | Use Spot Instances for Fault-Tolerant Workloads | COST-01 | Leverage EC2 Spot Instances in Batch compute environments for significant cost savings on fault-tolerant workloads | **IaC** - Configure bidPercentage and allocationStrategy in compute environment to use Spot instances with diversified instance types |
-| **High** | Implement Auto Scaling and Right-Sizing | COST-02 | Use managed compute environments with auto scaling to automatically adjust capacity based on job queue demand | **IaC** - Set appropriate minvCpus, maxvCpus, and desiredvCpus in managed compute environments for optimal scaling |
-| Medium | Optimize Instance Types and Families | COST-03 | Select appropriate EC2 instance types based on workload characteristics to optimize cost-performance ratio | **User** - Analyze job resource requirements and specify optimal instance types in compute environment instanceTypes parameter |
-| Medium | Implement Job Queue Prioritization | COST-04 | Use job queue priorities to ensure critical jobs run first and optimize resource utilization | **User** - Configure priority values for job queues and implement job scheduling strategies to maximize throughput |
-| Medium | Enable Cost Allocation Tags | COST-05 | Implement comprehensive tagging strategy for cost tracking and allocation across different teams or projects | **IaC** - Define consistent tagging strategy in infrastructure templates for all Batch resources including compute environments and job queues |
-| Low | Optimize Storage Costs | COST-06 | Use appropriate storage types and lifecycle policies for temporary and persistent data | **Platform** - Configure S3 storage classes, lifecycle policies, and use appropriate EBS volume types for different data access patterns |
-| Low | Implement Resource Monitoring and Alerting | COST-07 | Set up monitoring and alerting for cost anomalies and resource utilization | **Platform** - Configure CloudWatch billing alarms, AWS Cost Explorer, and AWS Budgets to monitor and alert on Batch costs |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **High** | COST-01 | AWS Batch Cost Optimization 2023 | Use Spot Instances for Fault-Tolerant Workloads | Leverage EC2 Spot Instances in Batch compute environments to reduce costs for fault-tolerant workloads | **IaC** - Configure compute environments with SPOT allocation strategy and appropriate bid prices in infrastructure templates |  |
+| **High** | COST-02 | AWS Batch Cost Optimization 2023 | Implement Auto Scaling for Compute Environments | Configure appropriate scaling policies to automatically adjust compute capacity based on job queue demand | **IaC** - Set minvCpus to 0 and configure appropriate maxvCpus and desiredvCpus in compute environment definitions |  |
+| **High** | COST-03 | AWS Batch Cost Optimization 2023 | Right-Size Instance Types | Select appropriate EC2 instance types based on workload requirements to optimize cost-performance ratio | **IaC** - Define instance type arrays with cost-optimized instances and use allocation strategy DIVERSIFIED |  |
+| Medium | COST-04 | AWS Batch Cost Optimization 2023 | Optimize Job Resource Requirements | Define accurate resource requirements in job definitions to prevent over-provisioning | **User** - Monitor job resource utilization and adjust vCpus, memory, and GPU requirements in job definitions accordingly |  |
+| Medium | COST-05 | AWS Batch Cost Optimization 2023 | Use Multi-AZ Deployment Strategically | Deploy across multiple AZs to take advantage of Spot Instance availability and pricing variations | **IaC** - Configure compute environments with subnets from multiple availability zones to optimize Spot pricing |  |
+| Medium | COST-06 | AWS Batch Cost Optimization 2023 | Implement Job Queue Prioritization | Use job queue priorities to ensure critical jobs run first and optimize resource allocation | **IaC** - Configure job queues with appropriate priority levels and associate with cost-optimized compute environments |  |
+| Medium | COST-07 | AWS Batch Cost Optimization 2023 | Monitor and Alert on Cost Metrics | Implement cost monitoring and alerting to track Batch spending and identify optimization opportunities | **Platform** - Set up AWS Cost Explorer, budgets, and CloudWatch alarms to monitor Batch-related EC2 and EBS costs |  |
+| Low | COST-08 | AWS Batch Cost Optimization 2023 | Use Efficient Container Images | Optimize container images to reduce startup time and storage costs | **User** - Use minimal base images, implement multi-stage builds, and optimize layer caching in container image creation |  |
+| Low | COST-09 | AWS Batch Cost Optimization 2023 | Implement Lifecycle Policies for Logs and Data | Configure lifecycle policies for CloudWatch Logs and associated S3 storage to manage long-term costs | **IaC** - Set log retention periods and S3 lifecycle transitions to cheaper storage classes in infrastructure templates |  |
 

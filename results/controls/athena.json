@@ -2,225 +2,205 @@
     "service": "AWS Athena",
     "security": [
         {
-            "name": "CSA CCM",
-            "version": "v5.0",
-            "controls": [
-                {
-                    "identifier": "IAM-01",
-                    "title": "Identity and Access Management Policy and Procedures",
-                    "severity": "Critical",
-                    "description": "Establish comprehensive identity and access management policies for Athena service access",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Configure IAM policies with least privilege access to Athena resources, implement role-based access control (RBAC) for query execution and data access"
-                    }
-                },
-                {
-                    "identifier": "DSI-07",
-                    "title": "Data Security and Information Lifecycle Management",
-                    "severity": "Critical",
-                    "description": "Implement data classification and lifecycle management for data accessed through Athena",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Define data classification schemas in S3 bucket policies and implement lifecycle rules for query results stored in result buckets"
-                    }
-                },
-                {
-                    "identifier": "EKM-01",
-                    "title": "Encryption and Key Management",
-                    "severity": "High",
-                    "description": "Ensure encryption at rest and in transit for all Athena operations",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure S3 bucket encryption for data sources and result locations, enable SSL/TLS for Athena API calls and JDBC/ODBC connections"
-                    }
-                },
-                {
-                    "identifier": "IVS-01",
-                    "title": "Information Security Monitoring",
-                    "severity": "High",
-                    "description": "Implement comprehensive monitoring and logging for Athena service usage",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Enable CloudTrail logging for Athena API calls, configure CloudWatch metrics for query performance and cost monitoring"
-                    }
-                },
-                {
-                    "identifier": "TVM-01",
-                    "title": "Threat and Vulnerability Management",
-                    "severity": "Medium",
-                    "description": "Implement vulnerability scanning and threat detection for Athena workloads",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Use AWS Security Hub and GuardDuty to monitor for suspicious query patterns and unauthorized access attempts"
-                    }
-                }
-            ]
-        },
-        {
             "name": "NIST 800-53",
             "version": "Rev 5",
             "controls": [
                 {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "High",
+                    "description": "Manage information system accounts, including establishing, activating, modifying, reviewing, disabling, and removing accounts",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Implement IAM policies and roles with least privilege access to Athena resources, regularly review and audit user accounts"
+                    }
+                },
+                {
                     "identifier": "AC-3",
                     "title": "Access Enforcement",
-                    "severity": "Critical",
-                    "description": "Enforce approved authorizations for logical access to Athena resources",
+                    "severity": "High",
+                    "description": "Enforce approved authorizations for logical access to information and system resources",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement fine-grained IAM policies with resource-level permissions for databases, tables, and workgroups in Athena"
+                        "description": "Configure IAM policies to control access to specific databases, tables, and S3 locations used by Athena"
                     }
                 },
                 {
                     "identifier": "SC-8",
                     "title": "Transmission Confidentiality and Integrity",
-                    "severity": "Critical",
+                    "severity": "High",
                     "description": "Protect the confidentiality and integrity of transmitted information",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Enforce HTTPS/TLS 1.2+ for all Athena API communications and client connections"
+                        "description": "Enable TLS encryption for all Athena API calls and query results in transit"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of information at rest",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable S3 encryption for Athena query results and source data using KMS keys"
                     }
                 },
                 {
                     "identifier": "AU-2",
-                    "title": "Event Logging",
-                    "severity": "High",
-                    "description": "Ensure auditable events are defined and logged appropriately",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure CloudTrail to log all Athena API calls including StartQueryExecution, GetQueryResults, and workgroup management activities"
-                    }
-                },
-                {
-                    "identifier": "SC-7",
-                    "title": "Boundary Protection",
-                    "severity": "High",
-                    "description": "Monitor and control communications at external boundaries of the system",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure VPC endpoints for Athena service access and implement network ACLs to restrict access to authorized networks"
-                    }
-                },
-                {
-                    "identifier": "CP-9",
-                    "title": "System Backup",
+                    "title": "Audit Events",
                     "severity": "Medium",
-                    "description": "Conduct backups of system-level information contained in the system",
+                    "description": "Identify the types of events that the system is capable of logging in support of the audit function",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable CloudTrail logging for all Athena API calls and configure VPC Flow Logs if using VPC endpoints"
+                    }
+                },
+                {
+                    "identifier": "AU-12",
+                    "title": "Audit Record Generation",
+                    "severity": "Medium",
+                    "description": "Provide audit record generation capability for defined auditable events",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure CloudWatch logging for Athena query execution and performance metrics"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "Medium",
+                    "description": "Monitor the system to detect attacks and indicators of potential attacks",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set up CloudWatch alarms for unusual query patterns, failed queries, and resource consumption"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "CSA CCM",
+            "version": "v4.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy and Procedures",
+                    "severity": "High",
+                    "description": "Establish and maintain identity and access management policies and procedures",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Document and implement IAM policies for Athena access with role-based permissions and regular reviews"
+                    }
+                },
+                {
+                    "identifier": "IAM-02",
+                    "title": "User Access Provisioning",
+                    "severity": "High",
+                    "description": "User access is provisioned, de-provisioned, and reviewed",
                     "implementation": {
                         "type": "User",
-                        "description": "Implement backup strategies for Athena metadata catalogs and ensure S3 data sources have appropriate backup and versioning enabled"
+                        "description": "Implement automated provisioning and de-provisioning of Athena access through IAM roles and groups"
+                    }
+                },
+                {
+                    "identifier": "EKM-02",
+                    "title": "Encryption Key Management",
+                    "severity": "High",
+                    "description": "Encryption keys are managed throughout their lifecycle",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use AWS KMS for managing encryption keys for Athena query results and implement key rotation policies"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "Medium",
+                    "description": "Data and objects are protected throughout their lifecycle",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement data classification and retention policies for Athena query results and underlying S3 data"
+                    }
+                },
+                {
+                    "identifier": "DSI-07",
+                    "title": "Secure Disposal",
+                    "severity": "Medium",
+                    "description": "Secure disposal of data when no longer required",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure S3 lifecycle policies for Athena result buckets to automatically delete old query results"
                     }
                 }
             ]
         },
         {
             "name": "AWS Foundational Security Best Practices",
-            "version": "v1.0.0",
+            "version": "1.0.0",
             "controls": [
                 {
-                    "identifier": "Athena.1",
-                    "title": "Athena workgroups should be encrypted at rest",
-                    "severity": "Critical",
-                    "description": "Athena workgroups should have encryption at rest enabled for query results",
+                    "identifier": "IAM.1",
+                    "title": "IAM policies should not allow full administrative privileges",
+                    "severity": "High",
+                    "description": "This control checks whether IAM policies grant full administrative privileges",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure workgroups with ResultConfiguration encryption using SSE-S3, SSE-KMS, or CSE-KMS encryption"
+                        "description": "Apply principle of least privilege for Athena IAM policies, avoiding wildcard permissions"
                     }
                 },
                 {
                     "identifier": "S3.1",
                     "title": "S3 Block Public Access setting should be enabled",
-                    "severity": "Critical",
-                    "description": "S3 buckets used by Athena should have Block Public Access enabled",
+                    "severity": "High",
+                    "description": "This control checks whether S3 Block Public Access settings are configured for S3 buckets used by Athena",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable S3 Block Public Access settings on all buckets used for Athena data sources and query results"
+                        "description": "Enable S3 Block Public Access settings on buckets containing Athena data sources and results"
                     }
                 },
                 {
-                    "identifier": "IAM.1",
-                    "title": "IAM policies should not allow full administrative privileges",
-                    "severity": "High",
-                    "description": "IAM policies for Athena access should follow principle of least privilege",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Create specific IAM policies for Athena that grant only necessary permissions for query execution and data access"
-                    }
-                },
-                {
-                    "identifier": "CloudTrail.1",
-                    "title": "CloudTrail should be enabled and configured with at least one multi-Region trail",
-                    "severity": "High",
-                    "description": "Enable CloudTrail logging to capture Athena API calls across all regions",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Configure multi-region CloudTrail with S3 bucket logging and log file validation for Athena service events"
-                    }
-                },
-                {
-                    "identifier": "Config.1",
-                    "title": "AWS Config should be enabled",
+                    "identifier": "Athena.1",
+                    "title": "Athena workgroups should encrypt query results",
                     "severity": "Medium",
-                    "description": "AWS Config should be enabled to track configuration changes to Athena resources",
+                    "description": "This control checks whether an Amazon Athena workgroup encrypts query results",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Enable AWS Config to monitor changes to Athena workgroups, data catalogs, and associated IAM policies"
+                        "type": "IaC",
+                        "description": "Configure workgroup settings to enforce encryption of query results using S3 server-side encryption"
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "2023.1.0",
+            "version": "Current",
             "controls": [
                 {
-                    "identifier": "Athena.1",
-                    "title": "Athena workgroups should encrypt query results",
-                    "severity": "Critical",
-                    "description": "Athena workgroups must encrypt query results to protect sensitive data",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure workgroup ResultConfiguration with EncryptionConfiguration using appropriate KMS keys"
-                    }
-                },
-                {
-                    "identifier": "S3.8",
-                    "title": "S3 buckets should block public access",
-                    "severity": "Critical",
-                    "description": "S3 buckets used with Athena should have public access blocked",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Apply bucket policies and Block Public Access settings to prevent unauthorized access to Athena data sources"
-                    }
-                },
-                {
-                    "identifier": "IAM.21",
-                    "title": "IAM customer managed policies should not allow decryption actions on all KMS keys",
+                    "identifier": "CloudTrail.1",
+                    "title": "CloudTrail should be enabled and configured with at least one multi-Region trail",
                     "severity": "High",
-                    "description": "Restrict KMS key access in IAM policies used for Athena encryption",
+                    "description": "This control checks that there is at least one multi-region CloudTrail trail",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Create specific IAM policies that grant decrypt permissions only for KMS keys used by Athena workgroups"
+                        "type": "Platform",
+                        "description": "Enable multi-region CloudTrail to capture all Athena API calls across regions"
                     }
                 },
                 {
                     "identifier": "CloudWatch.1",
                     "title": "A log metric filter and alarm should exist for usage of root user",
-                    "severity": "High",
-                    "description": "Monitor root user access to Athena services through CloudWatch alarms",
+                    "severity": "Medium",
+                    "description": "This control checks whether a log metric filter and alarm exist for root user usage",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Create CloudWatch metric filters and alarms to detect root user access to Athena resources"
+                        "type": "IaC",
+                        "description": "Create CloudWatch alarms for root user access to Athena resources"
                     }
                 },
                 {
-                    "identifier": "VPC.7",
-                    "title": "VPC flow logs should be enabled",
+                    "identifier": "EC2.2",
+                    "title": "VPC default security groups should not allow inbound or outbound traffic",
                     "severity": "Medium",
-                    "description": "Enable VPC flow logs to monitor network traffic to Athena VPC endpoints",
+                    "description": "This control checks that the default security group restricts all traffic",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure VPC flow logs for subnets containing Athena VPC endpoints to monitor network access patterns"
+                        "description": "Configure restrictive security groups for VPC endpoints used with Athena"
                     }
                 }
             ]
@@ -230,86 +210,86 @@
     "cost": [
         {
             "name": "AWS Athena Cost Optimization Best Practices",
-            "version": "2023",
+            "version": "Current",
             "controls": [
                 {
-                    "identifier": "COST-001",
-                    "title": "Implement Query Result Caching",
-                    "severity": "High",
-                    "description": "Enable query result caching to avoid re-running identical queries and reduce data scanning costs",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Configure workgroups to enable query result reuse and set appropriate cache TTL values based on data refresh patterns"
-                    }
-                },
-                {
-                    "identifier": "COST-002",
+                    "identifier": "COST-01",
                     "title": "Optimize Data Storage Format",
                     "severity": "High",
-                    "description": "Use columnar storage formats like Parquet or ORC to reduce data scanning and improve query performance",
+                    "description": "Use columnar storage formats like Parquet or ORC to reduce data scanned and improve query performance",
                     "implementation": {
                         "type": "User",
-                        "description": "Convert data sources to Parquet or ORC format with appropriate compression algorithms (SNAPPY, GZIP) to minimize storage costs and query execution time"
+                        "description": "Convert data to Parquet or ORC format and partition data appropriately to minimize data scanned per query"
                     }
                 },
                 {
-                    "identifier": "COST-003",
+                    "identifier": "COST-02",
                     "title": "Implement Data Partitioning",
                     "severity": "High",
-                    "description": "Partition data to limit the amount of data scanned during query execution",
+                    "description": "Partition data by commonly queried fields to reduce the amount of data scanned",
                     "implementation": {
                         "type": "User",
-                        "description": "Design partition schemes based on common query patterns (date, region, department) and ensure queries include partition predicates to limit scanning"
+                        "description": "Design partition schemes based on query patterns and use partition projection where applicable"
                     }
                 },
                 {
-                    "identifier": "COST-004",
-                    "title": "Configure Workgroup Query Limits",
+                    "identifier": "COST-03",
+                    "title": "Use Data Compression",
+                    "severity": "High",
+                    "description": "Compress data to reduce storage costs and improve query performance",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Apply appropriate compression algorithms (GZIP, Snappy, LZO) based on data type and access patterns"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Configure Query Result Location Lifecycle",
                     "severity": "Medium",
-                    "description": "Set data usage controls and query limits to prevent runaway queries and unexpected costs",
+                    "description": "Set up S3 lifecycle policies for query result locations to automatically delete old results",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure workgroup settings with BytesScannedCutoffPerQuery limits and enable query result location enforcement to control costs"
+                        "description": "Configure S3 lifecycle rules to transition old query results to cheaper storage classes or delete them"
                     }
                 },
                 {
-                    "identifier": "COST-005",
+                    "identifier": "COST-05",
+                    "title": "Implement Workgroup Query Controls",
+                    "severity": "Medium",
+                    "description": "Use workgroups to set query limits and control resource usage",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure workgroups with data usage controls, query timeout limits, and result encryption requirements"
+                    }
+                },
+                {
+                    "identifier": "COST-07",
+                    "title": "Monitor and Alert on Usage",
+                    "severity": "Medium",
+                    "description": "Set up monitoring and alerting for Athena usage and costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create CloudWatch alarms for data processed, query costs, and set up AWS Budgets for cost control"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
                     "title": "Optimize Query Performance",
                     "severity": "Medium",
-                    "description": "Write efficient queries to minimize data scanning and execution time",
+                    "description": "Write efficient queries to minimize data processing and reduce costs",
                     "implementation": {
                         "type": "User",
-                        "description": "Use specific column selection instead of SELECT *, implement appropriate WHERE clauses, and utilize LIMIT clauses for exploratory queries"
+                        "description": "Use LIMIT clauses, specific column selection, predicate pushdown, and avoid SELECT * statements"
                     }
                 },
                 {
-                    "identifier": "COST-006",
-                    "title": "Implement S3 Lifecycle Policies",
-                    "severity": "Medium",
-                    "description": "Configure lifecycle policies for query results and temporary data to reduce storage costs",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Set up S3 lifecycle rules to automatically transition query results to cheaper storage classes (IA, Glacier) or delete them after defined retention periods"
-                    }
-                },
-                {
-                    "identifier": "COST-007",
-                    "title": "Monitor and Alert on Query Costs",
-                    "severity": "Medium",
-                    "description": "Implement cost monitoring and alerting to track Athena usage and spending patterns",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Configure CloudWatch metrics and billing alerts for Athena data scanning costs, and use AWS Cost Explorer to analyze usage patterns by workgroup and user"
-                    }
-                },
-                {
-                    "identifier": "COST-008",
-                    "title": "Use Approximate Functions When Appropriate",
+                    "identifier": "COST-08",
+                    "title": "Use Approximation Functions",
                     "severity": "Low",
-                    "description": "Utilize approximate aggregate functions for large datasets when exact precision is not required",
+                    "description": "Use approximation functions for large datasets when exact results are not required",
                     "implementation": {
                         "type": "User",
-                        "description": "Replace exact functions like COUNT DISTINCT with approximate functions like approx_distinct() for large dataset analysis to reduce query execution time and costs"
+                        "description": "Utilize functions like approx_distinct() and approx_percentile() for faster, cost-effective analytics"
                     }
                 }
             ]

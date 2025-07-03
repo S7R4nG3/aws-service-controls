@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -22,26 +23,12 @@ type Service struct {
 	ReviewPrompt  llm.LlmPrompt
 }
 
-var ModuleServices = LoadServices()
-
-func LoadServices() []Service {
+func LoadServices(filename string) []Service {
 	wd, _ := os.Getwd()
-	filepath := filepath.Join(wd, "services.json")
+	filepath := filepath.Join(wd, filename)
 	if _, err := os.Stat(filepath); errors.Is(err, os.ErrNotExist) {
-		return []Service{
-			{
-				Short: "lambda",
-				Long:  "Lambda",
-			},
-			{
-				Short: "ecs",
-				Long:  "Elastic Container Service",
-			},
-			{
-				Short: "cloudfront",
-				Long:  "CloudFront",
-			},
-		}
+		log.Fatal(err)
+		return []Service{}
 	} else {
 		var serviceFile ServicesFile
 		file, err := os.Open("services.json")

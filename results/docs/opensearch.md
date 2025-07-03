@@ -1,45 +1,31 @@
 # AWS OpenSearch
 ---
 
-
-### CSA Cloud Controls Matrix v5.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Identity and Access Management Policy and Procedures | IAM-01 | Establish comprehensive identity and access management policies for OpenSearch cluster access | **IaC** - Define IAM policies and roles with least privilege access, implement fine-grained access control using OpenSearch security plugin |  |
-| **Critical** | Data Security and Information Lifecycle Management | DSI-01 | Implement encryption at rest and in transit for all OpenSearch data | **Platform** - Enable encryption at rest using AWS KMS keys and enforce HTTPS/TLS for all communications |  |
-| **High** | Infrastructure and Virtualization Security | IVS-01 | Secure network infrastructure and implement network segmentation | **IaC** - Deploy OpenSearch in VPC with private subnets, configure security groups with minimal required ports |  |
-| **High** | Logging and Monitoring | LOG-01 | Enable comprehensive logging and monitoring for security events | **Platform** - Enable CloudWatch logs, CloudTrail, and OpenSearch audit logs with appropriate retention policies |  |
-| Medium | Business Continuity Management | BCR-01 | Implement backup and disaster recovery procedures | **IaC** - Configure automated snapshots to S3, implement multi-AZ deployment, define RTO/RPO requirements |  |
-
-### NIST 800-53 Rev 5
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Account Management | AC-2 | Manage user accounts and access to OpenSearch resources | **User** - Implement regular account reviews, disable unused accounts, use IAM roles for service access |  |
-| **Critical** | Transmission Confidentiality and Integrity | SC-8 | Protect data in transit to and from OpenSearch | **Platform** - Enforce HTTPS/TLS 1.2+ for all client connections and inter-node communication |  |
-| **Critical** | Protection of Information at Rest | SC-28 | Encrypt sensitive data stored in OpenSearch | **IaC** - Enable encryption at rest using customer-managed KMS keys with proper key rotation |  |
-| **High** | Content of Audit Records | AU-3 | Generate comprehensive audit logs for security monitoring | **Platform** - Configure OpenSearch audit logging to capture authentication, authorization, and data access events |  |
-| **High** | Information System Backup | CP-9 | Implement regular backup procedures for OpenSearch data | **IaC** - Configure automated daily snapshots with cross-region replication for disaster recovery |  |
-| Medium | Information System Monitoring | SI-4 | Monitor OpenSearch for security events and anomalies | **Platform** - Implement CloudWatch monitoring with custom metrics and alerting for suspicious activities |  |
-
-### AWS Foundational Security Best Practices 1.0.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | OpenSearch domains should have encryption at rest enabled | OpenSearch.1 | Ensures OpenSearch domains encrypt data at rest to protect sensitive information | **IaC** - Set encryptionAtRestOptions.enabled to true in domain configuration with KMS key specification |  |
-| **Critical** | OpenSearch domains should be in a VPC | OpenSearch.2 | Deploy OpenSearch domains within VPC for network isolation and security | **IaC** - Configure VPC options with private subnets and appropriate security groups in domain configuration |  |
-| **Critical** | OpenSearch domains should encrypt data sent between nodes | OpenSearch.3 | Enable node-to-node encryption for inter-cluster communication security | **IaC** - Set nodeToNodeEncryptionOptions.enabled to true in domain configuration |  |
-| **High** | OpenSearch domain error logging to CloudWatch Logs should be enabled | OpenSearch.4 | Enable error logging for troubleshooting and security monitoring | **IaC** - Configure logPublishingOptions for ERROR_LOGS with appropriate CloudWatch log group |  |
-| **High** | OpenSearch domains should have audit logging enabled | OpenSearch.5 | Enable audit logging to track access and changes to OpenSearch resources | **IaC** - Configure logPublishingOptions for AUDIT_LOGS with CloudWatch log group and appropriate retention |  |
-| Medium | OpenSearch domains should have at least three data nodes | OpenSearch.6 | Ensure high availability and fault tolerance with minimum three data nodes | **IaC** - Set clusterConfig.instanceCount to minimum of 3 with dedicatedMasterEnabled for production workloads |  |
-
-### AWS Security Hub 2023.1
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | OpenSearch domains should have encryption at rest enabled | OpenSearch.1 | Detects OpenSearch domains without encryption at rest enabled | **Platform** - Enable automatic remediation through Security Hub or Config rules to enforce encryption settings |  |
-| **Critical** | OpenSearch domains should be in a VPC | OpenSearch.2 | Identifies OpenSearch domains not deployed within a VPC | **IaC** - Ensure all OpenSearch domains are created with VPC configuration in CloudFormation/Terraform templates |  |
-| **High** | OpenSearch domains should have fine-grained access control enabled | OpenSearch.7 | Ensures fine-grained access control is enabled for enhanced security | **IaC** - Enable advancedSecurityOptions with fine-grained access control and internal user database or SAML |  |
-| **High** | OpenSearch domain connections should be encrypted using TLS 1.2 | OpenSearch.8 | Ensures all connections use minimum TLS 1.2 for secure communication | **IaC** - Configure domainEndpointOptions with TLS security policy set to Policy-Min-TLS-1-2-2019-07 or later |  |
-| Medium | OpenSearch domains should have automatic snapshots enabled | OpenSearch.9 | Verifies automatic snapshot configuration for data backup and recovery | **IaC** - Configure snapshotOptions with automated snapshot hour setting in domain configuration |  |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **Critical** | IAM-01 | Cloud Security Alliance (CSA) Cloud Controls Matrix v4.0 | Entitlement | Policies and procedures shall be established to govern the assignment of privileges associated with OpenSearch service access | **IaC** - Implement IAM policies through CloudFormation/Terraform templates defining role-based access controls for OpenSearch domains |  |
+| **Critical** | DSI-01 | Cloud Security Alliance (CSA) Cloud Controls Matrix v4.0 | Data Classification | Policies and procedures shall be established for classifying data stored in OpenSearch based on sensitivity, criticality, and business value | **IaC** - Define index lifecycle management policies and data retention rules in OpenSearch configuration templates |  |
+| **Critical** | EKM-01 | Cloud Security Alliance (CSA) Cloud Controls Matrix v4.0 | Encryption | Policies and procedures shall be established for the use of encryption to protect data at rest and in transit in OpenSearch | **Platform** - Enable encryption at rest using AWS KMS and enforce HTTPS/TLS for all communications |  |
+| **High** | IAM-02 | Cloud Security Alliance (CSA) Cloud Controls Matrix v4.0 | User Access Management | Policies and procedures shall be established to govern user access provisioning and de-provisioning for OpenSearch clusters | **Platform** - Configure fine-grained access control with AWS IAM integration and OpenSearch native authentication |  |
+| **High** | IVS-01 | Cloud Security Alliance (CSA) Cloud Controls Matrix v4.0 | Network Architecture | Network security architecture shall be designed and implemented to protect OpenSearch infrastructure | **IaC** - Deploy OpenSearch in private subnets with VPC security groups and NACLs configured through infrastructure templates |  |
+| Medium | BCR-01 | Cloud Security Alliance (CSA) Cloud Controls Matrix v4.0 | Business Continuity Planning | Business continuity planning shall be implemented to ensure the availability of OpenSearch services during disruptions | **Platform** - Configure automated snapshots to S3 and cross-region replication for critical OpenSearch domains |  |
+| **Critical** | AC-2 | NIST Special Publication 800-53 Rev. 5 | Account Management | Manage OpenSearch user accounts including creation, enabling, modification, disabling, and removal | **User** - Establish procedures for managing OpenSearch user accounts through AWS IAM and internal user databases |  |
+| **Critical** | AC-3 | NIST Special Publication 800-53 Rev. 5 | Access Enforcement | Enforce approved authorizations for logical access to OpenSearch resources | **Platform** - Configure fine-grained access control policies and resource-based permissions in OpenSearch |  |
+| **Critical** | SC-8 | NIST Special Publication 800-53 Rev. 5 | Transmission Confidentiality and Integrity | Protect the confidentiality and integrity of transmitted information to and from OpenSearch | **Platform** - Enable TLS encryption for all OpenSearch communications and configure certificate validation |  |
+| **Critical** | SC-28 | NIST Special Publication 800-53 Rev. 5 | Protection of Information at Rest | Protect the confidentiality and integrity of information at rest in OpenSearch | **Platform** - Enable encryption at rest using AWS KMS customer-managed keys for OpenSearch domains |  |
+| **High** | AU-2 | NIST Special Publication 800-53 Rev. 5 | Event Logging | Identify the types of events to be logged by OpenSearch | **IaC** - Configure OpenSearch audit logging and integrate with CloudWatch Logs through infrastructure templates |  |
+| **High** | SI-4 | NIST Special Publication 800-53 Rev. 5 | System Monitoring | Monitor the OpenSearch system to detect attacks and indicators of potential attacks | **Platform** - Enable CloudWatch monitoring and set up CloudTrail logging for OpenSearch API calls |  |
+| Medium | CP-9 | NIST Special Publication 800-53 Rev. 5 | System Backup | Conduct backups of OpenSearch data and system-level information | **IaC** - Implement automated snapshot policies and cross-region backup strategies in OpenSearch configuration |  |
+| **Critical** | OpenSearch.1 | AWS Foundational Security Best Practices 1.0.0 | OpenSearch domains should have encryption at rest enabled | OpenSearch domains must use encryption at rest to protect sensitive data | **Platform** - Enable encryption at rest when creating OpenSearch domains through AWS console or API |  |
+| **Critical** | OpenSearch.2 | AWS Foundational Security Best Practices 1.0.0 | OpenSearch domains should not be publicly accessible | OpenSearch domains should be configured to prevent public access | **IaC** - Configure VPC-based access and restrict public access policies in OpenSearch domain configuration |  |
+| **Critical** | OpenSearch.3 | AWS Foundational Security Best Practices 1.0.0 | OpenSearch domains should encrypt data sent between nodes | Enable node-to-node encryption for OpenSearch domains | **Platform** - Enable node-to-node encryption setting when configuring OpenSearch domain security |  |
+| **High** | OpenSearch.4 | AWS Foundational Security Best Practices 1.0.0 | OpenSearch domain error logging to CloudWatch Logs should be enabled | Enable error logging to CloudWatch Logs for monitoring and troubleshooting | **Platform** - Configure CloudWatch Logs integration for OpenSearch error logs in domain settings |  |
+| **High** | OpenSearch.5 | AWS Foundational Security Best Practices 1.0.0 | OpenSearch domains should have audit logging enabled | Enable audit logging to track access and changes to OpenSearch domains | **Platform** - Enable audit logs in OpenSearch fine-grained access control settings |  |
+| **High** | OpenSearch.7 | AWS Foundational Security Best Practices 1.0.0 | OpenSearch domains should have fine-grained access control enabled | Enable fine-grained access control for enhanced security | **Platform** - Enable fine-grained access control with internal user database or SAML authentication |  |
+| Medium | OpenSearch.6 | AWS Foundational Security Best Practices 1.0.0 | OpenSearch domains should have at least three data nodes | Ensure high availability by configuring at least three data nodes | **IaC** - Configure cluster with minimum three data nodes across multiple AZs in infrastructure templates |  |
+| **Critical** | OpenSearch.8 | AWS Security Hub 2.0 | Connections to OpenSearch domains should be encrypted using TLS 1.2 | Enforce TLS 1.2 or higher for all connections to OpenSearch domains | **Platform** - Configure TLS security policy to enforce minimum TLS 1.2 in OpenSearch domain settings |  |
+| **High** | OpenSearch.9 | AWS Security Hub 2.0 | OpenSearch domains should have automatic software update enabled | Enable automatic software updates to ensure security patches are applied | **Platform** - Enable service software update settings in OpenSearch domain configuration |  |
+| Medium | OpenSearch.10 | AWS Security Hub 2.0 | OpenSearch domains should not use deprecated instance types | Use current generation instance types for better security and performance | **IaC** - Specify current generation instance types (m6g, r6g, etc.) in OpenSearch domain templates |  |
 
 ## Operational Controls
 ---
@@ -49,17 +35,16 @@
 ## Cost Controls
 ---
 
-
-### AWS OpenSearch Service Cost Optimization 2023
-| Severity | Title | Identifier | Description | Implementation |
-| - | - | - | - | - |
-| **High** | Right-size OpenSearch instances | COST-01 | Monitor and optimize instance types and sizes based on actual usage patterns | **User** - Use CloudWatch metrics to analyze CPU, memory, and storage utilization; downsize or switch to more cost-effective instance types |
-| **High** | Implement data lifecycle management | COST-02 | Use Index State Management policies to transition older data to cheaper storage tiers | **IaC** - Configure ISM policies to move data from hot to warm to cold storage, and delete old indices automatically |
-| **High** | Optimize storage configuration | COST-03 | Select appropriate EBS volume types and sizes based on performance requirements | **IaC** - Use gp3 volumes instead of gp2 for better price-performance ratio, implement storage monitoring and alerting |
-| Medium | Use Reserved Instances for predictable workloads | COST-04 | Purchase Reserved Instances for stable, long-running OpenSearch clusters | **User** - Analyze usage patterns and purchase 1-year or 3-year Reserved Instances for consistent workloads |
-| Medium | Implement cluster scaling policies | COST-05 | Configure automatic scaling to match capacity with demand | **IaC** - Use Application Auto Scaling to automatically adjust cluster size based on metrics like CPU utilization or search latency |
-| Medium | Optimize index and shard configuration | COST-06 | Configure optimal number of shards and replicas to minimize resource waste | **User** - Monitor shard sizes and distribution, use index templates to set appropriate shard counts for new indices |
-| Medium | Monitor and alert on cost anomalies | COST-07 | Set up cost monitoring and alerting to detect unexpected spending increases | **Platform** - Configure AWS Cost Anomaly Detection and Budgets with notifications for OpenSearch service spending |
-| Low | Use appropriate data compression | COST-08 | Enable compression to reduce storage costs and improve performance | **User** - Configure index compression settings and use appropriate field mappings to minimize storage footprint |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **High** | COST-01 | AWS OpenSearch Cost Optimization Best Practices 2024 | Right-size OpenSearch instances | Monitor and adjust instance types and sizes based on actual usage patterns | **User** - Regularly review CloudWatch metrics and use AWS Compute Optimizer recommendations to right-size instances |  |
+| **High** | COST-02 | AWS OpenSearch Cost Optimization Best Practices 2024 | Implement UltraWarm storage for infrequently accessed data | Move older, less frequently accessed data to UltraWarm storage to reduce costs | **Platform** - Configure UltraWarm nodes and implement index state management policies to automatically transition data |  |
+| **High** | COST-03 | AWS OpenSearch Cost Optimization Best Practices 2024 | Use Reserved Instances for predictable workloads | Purchase Reserved Instances for stable, long-running OpenSearch workloads | **User** - Analyze usage patterns and purchase 1-year or 3-year Reserved Instances for consistent workloads |  |
+| **High** | COST-04 | AWS OpenSearch Cost Optimization Best Practices 2024 | Optimize data retention and lifecycle policies | Implement data lifecycle management to automatically delete or archive old data | **IaC** - Configure Index State Management policies to automatically delete indices after specified retention periods |  |
+| Medium | COST-05 | AWS OpenSearch Cost Optimization Best Practices 2024 | Monitor and set up cost alerting | Implement cost monitoring and alerting to track OpenSearch spending | **Platform** - Set up AWS Budgets and Cost Anomaly Detection for OpenSearch service costs |  |
+| Medium | COST-06 | AWS OpenSearch Cost Optimization Best Practices 2024 | Optimize shard size and count | Configure appropriate shard sizes to optimize storage and compute costs | **User** - Design indices with optimal shard sizes (10-50GB per shard) and avoid over-sharding |  |
+| Medium | COST-07 | AWS OpenSearch Cost Optimization Best Practices 2024 | Use appropriate storage types | Select cost-effective storage types based on performance requirements | **IaC** - Choose gp3 over gp2 EBS volumes where appropriate and configure Cold storage for archival data |  |
+| Medium | COST-08 | AWS OpenSearch Cost Optimization Best Practices 2024 | Implement cluster auto-scaling | Use auto-scaling to automatically adjust cluster size based on demand | **Platform** - Enable auto-scaling for OpenSearch domains to automatically scale up/down based on utilization metrics |  |
+| Low | COST-09 | AWS OpenSearch Cost Optimization Best Practices 2024 | Regular cleanup of unused resources | Regularly identify and remove unused indices, snapshots, and domains | **User** - Implement regular audits to identify and clean up unused OpenSearch resources and old snapshots |  |
+| Low | COST-10 | AWS OpenSearch Cost Optimization Best Practices 2024 | Optimize cross-AZ data transfer | Minimize cross-AZ data transfer costs through proper cluster design | **IaC** - Configure zone awareness and replica placement to minimize cross-AZ data transfer |  |
 

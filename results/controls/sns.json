@@ -1,196 +1,176 @@
 {
-    "service": "AWS Simple Notification Service (SNS)",
+    "service": "AWS Simple Notification Service",
     "security": [
-        {
-            "name": "CSA Cloud Controls Matrix",
-            "version": "v5.0",
-            "controls": [
-                {
-                    "identifier": "IAM-01",
-                    "title": "Identity and Access Management Policy",
-                    "severity": "Critical",
-                    "description": "Establish and maintain identity and access management policies for SNS resources",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Implement IAM policies using CloudFormation or Terraform to define least-privilege access to SNS topics and subscriptions"
-                    }
-                },
-                {
-                    "identifier": "IAM-02",
-                    "title": "User Access Provisioning",
-                    "severity": "High",
-                    "description": "Implement proper user provisioning and access controls for SNS resources",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Use AWS IAM to create roles and policies that grant minimal necessary permissions for SNS operations"
-                    }
-                },
-                {
-                    "identifier": "EKM-01",
-                    "title": "Encryption Key Management",
-                    "severity": "Critical",
-                    "description": "Implement proper encryption key management for SNS message encryption",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure AWS KMS keys for SNS topic encryption and implement key rotation policies"
-                    }
-                },
-                {
-                    "identifier": "DSI-01",
-                    "title": "Data Security and Information Lifecycle Management",
-                    "severity": "High",
-                    "description": "Implement data classification and lifecycle management for SNS messages",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Classify message content and implement appropriate retention policies and data handling procedures"
-                    }
-                }
-            ]
-        },
         {
             "name": "NIST 800-53",
             "version": "Rev 5",
             "controls": [
                 {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "HIGH",
+                    "description": "Manage information system accounts including account creation, enabling, modification, disabling, removal, and auditing",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement IAM policies with least privilege access for SNS topics and subscriptions. Use IAM roles for service-to-service communication and regularly audit access permissions."
+                    }
+                },
+                {
                     "identifier": "AC-3",
                     "title": "Access Enforcement",
-                    "severity": "Critical",
-                    "description": "Enforce approved authorizations for logical access to SNS resources",
+                    "severity": "HIGH",
+                    "description": "Enforce approved authorizations for logical access to information and system resources",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement resource-based policies and IAM policies to enforce access controls on SNS topics and subscriptions"
+                        "description": "Define SNS topic policies and subscription filters in CloudFormation/Terraform templates to enforce granular access controls and message filtering."
                     }
                 },
                 {
                     "identifier": "SC-8",
                     "title": "Transmission Confidentiality and Integrity",
-                    "severity": "Critical",
-                    "description": "Protect the confidentiality and integrity of transmitted SNS messages",
+                    "severity": "HIGH",
+                    "description": "Protect the confidentiality and integrity of transmitted information",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Enable HTTPS endpoints for SNS subscriptions and use TLS encryption for message delivery"
+                        "type": "IaC",
+                        "description": "Enable HTTPS for SNS endpoints and implement message signing/verification for critical notifications using AWS SDK encryption features."
+                    }
+                },
+                {
+                    "identifier": "SC-13",
+                    "title": "Cryptographic Protection",
+                    "severity": "MEDIUM",
+                    "description": "Determine the cryptographic uses and implement cryptographic controls",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable server-side encryption for SNS topics using AWS KMS keys and implement message payload encryption for sensitive data."
                     }
                 },
                 {
                     "identifier": "AU-2",
                     "title": "Event Logging",
-                    "severity": "High",
-                    "description": "Identify events to be logged for SNS activities",
+                    "severity": "MEDIUM",
+                    "description": "Identify the types of events that the system is capable of logging in support of the audit function",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Configure CloudTrail to log SNS API calls and enable SNS message delivery status logging"
-                    }
-                },
-                {
-                    "identifier": "SC-28",
-                    "title": "Protection of Information at Rest",
-                    "severity": "High",
-                    "description": "Protect information at rest in SNS message storage",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Enable server-side encryption for SNS topics using AWS KMS customer-managed keys"
+                        "type": "Platform",
+                        "description": "Enable CloudTrail logging for SNS API calls and CloudWatch metrics for message delivery tracking and failure analysis."
                     }
                 },
                 {
                     "identifier": "CP-9",
                     "title": "System Backup",
-                    "severity": "Medium",
-                    "description": "Conduct backups of SNS configurations and subscriptions",
+                    "severity": "LOW",
+                    "description": "Conduct backups of user-level information contained in the system",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Implement Infrastructure as Code to maintain SNS topic and subscription configurations as versioned backups"
+                        "type": "User",
+                        "description": "Implement backup strategies for SNS topic configurations and subscription lists using AWS Config or custom automation scripts."
                     }
                 }
             ]
         },
         {
-            "name": "AWS Foundational Security Standard",
-            "version": "v1.0.0",
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v4.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Capability",
+                    "severity": "HIGH",
+                    "description": "Policies and procedures shall be established to maintain baseline requirements for identity and access management capability",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement multi-factor authentication for SNS administrative access and use federated identity providers for user authentication."
+                    }
+                },
+                {
+                    "identifier": "EKM-01",
+                    "title": "Encryption and Key Management",
+                    "severity": "HIGH",
+                    "description": "Encryption keys shall be managed throughout their lifecycle",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use AWS KMS customer-managed keys for SNS topic encryption and implement key rotation policies in infrastructure templates."
+                    }
+                },
+                {
+                    "identifier": "STA-01",
+                    "title": "Secure Transmission",
+                    "severity": "HIGH",
+                    "description": "Data in transit shall be protected using secure communications protocols",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure SNS to use TLS 1.2+ for all HTTPS endpoints and validate SSL certificates for webhook subscriptions."
+                    }
+                },
+                {
+                    "identifier": "LOG-01",
+                    "title": "Logging and Monitoring",
+                    "severity": "MEDIUM",
+                    "description": "Comprehensive logging records shall be maintained and monitored for anomalous or suspicious activity",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy CloudWatch alarms for SNS delivery failures and implement centralized logging for message processing metrics."
+                    }
+                },
+                {
+                    "identifier": "GRC-01",
+                    "title": "Governance, Risk and Compliance Framework",
+                    "severity": "MEDIUM",
+                    "description": "Governance and enterprise risk management framework shall be established and maintained",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Establish SNS usage policies, regular access reviews, and compliance reporting mechanisms for message handling."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
             "controls": [
                 {
                     "identifier": "SNS.1",
                     "title": "SNS topics should be encrypted at rest using AWS KMS",
-                    "severity": "Critical",
-                    "description": "SNS topics should be encrypted at rest to protect sensitive message content",
+                    "severity": "HIGH",
+                    "description": "Ensure SNS topics are encrypted at rest to protect sensitive message content",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure KmsMasterKeyId parameter when creating SNS topics to enable encryption at rest"
+                        "description": "Configure KmsMasterKeyId parameter in SNS topic definitions and use customer-managed KMS keys for enhanced security control."
                     }
                 },
                 {
                     "identifier": "SNS.2",
-                    "title": "Delivery status logging should be enabled for notification messages sent to a topic",
-                    "severity": "High",
-                    "description": "Enable delivery status logging to monitor message delivery success and failures",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure delivery status logging attributes for SNS topics to track message delivery to various endpoints"
-                    }
-                },
-                {
-                    "identifier": "CloudTrail.1",
-                    "title": "CloudTrail should be enabled and configured with at least one multi-Region trail",
-                    "severity": "High",
-                    "description": "Enable CloudTrail logging for SNS API calls for audit and compliance purposes",
+                    "title": "Delivery status logging should be enabled for notification messages sent to a platform endpoint",
+                    "severity": "MEDIUM",
+                    "description": "Enable delivery status logging to track message delivery success and failures",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Configure CloudTrail to capture SNS API events across all regions where SNS is used"
-                    }
-                },
-                {
-                    "identifier": "IAM.1",
-                    "title": "IAM policies should not allow full administrative privileges",
-                    "severity": "Medium",
-                    "description": "Implement least privilege access for SNS resources",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Create specific IAM policies that grant only necessary SNS permissions rather than using wildcard permissions"
+                        "description": "Configure delivery status attributes for each platform endpoint and integrate with CloudWatch for monitoring and alerting."
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "Current",
+            "version": "2023.1",
             "controls": [
                 {
                     "identifier": "SNS.1",
                     "title": "SNS topics should be encrypted at rest using AWS KMS",
-                    "severity": "Critical",
-                    "description": "Ensure SNS topics use KMS encryption for data protection at rest",
+                    "severity": "HIGH",
+                    "description": "This control checks whether Amazon SNS topics are encrypted at rest using AWS KMS",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Apply KMS encryption to SNS topics using customer-managed keys with appropriate key policies"
+                        "description": "Enable KMS encryption in SNS topic resource definitions and ensure proper key policies are configured for topic access."
                     }
                 },
                 {
                     "identifier": "SNS.2",
-                    "title": "Delivery status logging should be enabled for notification messages sent to a topic",
-                    "severity": "High",
-                    "description": "Enable message delivery status logging for operational visibility",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure SNS topic attributes to enable delivery status logging for HTTP/HTTPS, Lambda, SQS, and other endpoints"
-                    }
-                },
-                {
-                    "identifier": "Config.1",
-                    "title": "AWS Config should be enabled",
-                    "severity": "High",
-                    "description": "Enable AWS Config to monitor SNS resource configuration changes",
+                    "title": "Delivery status logging should be enabled for notification messages sent to a platform endpoint",
+                    "severity": "MEDIUM",
+                    "description": "This control checks whether delivery status logging is enabled for Amazon SNS topic subscriptions to platform endpoints",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Configure AWS Config rules to monitor SNS topic configuration compliance and changes"
-                    }
-                },
-                {
-                    "identifier": "CloudWatch.1",
-                    "title": "A log metric filter and alarm should exist for usage of root user",
-                    "severity": "Medium",
-                    "description": "Monitor root user access to SNS resources",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Create CloudWatch alarms and metric filters to detect root user SNS API usage"
+                        "description": "Enable delivery status logging attributes and configure appropriate IAM roles for SNS to write to CloudWatch Logs."
                     }
                 }
             ]
@@ -200,76 +180,66 @@
     "cost": [
         {
             "name": "AWS SNS Cost Optimization Best Practices",
-            "version": "Current",
+            "version": "2023",
             "controls": [
                 {
                     "identifier": "COST-01",
-                    "title": "Optimize Message Batching",
-                    "severity": "High",
-                    "description": "Use message batching where possible to reduce the number of API calls and associated costs",
+                    "title": "Optimize Message Filtering",
+                    "severity": "HIGH",
+                    "description": "Use message filtering to reduce unnecessary message deliveries and associated costs",
                     "implementation": {
-                        "type": "User",
-                        "description": "Implement batch publishing using PublishBatch API to send up to 10 messages in a single request"
+                        "type": "IaC",
+                        "description": "Implement message filtering policies at the subscription level to ensure only relevant messages are delivered to endpoints, reducing billable message deliveries."
                     }
                 },
                 {
                     "identifier": "COST-02",
-                    "title": "Right-size Message Payloads",
-                    "severity": "High",
-                    "description": "Optimize message size to avoid unnecessary charges for oversized messages",
+                    "title": "Choose Appropriate Delivery Protocols",
+                    "severity": "HIGH",
+                    "description": "Select cost-effective delivery protocols based on use case requirements",
                     "implementation": {
                         "type": "User",
-                        "description": "Keep message payloads under 256KB and use message attributes efficiently to minimize billing increments"
+                        "description": "Use SQS subscriptions instead of HTTP/HTTPS for internal communications and batch processing to reduce per-message costs."
                     }
                 },
                 {
                     "identifier": "COST-03",
                     "title": "Implement Dead Letter Queues",
-                    "severity": "Medium",
-                    "description": "Use dead letter queues to avoid repeated delivery attempts and associated costs",
+                    "severity": "MEDIUM",
+                    "description": "Use dead letter queues to prevent repeated delivery attempts for failed messages",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure dead letter queues for SNS subscriptions to prevent costly retry cycles"
+                        "description": "Configure dead letter queues for SNS subscriptions to avoid excessive retry charges and implement proper error handling workflows."
                     }
                 },
                 {
                     "identifier": "COST-04",
-                    "title": "Monitor and Optimize Cross-Region Data Transfer",
-                    "severity": "Medium",
-                    "description": "Minimize cross-region data transfer costs by optimizing SNS topic and subscription placement",
+                    "title": "Monitor and Optimize Message Size",
+                    "severity": "MEDIUM",
+                    "description": "Optimize message payload sizes to reduce data transfer and processing costs",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Deploy SNS topics in the same region as subscribers to avoid cross-region data transfer charges"
+                        "type": "User",
+                        "description": "Implement message compression and avoid sending large payloads through SNS; use S3 references for large data objects instead."
                     }
                 },
                 {
                     "identifier": "COST-05",
-                    "title": "Use Message Filtering",
-                    "severity": "Medium",
-                    "description": "Implement message filtering to reduce unnecessary message deliveries and associated costs",
+                    "title": "Regular Subscription Audit",
+                    "severity": "MEDIUM",
+                    "description": "Regularly audit and clean up unused or inactive subscriptions",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Configure subscription filter policies to deliver only relevant messages to subscribers"
+                        "type": "Platform",
+                        "description": "Implement automated monitoring to identify and remove unused subscriptions and topics to avoid unnecessary charges for inactive resources."
                     }
                 },
                 {
                     "identifier": "COST-06",
-                    "title": "Optimize SMS and Email Delivery",
-                    "severity": "Low",
-                    "description": "Optimize SMS and email delivery patterns to minimize premium messaging costs",
+                    "title": "Leverage Free Tier Appropriately",
+                    "severity": "LOW",
+                    "description": "Understand and optimize usage within AWS Free Tier limits for development and testing",
                     "implementation": {
                         "type": "User",
-                        "description": "Use appropriate message prioritization and avoid sending SMS to premium numbers unnecessarily"
-                    }
-                },
-                {
-                    "identifier": "COST-07",
-                    "title": "Implement Cost Monitoring and Alerting",
-                    "severity": "Low",
-                    "description": "Set up cost monitoring and alerting for SNS usage to prevent unexpected charges",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Configure AWS Cost Explorer and CloudWatch billing alarms to monitor SNS costs and usage patterns"
+                        "description": "Monitor monthly usage against Free Tier limits (1 million requests, 100,000 HTTP deliveries, 1,000 email deliveries) and implement usage controls for non-production environments."
                     }
                 }
             ]

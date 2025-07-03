@@ -3,56 +3,56 @@
     "security": [
         {
             "name": "CSA Cloud Controls Matrix",
-            "version": "v4.0.10",
+            "version": "v4.0",
             "controls": [
                 {
-                    "identifier": "IAM-01",
-                    "title": "Identity and Access Management Policy and Procedures",
-                    "severity": "High",
-                    "description": "Establish and maintain identity and access management policies for WAF resources",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Implement IAM policies and roles with least privilege access to WAF resources using CloudFormation or Terraform templates"
-                    }
-                },
-                {
                     "identifier": "IAM-02",
-                    "title": "User Access Provisioning",
+                    "title": "User Access Management",
                     "severity": "High",
-                    "description": "Ensure proper user access provisioning and deprovisioning for WAF management",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Configure IAM users, groups, and roles with appropriate permissions for WAF administration through AWS IAM console"
-                    }
-                },
-                {
-                    "identifier": "DSI-01",
-                    "title": "Data Security and Information Lifecycle Management",
-                    "severity": "High",
-                    "description": "Protect data in transit and at rest for WAF configurations and logs",
+                    "description": "Establish proper identity and access controls for WAF resources and configuration",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable encryption for WAF logs stored in S3, CloudWatch, and Kinesis Data Firehose destinations"
+                        "description": "Implement IAM policies with least privilege access for WAF administrators and define resource-based policies for cross-account access"
                     }
                 },
                 {
-                    "identifier": "STA-01",
-                    "title": "Secure Transmission",
-                    "severity": "Medium",
-                    "description": "Ensure secure transmission of WAF configurations and logs",
+                    "identifier": "DSI-07",
+                    "title": "Secure Disposal or Re-use of Equipment",
+                    "severity": "High",
+                    "description": "Protect sensitive data in WAF logs and ensure proper data classification",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Use TLS 1.2 or higher for all API communications and enable HTTPS for management interfaces"
+                        "description": "Configure WAF logging with field redaction for sensitive data and implement log encryption at rest"
                     }
                 },
                 {
-                    "identifier": "IVS-01",
-                    "title": "Information System Documentation",
-                    "severity": "Medium",
-                    "description": "Maintain documentation of WAF rules, configurations, and security policies",
+                    "identifier": "TVM-02",
+                    "title": "Vulnerability / Patch Management",
+                    "severity": "High",
+                    "description": "Regularly update WAF rules and signatures to protect against emerging threats",
                     "implementation": {
                         "type": "User",
-                        "description": "Document WAF rule sets, IP allow/deny lists, and security group configurations in version-controlled repositories"
+                        "description": "Subscribe to AWS managed rule sets and establish procedures for regular rule updates and threat intelligence integration"
+                    }
+                },
+                {
+                    "identifier": "AIS-01",
+                    "title": "Application Security",
+                    "severity": "Medium",
+                    "description": "Implement application-specific security controls through WAF rules",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy custom WAF rules based on application security requirements and OWASP Top 10 protections"
+                    }
+                },
+                {
+                    "identifier": "GRM-02",
+                    "title": "Management Oversight",
+                    "severity": "Medium",
+                    "description": "Establish governance framework for WAF rule management and compliance",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Create WAF governance policies, change management procedures, and regular compliance assessments"
                     }
                 }
             ]
@@ -62,63 +62,63 @@
             "version": "Rev 5",
             "controls": [
                 {
-                    "identifier": "AC-2",
-                    "title": "Account Management",
-                    "severity": "High",
-                    "description": "Manage accounts with access to WAF resources and configurations",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Implement account lifecycle management for WAF administrators using AWS IAM with regular access reviews"
-                    }
-                },
-                {
                     "identifier": "AC-3",
                     "title": "Access Enforcement",
                     "severity": "High",
                     "description": "Enforce approved authorizations for logical access to WAF resources",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Deploy resource-based policies and IAM policies that enforce least privilege access to WAF APIs and console"
+                        "description": "Implement IAM policies that enforce least privilege access to WAF resources and API actions"
                     }
                 },
                 {
                     "identifier": "SI-4",
                     "title": "System Monitoring",
                     "severity": "High",
-                    "description": "Monitor WAF for security events and potential threats",
+                    "description": "Monitor WAF for attacks, intrusions, and unauthorized activities",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Configure CloudWatch metrics, alarms, and logging for WAF to detect and alert on security events"
-                    }
-                },
-                {
-                    "identifier": "AU-2",
-                    "title": "Event Logging",
-                    "severity": "High",
-                    "description": "Ensure comprehensive logging of WAF events and rule matches",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Enable WAF logging to CloudWatch Logs, S3, or Kinesis Data Firehose with appropriate retention policies"
+                        "type": "Platform",
+                        "description": "Enable comprehensive WAF logging and integrate with CloudWatch and Security Hub for real-time monitoring"
                     }
                 },
                 {
                     "identifier": "SC-7",
                     "title": "Boundary Protection",
-                    "severity": "Medium",
-                    "description": "Implement boundary protection through WAF rules and policies",
+                    "severity": "High",
+                    "description": "Monitor and control communications at external boundaries using WAF",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Deploy managed rule groups and custom rules to protect against OWASP Top 10 and other web application threats"
+                        "description": "Deploy WAF at application boundaries with appropriate rule sets for traffic filtering and monitoring"
                     }
                 },
                 {
-                    "identifier": "CM-8",
-                    "title": "System Component Inventory",
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
                     "severity": "Medium",
-                    "description": "Maintain inventory of WAF components and configurations",
+                    "description": "Ensure WAF generates audit records for security-relevant events",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure WAF logging to capture all blocked and allowed requests with detailed metadata"
+                    }
+                },
+                {
+                    "identifier": "CP-10",
+                    "title": "System Recovery and Reconstitution",
+                    "severity": "Medium",
+                    "description": "Provide for recovery and reconstitution of WAF configurations",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Maintain WAF configurations in version-controlled IaC templates and implement automated backup procedures"
+                    }
+                },
+                {
+                    "identifier": "RA-5",
+                    "title": "Vulnerability Monitoring and Scanning",
+                    "severity": "Low",
+                    "description": "Monitor and scan for vulnerabilities in WAF configurations",
                     "implementation": {
                         "type": "User",
-                        "description": "Use AWS Config to track WAF resources and maintain inventory of Web ACLs, rule groups, and IP sets"
+                        "description": "Regularly assess WAF rule effectiveness and configuration security using AWS Config and third-party tools"
                     }
                 }
             ]
@@ -129,118 +129,128 @@
             "controls": [
                 {
                     "identifier": "WAF.1",
-                    "title": "AWS WAF Classic Global Web ACL logging should be enabled",
+                    "title": "A WAF Global Web ACL should have at least one rule or rule group",
                     "severity": "Medium",
-                    "description": "Enable logging for AWS WAF Classic Global Web ACLs to monitor and analyze web requests",
+                    "description": "Enable logging for WAF Classic Global Web ACLs to monitor web traffic patterns",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Configure logging destination for WAF Classic Web ACLs using CloudFormation or Terraform"
+                        "type": "Platform",
+                        "description": "Configure CloudWatch Logs destination for WAF Classic Global Web ACL logging"
                     }
                 },
                 {
                     "identifier": "WAF.2",
-                    "title": "AWS WAF Classic Regional Web ACL logging should be enabled",
+                    "title": "A WAF Regional Web ACL should have at least one rule or rule group",
                     "severity": "Medium",
-                    "description": "Enable logging for AWS WAF Classic Regional Web ACLs",
+                    "description": "Enable logging for WAF Classic Regional Web ACLs to monitor regional web traffic",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Enable regional WAF logging through infrastructure templates with appropriate log destinations"
+                        "type": "Platform",
+                        "description": "Configure CloudWatch Logs destination for WAF Classic Regional Web ACL logging"
                     }
                 },
                 {
                     "identifier": "WAF.3",
-                    "title": "AWS WAF Classic Global Web ACL should have at least one rule or rule group",
+                    "title": "A WAF Regional rule should have at least one condition",
                     "severity": "Medium",
-                    "description": "Ensure WAF Classic Global Web ACLs contain protective rules",
+                    "description": "Ensure WAF Classic Regional rules have at least one condition to be effective",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Deploy Web ACLs with managed rule groups or custom rules for application protection"
+                        "description": "Define meaningful conditions for all WAF Classic Regional rules in infrastructure templates"
                     }
                 },
                 {
                     "identifier": "WAF.4",
-                    "title": "AWS WAF Classic Regional Web ACL should have at least one rule or rule group",
+                    "title": "A WAF Regional Web ACL should have at least one rule or rule group",
                     "severity": "Medium",
-                    "description": "Ensure WAF Classic Regional Web ACLs contain protective rules",
+                    "description": "Ensure Regional Web ACLs contain rules to provide protection",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement regional Web ACLs with appropriate rule sets for regional application protection"
+                        "description": "Associate at least one rule or managed rule group with each Regional Web ACL"
                     }
                 },
                 {
                     "identifier": "WAF.6",
-                    "title": "AWS WAF Global Web ACL logging should be enabled",
+                    "title": "A WAF global rule should have at least one condition",
                     "severity": "Medium",
-                    "description": "Enable logging for AWS WAF v2 Global Web ACLs",
+                    "description": "Ensure WAF Classic global rules have conditions defined for effective filtering",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure logging for WAF v2 Global Web ACLs with CloudWatch Logs, S3, or Kinesis Data Firehose"
+                        "description": "Define appropriate conditions for all WAF Classic global rules"
                     }
                 },
                 {
                     "identifier": "WAF.7",
-                    "title": "AWS WAF Regional Web ACL logging should be enabled",
+                    "title": "A WAF Global Web ACL should have at least one rule or rule group",
                     "severity": "Medium",
-                    "description": "Enable logging for AWS WAF v2 Regional Web ACLs",
+                    "description": "Ensure global Web ACLs have rules configured for protection",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable comprehensive logging for regional WAF v2 Web ACLs through infrastructure automation"
+                        "description": "Associate rules or managed rule groups with global Web ACLs"
                     }
                 },
                 {
                     "identifier": "WAF.8",
-                    "title": "AWS WAF Global Web ACL should have at least one rule or rule group",
+                    "title": "A WAF web ACL should have at least one rule or rule group",
                     "severity": "Medium",
-                    "description": "Ensure WAF v2 Global Web ACLs contain protective rules",
+                    "description": "Verify that WAF v2 web ACLs contain rules for traffic filtering",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Deploy managed rule groups such as Core Rule Set, Known Bad Inputs, and application-specific rules"
-                    }
-                },
-                {
-                    "identifier": "WAF.10",
-                    "title": "AWS WAF Regional Web ACL should have at least one rule or rule group",
-                    "severity": "Medium",
-                    "description": "Ensure WAF v2 Regional Web ACLs contain protective rules",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Implement regional Web ACLs with managed and custom rule groups for comprehensive protection"
+                        "description": "Configure WAF v2 Web ACLs with appropriate rules and managed rule groups"
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "2023.1.0",
+            "version": "2023.04.00",
             "controls": [
                 {
                     "identifier": "WAF.1",
-                    "title": "WAF Classic logging should be enabled",
+                    "title": "A WAF Global Web ACL should have at least one rule or rule group",
                     "severity": "Medium",
-                    "description": "Enable comprehensive logging for WAF Classic to support security monitoring and incident response",
+                    "description": "Monitor and log all requests processed by WAF Classic Global Web ACLs",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Configure WAF Classic logging destinations and ensure log retention meets compliance requirements"
+                        "type": "Platform",
+                        "description": "Enable logging for WAF Classic Global Web ACLs and send logs to CloudWatch Logs"
                     }
                 },
                 {
                     "identifier": "WAF.2",
-                    "title": "WAF v2 logging should be enabled",
+                    "title": "A WAF Regional Web ACL should have at least one rule or rule group",
                     "severity": "Medium",
-                    "description": "Enable logging for WAF v2 Web ACLs to capture detailed request information",
+                    "description": "Enable comprehensive logging for WAF Classic Regional Web ACLs",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Deploy WAF v2 logging configuration with appropriate filtering and sampling rates"
+                        "type": "Platform",
+                        "description": "Configure logging destination for WAF Classic Regional Web ACLs"
                     }
                 },
                 {
-                    "identifier": "WAF.3",
-                    "title": "WAF Web ACLs should have protective rules",
+                    "identifier": "WAF.10",
+                    "title": "A WAF should have a logging configuration",
                     "severity": "Medium",
-                    "description": "Ensure Web ACLs implement adequate protection through rules and rule groups",
+                    "description": "Ensure WAF v2 has logging enabled for security monitoring",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure logging for WAF v2 Web ACLs with appropriate log destinations"
+                    }
+                },
+                {
+                    "identifier": "WAF.12",
+                    "title": "A WAF should have at least one rule or rule group",
+                    "severity": "Medium",
+                    "description": "Verify WAF Web ACLs have rules configured for traffic processing",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement a combination of AWS managed rules and custom rules tailored to application requirements"
+                        "description": "Associate rules or rule groups with WAF Web ACLs in infrastructure code"
+                    }
+                },
+                {
+                    "identifier": "WAF.11",
+                    "title": "A WAF should have at least one rule in a rule group",
+                    "severity": "Low",
+                    "description": "Ensure WAF rule groups contain at least one rule for effective protection",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Define rules within WAF rule groups to provide meaningful protection"
                     }
                 }
             ]
@@ -253,73 +263,63 @@
             "version": "2023",
             "controls": [
                 {
-                    "identifier": "COST-WAF-01",
-                    "title": "Optimize Web ACL Rule Evaluation",
+                    "identifier": "COST-1",
+                    "title": "Optimize WAF Request Pricing",
                     "severity": "High",
-                    "description": "Minimize Web Request Units (WRU) consumption by optimizing rule order and complexity",
+                    "description": "Minimize WAF costs by optimizing request processing and rule evaluation",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Order rules by likelihood of match and use efficient rule patterns to reduce WRU consumption"
+                        "description": "Order rules by frequency of matches and use rule groups efficiently to reduce processing overhead"
                     }
                 },
                 {
-                    "identifier": "COST-WAF-02",
-                    "title": "Right-size Managed Rule Groups",
+                    "identifier": "COST-2",
+                    "title": "Use AWS Managed Rules",
                     "severity": "High",
-                    "description": "Select only necessary managed rule groups to avoid unnecessary WRU charges",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Regularly review and disable unused managed rule groups based on application requirements and threat landscape"
-                    }
-                },
-                {
-                    "identifier": "COST-WAF-03",
-                    "title": "Implement Intelligent Request Sampling",
-                    "severity": "Medium",
-                    "description": "Configure appropriate logging sampling rates to reduce storage costs while maintaining visibility",
+                    "description": "Leverage AWS managed rule sets instead of creating custom rules when possible",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure sampling rates based on traffic volume and compliance requirements, typically 1-10% for high-volume applications"
+                        "description": "Implement AWS managed rule groups which are cost-effective and regularly updated"
                     }
                 },
                 {
-                    "identifier": "COST-WAF-04",
-                    "title": "Optimize Log Storage and Retention",
+                    "identifier": "COST-3",
+                    "title": "Optimize Logging Configuration",
                     "severity": "Medium",
-                    "description": "Implement lifecycle policies for WAF logs to manage storage costs effectively",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure S3 lifecycle policies to transition logs to IA and Glacier storage classes, and set appropriate retention periods"
-                    }
-                },
-                {
-                    "identifier": "COST-WAF-05",
-                    "title": "Monitor and Alert on WAF Costs",
-                    "severity": "Medium",
-                    "description": "Implement cost monitoring and alerting for WAF resource consumption",
+                    "description": "Configure selective logging to reduce storage and processing costs",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Set up CloudWatch billing alarms and AWS Cost Explorer reports to track WAF WRU consumption and associated costs"
+                        "description": "Enable logging only for blocked requests or specific rule matches, and use field redaction to reduce log size"
                     }
                 },
                 {
-                    "identifier": "COST-WAF-06",
-                    "title": "Regularly Review Rule Effectiveness",
-                    "severity": "Low",
-                    "description": "Conduct periodic reviews of rule effectiveness to remove unused or ineffective rules",
+                    "identifier": "COST-4",
+                    "title": "Monitor and Optimize Rule Performance",
+                    "severity": "Medium",
+                    "description": "Regularly review rule effectiveness and remove unused or ineffective rules",
                     "implementation": {
                         "type": "User",
-                        "description": "Use WAF metrics and logs to identify rules with low match rates and evaluate their continued necessity"
+                        "description": "Use CloudWatch metrics to analyze rule performance and remove rules that don't match traffic patterns"
                     }
                 },
                 {
-                    "identifier": "COST-WAF-07",
-                    "title": "Consolidate Web ACLs Where Appropriate",
-                    "severity": "Low",
-                    "description": "Consolidate multiple Web ACLs with similar rule sets to reduce management overhead and costs",
+                    "identifier": "COST-5",
+                    "title": "Right-size Web ACL Capacity",
+                    "severity": "Medium",
+                    "description": "Optimize Web ACL capacity units (WCU) to match actual requirements",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Evaluate opportunities to merge Web ACLs serving similar applications or environments while maintaining security boundaries"
+                        "description": "Monitor WCU utilization and adjust rule complexity to optimize capacity allocation"
+                    }
+                },
+                {
+                    "identifier": "COST-6",
+                    "title": "Implement Rate-Based Rules Efficiently",
+                    "severity": "Low",
+                    "description": "Use rate-based rules strategically to reduce request processing costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure rate-based rules with appropriate thresholds to block excessive requests early in the processing chain"
                     }
                 }
             ]

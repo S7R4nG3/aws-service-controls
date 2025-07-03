@@ -1,44 +1,27 @@
 # AWS API Gateway
 ---
 
-
-### Cloud Security Alliance (CSA) Cloud Controls Matrix v5.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **High** | Identity and Access Management Policy and Procedures | IAM-01 | Establish and maintain policies and procedures for identity and access management for API Gateway resources | **IaC** - Implement IAM policies in CloudFormation/Terraform templates that define least privilege access to API Gateway resources, including resource-based policies and execution roles |  |
-| **High** | Multi-Factor Authentication | IAM-05 | Require multi-factor authentication for administrative access to API Gateway console and APIs | **Platform** - Configure AWS IAM to require MFA for users accessing API Gateway management console and administrative APIs |  |
-| **High** | Data Security and Information Lifecycle Management | DSI-01 | Implement data classification and protection mechanisms for data passing through API Gateway | **IaC** - Configure request/response data transformation and validation rules in API Gateway to sanitize and protect sensitive data |  |
-| **High** | Encryption Key Management | EKM-01 | Implement proper encryption key management for API Gateway TLS certificates and custom domain names | **IaC** - Use AWS Certificate Manager or AWS KMS to manage TLS certificates and encryption keys for custom domains and client certificates |  |
-| Medium | Network Security | IVS-04 | Implement network-level security controls for API Gateway endpoints | **IaC** - Configure VPC endpoints for private API access and implement resource policies to restrict access based on IP ranges or VPC endpoints |  |
-| Medium | Security Event Logging | SEF-01 | Enable comprehensive logging of API Gateway security events and access patterns | **IaC** - Configure CloudTrail, CloudWatch Logs, and AWS Config to capture API Gateway management events, execution logs, and access logs |  |
-
-### NIST 800-53 Rev 5
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **High** | Access Enforcement | AC-3 | Enforce approved authorizations for logical access to API Gateway resources and APIs | **IaC** - Implement API Gateway authorizers (Lambda, Cognito, or IAM) and resource policies to enforce granular access control |  |
-| **High** | Identification and Authentication | IA-2 | Uniquely identify and authenticate organizational users accessing API Gateway | **User** - Configure appropriate authentication mechanisms such as API keys, AWS IAM, Amazon Cognito, or custom authorizers based on use case |  |
-| **High** | Transmission Confidentiality and Integrity | SC-8 | Protect the confidentiality and integrity of transmitted information through API Gateway | **IaC** - Enforce HTTPS/TLS 1.2+ for all API Gateway endpoints and configure minimum TLS version and cipher suites |  |
-| **High** | Event Logging | AU-2 | Ensure API Gateway generates audit records for security-relevant events | **IaC** - Enable CloudTrail for API Gateway management events and configure execution logging and access logging for runtime events |  |
-| Medium | Boundary Protection | SC-7 | Monitor and control communications at the external boundary of API Gateway | **IaC** - Implement resource policies, WAF integration, and VPC endpoints to control network access to API Gateway |  |
-| Medium | Information System Monitoring | SI-4 | Monitor API Gateway for attacks and indicators of potential attacks | **Platform** - Configure CloudWatch metrics, alarms, and AWS X-Ray tracing to monitor API performance, errors, and suspicious activity |  |
-
-### AWS Foundational Security Best Practices 1.0.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| Medium | API Gateway REST API execution logging should be enabled | APIGateway.1 | Ensure execution logging is enabled for API Gateway REST APIs to capture detailed information about requests and responses | **IaC** - Configure stage-level execution logging in API Gateway deployment templates with appropriate log level (INFO or ERROR) |  |
-| Medium | API Gateway REST API stages should be configured to use SSL certificates for backend authentication | APIGateway.2 | Configure SSL certificates for backend authentication to ensure secure communication between API Gateway and backend services | **IaC** - Configure client certificates in API Gateway stage settings and ensure backend services validate these certificates |  |
-| Low | API Gateway REST API stages should have AWS X-Ray tracing enabled | APIGateway.3 | Enable X-Ray tracing for API Gateway stages to provide detailed tracing information for debugging and monitoring | **IaC** - Enable X-Ray tracing in API Gateway stage configuration and ensure proper IAM permissions for X-Ray service |  |
-| Medium | API Gateway should be associated with an AWS WAF | APIGateway.4 | Associate API Gateway with AWS WAF to protect against common web exploits and attacks | **IaC** - Create and associate AWS WAF WebACL with API Gateway stage, implementing rules for common attack patterns and rate limiting |  |
-| Medium | API Gateway REST API cache data should be encrypted at rest | APIGateway.5 | Enable encryption at rest for API Gateway cache data to protect cached responses | **IaC** - Configure cache encryption in API Gateway method settings when caching is enabled |  |
-
-### AWS Security Hub 2023.1
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| Medium | API Gateway routes should specify an authorization type | APIGateway.8 | Ensure all API Gateway routes have an appropriate authorization type configured to prevent unauthorized access | **IaC** - Configure authorization type (AWS_IAM, COGNITO_USER_POOLS, CUSTOM, or JWT) for all API Gateway routes and methods |  |
-| Medium | Access logging should be configured for API Gateway V2 Stages | APIGateway.9 | Configure access logging for API Gateway V2 stages to capture client access patterns and troubleshoot issues | **IaC** - Configure access logging settings in API Gateway V2 stage with CloudWatch Logs destination and appropriate log format |  |
-| **High** | CloudTrail should be enabled and configured with at least one multi-Region trail | CloudTrail.1 | Enable CloudTrail to capture API Gateway management events across all regions | **Platform** - Configure CloudTrail with multi-region trail to capture API Gateway management API calls and configuration changes |  |
-| Medium | AWS Config should be enabled | Config.1 | Enable AWS Config to track configuration changes to API Gateway resources | **Platform** - Configure AWS Config to monitor API Gateway resource configurations and detect configuration drift |  |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **High** | IAM-01 | CSA Cloud Controls Matrix v4.0 | Entitlement | Provision and manage user account entitlements to enterprise assets and resources | **IaC** - Configure IAM policies, resource-based policies, and API Gateway authorizers (Lambda, Cognito, or IAM) to control access to APIs |  |
+| **High** | DSI-05 | CSA Cloud Controls Matrix v4.0 | Data Transmission | Encrypt data in transit using strong cryptographic protocols and algorithms | **IaC** - Configure custom domain names with SSL/TLS certificates and enforce HTTPS-only communication through API Gateway settings |  |
+| **High** | IVS-06 | CSA Cloud Controls Matrix v4.0 | Network Architecture | Design and implement network security architecture | **IaC** - Deploy private API Gateway endpoints within VPC, configure VPC endpoints, and implement WAF rules for protection |  |
+| Medium | STA-04 | CSA Cloud Controls Matrix v4.0 | Denial of Service Protection | Implement protective measures against denial of service attacks | **IaC** - Configure throttling limits, usage plans, and integrate with AWS WAF for advanced threat protection |  |
+| Medium | GRM-02 | CSA Cloud Controls Matrix v4.0 | Information System Regulatory Mapping | Map applicable regulatory requirements to information systems and associated controls | **User** - Implement API versioning strategies, deployment stages, and approval workflows for API changes |  |
+| **High** | AC-3 | NIST SP 800-53 Rev 5 | Access Enforcement | Enforce approved authorizations for logical access to information and system resources | **IaC** - Implement API Gateway authorizers with fine-grained access control using IAM roles, Lambda authorizers, or Cognito User Pools |  |
+| **High** | SC-8 | NIST SP 800-53 Rev 5 | Transmission Confidentiality and Integrity | Protect the confidentiality and integrity of transmitted information | **IaC** - Configure TLS 1.2+ encryption, certificate management, and mutual TLS authentication for sensitive APIs |  |
+| **High** | AU-2 | NIST SP 800-53 Rev 5 | Event Logging | Identify the types of events that the system is capable of logging | **IaC** - Enable CloudTrail logging, API Gateway execution logs, and access logs with comprehensive event capture |  |
+| Medium | SI-3 | NIST SP 800-53 Rev 5 | Malicious Code Protection | Implement malicious code protection mechanisms | **IaC** - Deploy AWS WAF with API Gateway to filter malicious requests and implement request validation |  |
+| Medium | CP-2 | NIST SP 800-53 Rev 5 | Contingency Plan | Develop, document, and maintain a contingency plan for information systems | **User** - Implement multi-region deployments, backup strategies, and disaster recovery procedures for API Gateway configurations |  |
+| **High** | APIGateway.2 | AWS Foundational Security Best Practices v1.0.0 | API Gateway REST API stages should be configured to use SSL certificates for backend authentication | Configure SSL certificates for backend authentication to ensure secure communication | **IaC** - Deploy SSL certificates via ACM and configure custom domain names with HTTPS endpoints |  |
+| Medium | APIGateway.1 | AWS Foundational Security Best Practices v1.0.0 | API Gateway REST API execution logging should be enabled | Enable execution logging for REST APIs to capture detailed information about requests and responses | **IaC** - Configure CloudWatch Logs integration with API Gateway stages to enable INFO or ERROR level execution logging |  |
+| Medium | APIGateway.4 | AWS Foundational Security Best Practices v1.0.0 | API Gateway should be associated with a WAF Web ACL | Associate API Gateway with AWS WAF to protect against common web exploits | **IaC** - Create WAF web ACL with appropriate rules and associate it with API Gateway stages |  |
+| Medium | APIGateway.5 | AWS Foundational Security Best Practices v1.0.0 | API Gateway REST API cache data should be encrypted at rest | Enable encryption for API Gateway caching to protect cached data at rest | **IaC** - Configure cache encryption settings in API Gateway method responses and stage configurations |  |
+| Low | APIGateway.3 | AWS Foundational Security Best Practices v1.0.0 | API Gateway REST API stages should have AWS X-Ray tracing enabled | Enable AWS X-Ray tracing to analyze and debug distributed API applications | **IaC** - Enable X-Ray tracing at the API Gateway stage level and configure sampling rules |  |
+| **High** | APIGateway.10 | AWS Security Hub 2023.04.0 | API Gateway REST APIs should prohibit public read access | Ensure REST APIs do not allow unrestricted public read access | **IaC** - Configure proper authorization and resource policies to prevent anonymous public access to sensitive API operations |  |
+| **High** | APIGateway.11 | AWS Security Hub 2023.04.0 | API Gateway REST APIs should prohibit public write access | Ensure REST APIs do not allow unrestricted public write access | **IaC** - Implement strong authorization controls for write operations including POST, PUT, DELETE methods |  |
+| Medium | APIGateway.8 | AWS Security Hub 2023.04.0 | API Gateway routes should specify an authorization type | Ensure all API Gateway routes have appropriate authorization configured | **IaC** - Configure authorization type (IAM, Lambda, Cognito, or JWT) for all API Gateway routes and methods |  |
+| Medium | APIGateway.9 | AWS Security Hub 2023.04.0 | Access logging should be configured for API Gateway V2 Stages | Enable access logging for HTTP API and WebSocket API stages | **IaC** - Configure access logging with CloudWatch Logs destination and appropriate log format for API Gateway v2 stages |  |
 
 ## Operational Controls
 ---
@@ -48,16 +31,12 @@
 ## Cost Controls
 ---
 
-
-### AWS API Gateway Cost Optimization Best Practices 2023
-| Severity | Title | Identifier | Description | Implementation |
-| - | - | - | - | - |
-| **High** | Implement Response Caching | COST-01 | Enable response caching to reduce backend calls and API Gateway request charges for frequently accessed data | **IaC** - Configure caching at the stage or method level with appropriate TTL values and cache key parameters to optimize cache hit ratios |
-| **High** | Optimize API Gateway Type Selection | COST-02 | Choose the appropriate API Gateway type (REST vs HTTP vs WebSocket) based on feature requirements and cost considerations | **User** - Evaluate using HTTP APIs instead of REST APIs when advanced features are not needed, as HTTP APIs cost up to 70% less |
-| Medium | Implement Request Throttling and Rate Limiting | COST-03 | Configure throttling and rate limiting to control API usage and prevent unexpected cost spikes | **IaC** - Set up usage plans with throttling limits and quotas to control API consumption and implement burst limits |
-| Medium | Optimize Data Transfer | COST-04 | Minimize data transfer costs by implementing response compression and optimizing payload sizes | **IaC** - Enable content encoding (gzip) and implement request/response transformation to reduce payload sizes |
-| Medium | Monitor and Alert on Usage Patterns | COST-05 | Implement monitoring and alerting for API usage to identify cost optimization opportunities and usage anomalies | **Platform** - Configure CloudWatch metrics and billing alerts to monitor API Gateway usage, costs, and set up notifications for unusual patterns |
-| Low | Implement Regional Optimization | COST-06 | Deploy API Gateway in regions closest to users and integrate with CloudFront for global optimization | **IaC** - Use regional API endpoints and configure CloudFront distribution for caching and global edge optimization |
-| Low | Optimize Custom Domain and Certificate Usage | COST-07 | Consolidate APIs under fewer custom domains to reduce certificate and domain management costs | **User** - Use path-based routing to serve multiple APIs from a single custom domain rather than creating separate domains for each API |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **High** | COST-01 | AWS API Gateway Cost Optimization Best Practices 2023 | Implement Caching Strategy | Enable API Gateway caching to reduce backend calls and improve performance while reducing costs | **IaC** - Configure method-level caching with appropriate TTL values and cache key parameters to minimize redundant backend requests |  |
+| **High** | COST-02 | AWS API Gateway Cost Optimization Best Practices 2023 | Optimize API Gateway Type Selection | Choose the appropriate API Gateway type (HTTP API vs REST API) based on feature requirements | **User** - Use HTTP APIs for simple proxy integrations as they are up to 70% cheaper than REST APIs with lower latency |  |
+| Medium | COST-03 | AWS API Gateway Cost Optimization Best Practices 2023 | Implement Usage Plans and API Keys | Control API usage and prevent unexpected costs through usage plans and throttling | **IaC** - Configure usage plans with quotas and throttling limits to control API consumption and associated backend costs |  |
+| Medium | COST-04 | AWS API Gateway Cost Optimization Best Practices 2023 | Monitor and Optimize Request Routing | Optimize request routing to minimize data transfer and processing costs | **User** - Use regional endpoints instead of edge-optimized when clients are in the same region, and implement request/response transformations efficiently |  |
+| Medium | COST-05 | AWS API Gateway Cost Optimization Best Practices 2023 | Implement Efficient Error Handling | Optimize error handling to reduce unnecessary backend invocations and associated costs | **IaC** - Configure gateway responses and request validation to catch errors early and avoid backend processing costs |  |
+| Low | COST-06 | AWS API Gateway Cost Optimization Best Practices 2023 | Regular Cost Monitoring and Analysis | Implement regular monitoring of API Gateway costs and usage patterns | **Platform** - Set up CloudWatch dashboards and billing alerts to monitor API Gateway usage, costs, and identify optimization opportunities |  |
 

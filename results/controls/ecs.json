@@ -2,345 +2,345 @@
     "service": "AWS Elastic Container Service (ECS)",
     "security": [
         {
-            "name": "AWS Foundational Security Best Practices",
-            "version": "1.0.0",
-            "controls": [
-                {
-                    "identifier": "ECS.1",
-                    "title": "Amazon ECS task definitions should have secure networking modes and user definitions",
-                    "severity": "HIGH",
-                    "description": "ECS task definitions should not have elevated privileges and should use secure networking modes to prevent unauthorized access",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure task definitions with non-root users, avoid privileged mode, and use awsvpc network mode for better isolation"
-                    }
-                },
-                {
-                    "identifier": "ECS.2",
-                    "title": "ECS services should not have public IP addresses assigned automatically",
-                    "severity": "HIGH",
-                    "description": "ECS services should not automatically assign public IP addresses to tasks to reduce attack surface",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Set assignPublicIp to DISABLED in service configuration and use NAT Gateway or VPC endpoints for outbound connectivity"
-                    }
-                },
-                {
-                    "identifier": "ECS.3",
-                    "title": "ECS task definitions should not share the host's process namespace",
-                    "severity": "HIGH",
-                    "description": "Task definitions should not share the host's process namespace to maintain container isolation",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Set pidMode to task or omit pidMode parameter in task definition to avoid sharing host process namespace"
-                    }
-                },
-                {
-                    "identifier": "ECS.4",
-                    "title": "ECS containers should run as non-privileged",
-                    "severity": "MEDIUM",
-                    "description": "Containers should not run with privileged access to the host system",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Set privileged to false in container definition and avoid running containers as root user"
-                    }
-                },
-                {
-                    "identifier": "ECS.5",
-                    "title": "ECS containers should be limited in their access to host resources",
-                    "severity": "MEDIUM",
-                    "description": "Container access to host resources should be restricted to minimize security risks",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Limit or avoid host port mappings, restrict volume mounts, and configure appropriate ulimits"
-                    }
-                },
-                {
-                    "identifier": "ECS.8",
-                    "title": "Secrets should not be passed as container environment variables",
-                    "severity": "MEDIUM",
-                    "description": "Sensitive information should not be passed through environment variables",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Use AWS Systems Manager Parameter Store or AWS Secrets Manager with secrets retrieval in task definitions"
-                    }
-                },
-                {
-                    "identifier": "ECS.10",
-                    "title": "ECS Fargate services should run on the latest Fargate platform version",
-                    "severity": "MEDIUM",
-                    "description": "Fargate services should use the latest platform version for security patches and improvements",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Set platformVersion to LATEST or specify the most recent platform version in service configuration"
-                    }
-                },
-                {
-                    "identifier": "ECS.12",
-                    "title": "ECS clusters should use Container Insights",
-                    "severity": "LOW",
-                    "description": "Container Insights should be enabled for monitoring and observability",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Enable Container Insights in cluster configuration for enhanced monitoring and logging capabilities"
-                    }
-                }
-            ]
-        },
-        {
             "name": "NIST 800-53",
             "version": "Rev 5",
             "controls": [
                 {
                     "identifier": "AC-2",
                     "title": "Account Management",
-                    "severity": "HIGH",
-                    "description": "Manage user accounts, group memberships, privileges, and access authorizations",
+                    "severity": "High",
+                    "description": "Manage system accounts, group memberships, privileges, workflow, notifications, deactivations, and authorizations",
                     "implementation": {
-                        "type": "User",
-                        "description": "Implement IAM roles and policies for ECS access, use least privilege principle, and regularly audit access permissions"
+                        "type": "Platform",
+                        "description": "Implement IAM roles and policies for ECS services, tasks, and users with principle of least privilege"
                     }
                 },
                 {
                     "identifier": "AC-3",
                     "title": "Access Enforcement",
-                    "severity": "HIGH",
+                    "severity": "High",
                     "description": "Enforce approved authorizations for logical access to information and system resources",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure IAM policies, resource-based policies, and security groups to enforce access controls"
+                        "description": "Define IAM policies in CloudFormation/Terraform templates that restrict ECS API access and task execution permissions"
                     }
                 },
                 {
                     "identifier": "SC-7",
                     "title": "Boundary Protection",
-                    "severity": "HIGH",
-                    "description": "Monitor and control communications at the external boundary and key internal boundaries",
+                    "severity": "High",
+                    "description": "Monitor and control communications at the external boundary of the system and at key internal boundaries",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement VPC security groups, NACLs, and service mesh for network boundary protection"
-                    }
-                },
-                {
-                    "identifier": "AU-2",
-                    "title": "Event Logging",
-                    "severity": "MEDIUM",
-                    "description": "Identify the types of events to be logged by the system",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Enable CloudTrail for API logging, configure CloudWatch Logs for container logs, and enable VPC Flow Logs"
+                        "description": "Configure VPC security groups, NACLs, and Application Load Balancer security groups for ECS services"
                     }
                 },
                 {
                     "identifier": "SC-8",
                     "title": "Transmission Confidentiality and Integrity",
-                    "severity": "MEDIUM",
+                    "severity": "High",
                     "description": "Protect the confidentiality and integrity of transmitted information",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Use TLS encryption for all communication, implement Application Load Balancer with SSL/TLS termination"
+                        "description": "Enable TLS encryption for ECS service communication and configure SSL/TLS certificates on load balancers"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Audit Events",
+                    "severity": "Medium",
+                    "description": "Identify the types of events that the system is capable of logging and that the organization wants logged",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable CloudTrail logging for ECS API calls and configure container insights for application logging"
+                    }
+                },
+                {
+                    "identifier": "AU-6",
+                    "title": "Audit Record Review, Analysis, and Reporting",
+                    "severity": "Medium",
+                    "description": "Review and analyze system audit records for indications of inappropriate or unusual activity",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Set up CloudWatch monitoring and alerts for ECS service metrics and security events"
                     }
                 },
                 {
                     "identifier": "CM-2",
                     "title": "Baseline Configuration",
-                    "severity": "MEDIUM",
-                    "description": "Develop, document, and maintain baseline configurations",
+                    "severity": "Medium",
+                    "description": "Develop, document, and maintain a current baseline configuration of the system",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Use Infrastructure as Code templates, maintain version control for configurations, and implement configuration drift detection"
+                        "description": "Use standardized ECS task definitions and container images with version control and configuration management"
                     }
                 },
                 {
-                    "identifier": "SI-4",
-                    "title": "System Monitoring",
-                    "severity": "MEDIUM",
-                    "description": "Monitor the system to detect attacks and indicators of potential attacks",
+                    "identifier": "RA-5",
+                    "title": "Vulnerability Monitoring and Scanning",
+                    "severity": "Medium",
+                    "description": "Monitor and scan for vulnerabilities in the system and hosted applications and update the vulnerability scanning activities when new vulnerabilities are identified",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Enable GuardDuty, configure CloudWatch alarms, and implement AWS Security Hub for centralized monitoring"
-                    }
-                },
-                {
-                    "identifier": "CP-9",
-                    "title": "System Backup",
-                    "severity": "LOW",
-                    "description": "Conduct backups of user-level and system-level information",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Implement automated backups for ECS configurations, use AWS Backup for persistent volumes"
+                        "description": "Enable Amazon Inspector for ECS container vulnerability assessments and ECR image scanning"
                     }
                 }
             ]
         },
         {
             "name": "CSA Cloud Controls Matrix",
-            "version": "v4.0.10",
+            "version": "v4.0",
             "controls": [
                 {
                     "identifier": "IAM-01",
-                    "title": "Identity and Access Management Policy and Procedures",
-                    "severity": "HIGH",
-                    "description": "Policies and procedures shall be established for identity and access management",
+                    "title": "Identity and Access Management Policy",
+                    "severity": "High",
+                    "description": "Policies and procedures shall be established for the full lifecycle of identity and access management",
                     "implementation": {
                         "type": "User",
-                        "description": "Establish IAM policies for ECS resource access, implement role-based access control, and document access procedures"
+                        "description": "Develop and implement IAM policies specific to ECS resource access and container execution roles"
                     }
                 },
                 {
                     "identifier": "IAM-02",
-                    "title": "User Access Provisioning",
-                    "severity": "HIGH",
-                    "description": "User access shall be provisioned based on job function and least privilege",
+                    "title": "User Access Authorization",
+                    "severity": "High",
+                    "description": "User access policies and procedures shall be established and maintained for all systems and services",
                     "implementation": {
-                        "type": "User",
-                        "description": "Use IAM roles for ECS tasks, implement least privilege access, and regularly review access permissions"
+                        "type": "Platform",
+                        "description": "Configure ECS task roles and execution roles with minimal required permissions for container operations"
                     }
                 },
                 {
                     "identifier": "DSI-01",
                     "title": "Data Security and Information Lifecycle Management",
-                    "severity": "HIGH",
+                    "severity": "High",
                     "description": "Policies and procedures shall be established for data security and information lifecycle management",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Implement encryption at rest and in transit, use AWS KMS for key management, and establish data retention policies"
+                        "type": "User",
+                        "description": "Classify data processed by ECS containers and implement appropriate security controls based on classification"
                     }
                 },
                 {
-                    "identifier": "IVS-01",
-                    "title": "Infrastructure and Virtualization Security Policy and Procedures",
-                    "severity": "MEDIUM",
-                    "description": "Policies and procedures shall be established for infrastructure and virtualization security",
+                    "identifier": "EKM-01",
+                    "title": "Encryption and Key Management",
+                    "severity": "High",
+                    "description": "Encryption and key management policies and procedures shall be established and maintained",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Implement container security best practices, use security groups for network isolation, and maintain secure base images"
+                        "type": "Platform",
+                        "description": "Use AWS KMS for encrypting ECS task data, EBS volumes, and secrets management with proper key rotation"
                     }
                 },
                 {
-                    "identifier": "AIS-01",
-                    "title": "Application and Interface Security",
-                    "severity": "MEDIUM",
-                    "description": "Policies and procedures shall be established for application and interface security",
+                    "identifier": "LOG-01",
+                    "title": "Logging and Monitoring Policy",
+                    "severity": "Medium",
+                    "description": "Logging and monitoring policies and procedures shall be established and maintained",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement secure coding practices, use WAF for web applications, and configure API security measures"
+                        "description": "Configure centralized logging for ECS containers using CloudWatch Logs or third-party solutions"
+                    }
+                },
+                {
+                    "identifier": "IPY-01",
+                    "title": "Network Infrastructure Protection",
+                    "severity": "Medium",
+                    "description": "Network security controls shall be implemented to protect the service provider network infrastructure",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement network segmentation for ECS services using VPC subnets and security groups"
                     }
                 },
                 {
                     "identifier": "BCR-01",
                     "title": "Business Continuity Management and Operational Resilience",
-                    "severity": "MEDIUM",
-                    "description": "Policies and procedures shall be established for business continuity and operational resilience",
+                    "severity": "Medium",
+                    "description": "Business continuity and operational resilience procedures shall be established and maintained",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement multi-AZ deployments, configure auto-scaling, and establish disaster recovery procedures"
+                        "description": "Deploy ECS services across multiple Availability Zones with appropriate auto-scaling policies"
                     }
                 },
                 {
-                    "identifier": "CCC-01",
-                    "title": "Change Control and Configuration Management",
-                    "severity": "MEDIUM",
-                    "description": "Policies and procedures shall be established for change control and configuration management",
+                    "identifier": "STA-01",
+                    "title": "Secure Software Development Lifecycle",
+                    "severity": "Low",
+                    "description": "Policies and procedures shall be established for secure application development and deployment",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement secure container image building practices and vulnerability scanning in CI/CD pipelines"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "ECS.1",
+                    "title": "Amazon ECS task definitions should not share the host's process namespace",
+                    "severity": "High",
+                    "description": "ECS task definitions should not share the host's process namespace to maintain container isolation",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Use version control for infrastructure code, implement CI/CD pipelines, and maintain configuration baselines"
+                        "description": "Set pidMode to 'task' or omit pidMode parameter in ECS task definitions to avoid sharing host process namespace"
                     }
                 },
                 {
-                    "identifier": "DCS-01",
-                    "title": "Data Center Security",
-                    "severity": "LOW",
-                    "description": "Policies and procedures shall be established for data center security",
+                    "identifier": "ECS.2",
+                    "title": "ECS services should not have public IP addresses assigned automatically",
+                    "severity": "High",
+                    "description": "ECS services should not automatically assign public IP addresses unless required for internet access",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set assignPublicIp to 'DISABLED' in ECS service network configuration and use NAT Gateway for outbound internet access"
+                    }
+                },
+                {
+                    "identifier": "ECS.3",
+                    "title": "ECS task definitions should not share the host's network namespace",
+                    "severity": "High",
+                    "description": "ECS task definitions should use awsvpc network mode instead of host network mode",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure networkMode to 'awsvpc' in ECS task definitions to provide network isolation"
+                    }
+                },
+                {
+                    "identifier": "ECS.4",
+                    "title": "ECS containers should run as non-privileged",
+                    "severity": "High",
+                    "description": "ECS containers should not run with privileged access to the host",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set privileged to false in container definitions and avoid running containers as root user"
+                    }
+                },
+                {
+                    "identifier": "ECS.8",
+                    "title": "Secrets should not be passed as container environment variables",
+                    "severity": "High",
+                    "description": "ECS task definitions should use secrets manager or parameter store instead of environment variables for sensitive data",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use secrets parameter in container definitions to reference AWS Secrets Manager or Systems Manager Parameter Store"
+                    }
+                },
+                {
+                    "identifier": "ECS.5",
+                    "title": "ECS containers should limit memory usage",
+                    "severity": "Medium",
+                    "description": "ECS container definitions should specify memory limits to prevent resource exhaustion",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Define memory and memoryReservation parameters in ECS container definitions to limit resource usage"
+                    }
+                },
+                {
+                    "identifier": "ECS.10",
+                    "title": "ECS Fargate services should run on the latest Fargate platform version",
+                    "severity": "Medium",
+                    "description": "ECS Fargate services should use the latest platform version for security updates",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Leverage AWS physical security controls, implement network segmentation, and use dedicated tenancy when required"
+                        "description": "Specify platformVersion as 'LATEST' or specific latest version in ECS Fargate service configuration"
+                    }
+                },
+                {
+                    "identifier": "ECS.12",
+                    "title": "ECS clusters should use Container Insights",
+                    "severity": "Low",
+                    "description": "ECS clusters should have Container Insights enabled for monitoring and logging",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable Container Insights on ECS clusters through AWS CLI or console for enhanced monitoring capabilities"
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "2.0",
+            "version": "2024",
             "controls": [
                 {
                     "identifier": "ECS.1",
-                    "title": "Amazon ECS task definitions should have secure networking modes and user definitions",
-                    "severity": "HIGH",
-                    "description": "This control checks whether an Amazon ECS task definition with host networking mode has privileged or user container definitions",
+                    "title": "Amazon ECS task definitions should not share the host's process namespace",
+                    "severity": "High",
+                    "description": "This control checks whether Amazon ECS task definitions are configured to share a host's process namespace",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure task definitions without privileged mode and avoid host networking mode unless absolutely necessary"
+                        "description": "Ensure pidMode is not set to 'host' in ECS task definitions to maintain process isolation"
                     }
                 },
                 {
                     "identifier": "ECS.2",
                     "title": "ECS services should not have public IP addresses assigned automatically",
-                    "severity": "HIGH",
+                    "severity": "High",
                     "description": "This control checks whether Amazon ECS services are configured to automatically assign public IP addresses",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure ECS services to not automatically assign public IP addresses and use load balancers for external access"
-                    }
-                },
-                {
-                    "identifier": "ECS.3",
-                    "title": "ECS task definitions should not share the host's process namespace",
-                    "severity": "MEDIUM",
-                    "description": "This control checks if Amazon ECS task definitions are configured to share a host's process namespace with its containers",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Ensure task definitions do not set pidMode to 'host' to maintain container isolation"
+                        "description": "Configure ECS services with assignPublicIp set to 'DISABLED' in private subnets with NAT Gateway access"
                     }
                 },
                 {
                     "identifier": "ECS.4",
                     "title": "ECS containers should run as non-privileged",
-                    "severity": "MEDIUM",
-                    "description": "This control checks if the privileged parameter in the container definition of Amazon ECS Task Definitions is set to true",
+                    "severity": "High",
+                    "description": "This control checks if the privileged parameter in the container definition of ECS Task Definitions is set to true",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Set privileged parameter to false in container definitions and run containers with minimal required privileges"
-                    }
-                },
-                {
-                    "identifier": "ECS.5",
-                    "title": "ECS containers should be limited in their access to host resources",
-                    "severity": "MEDIUM",
-                    "description": "This control checks if Amazon ECS containers are limited in their access to host resources",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure appropriate resource limits and avoid mounting sensitive host directories"
+                        "description": "Set privileged to false in ECS container definitions and implement least privilege access"
                     }
                 },
                 {
                     "identifier": "ECS.8",
                     "title": "Secrets should not be passed as container environment variables",
-                    "severity": "MEDIUM",
-                    "description": "This control checks whether the key value of any variables in the environment file of Amazon ECS task definitions contains secrets",
+                    "severity": "High",
+                    "description": "This control checks whether Amazon ECS task definitions have secrets passed as environment variables",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Use AWS Secrets Manager or Systems Manager Parameter Store instead of environment variables for sensitive data"
+                        "description": "Use AWS Secrets Manager or Systems Manager Parameter Store with secrets configuration instead of environment variables"
+                    }
+                },
+                {
+                    "identifier": "ECS.3",
+                    "title": "ECS task definitions should not share the host's network namespace",
+                    "severity": "Medium",
+                    "description": "This control checks if Amazon ECS task definitions have host networking mode configured",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use 'awsvpc' network mode instead of 'host' network mode in ECS task definitions"
+                    }
+                },
+                {
+                    "identifier": "ECS.5",
+                    "title": "ECS containers should limit memory usage",
+                    "severity": "Medium",
+                    "description": "This control checks if Amazon ECS containers have memory usage limits defined",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Define memory limits in ECS container definitions to prevent resource exhaustion and improve stability"
                     }
                 },
                 {
                     "identifier": "ECS.10",
                     "title": "ECS Fargate services should run on the latest Fargate platform version",
-                    "severity": "MEDIUM",
+                    "severity": "Medium",
                     "description": "This control checks if Amazon ECS Fargate services are running the latest Fargate platform version",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Regularly update Fargate platform version to the latest available version for security patches"
+                        "description": "Regularly update ECS Fargate services to use the latest platform version for security patches and improvements"
                     }
                 },
                 {
                     "identifier": "ECS.12",
                     "title": "ECS clusters should use Container Insights",
-                    "severity": "LOW",
-                    "description": "This control checks if Amazon ECS clusters use Container Insights",
+                    "severity": "Low",
+                    "description": "This control checks if ECS clusters use Container Insights",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Enable Container Insights on ECS clusters for enhanced monitoring and observability"
+                        "type": "Platform",
+                        "description": "Enable Container Insights on ECS clusters for comprehensive monitoring and observability"
                     }
                 }
             ]
@@ -355,101 +355,81 @@
                 {
                     "identifier": "COST-01",
                     "title": "Right-size ECS Tasks and Services",
-                    "severity": "HIGH",
-                    "description": "Optimize CPU and memory allocation for ECS tasks to avoid over-provisioning",
+                    "severity": "High",
+                    "description": "Optimize CPU and memory allocation for ECS tasks to avoid over-provisioning resources",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Monitor resource utilization using CloudWatch metrics and adjust task definitions to match actual resource requirements"
+                        "type": "Platform",
+                        "description": "Monitor CloudWatch Container Insights metrics to right-size CPU and memory allocation, and use AWS Compute Optimizer recommendations"
                     }
                 },
                 {
                     "identifier": "COST-02",
                     "title": "Use Fargate Spot for Fault-Tolerant Workloads",
-                    "severity": "HIGH",
-                    "description": "Leverage Fargate Spot pricing for cost-effective execution of fault-tolerant workloads",
+                    "severity": "High",
+                    "description": "Utilize Fargate Spot pricing for cost-sensitive and fault-tolerant workloads to reduce compute costs by up to 70%",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure ECS services to use Fargate Spot capacity providers for workloads that can handle interruptions"
+                        "description": "Configure ECS services with capacityProviders including FARGATE_SPOT with appropriate capacity provider strategies"
                     }
                 },
                 {
                     "identifier": "COST-03",
                     "title": "Implement Auto Scaling",
-                    "severity": "HIGH",
-                    "description": "Configure auto scaling to automatically adjust the number of tasks based on demand",
+                    "severity": "High",
+                    "description": "Configure ECS service auto scaling and cluster auto scaling to match resource demand dynamically",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Set up Application Auto Scaling policies based on CPU utilization, memory utilization, or custom metrics"
+                        "description": "Set up Application Auto Scaling policies for ECS services based on CPU, memory, or custom metrics to scale automatically"
                     }
                 },
                 {
                     "identifier": "COST-04",
                     "title": "Use EC2 Spot Instances for ECS Clusters",
-                    "severity": "MEDIUM",
-                    "description": "Leverage EC2 Spot Instances in ECS clusters for significant cost savings",
+                    "severity": "Medium",
+                    "description": "Leverage EC2 Spot Instances in ECS clusters for significant cost savings on fault-tolerant workloads",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure ECS cluster with mixed instance types including Spot instances using capacity providers"
+                        "description": "Configure ECS Capacity Providers with EC2 Auto Scaling Groups using Spot Instances and mixed instance types"
                     }
                 },
                 {
                     "identifier": "COST-05",
                     "title": "Optimize Container Images",
-                    "severity": "MEDIUM",
-                    "description": "Reduce container image sizes to minimize storage costs and improve startup times",
+                    "severity": "Medium",
+                    "description": "Minimize container image sizes to reduce storage costs and improve deployment times",
                     "implementation": {
                         "type": "User",
-                        "description": "Use multi-stage builds, minimal base images, and remove unnecessary packages from container images"
+                        "description": "Use multi-stage Docker builds, minimal base images, and remove unnecessary packages to reduce image size and ECR storage costs"
                     }
                 },
                 {
                     "identifier": "COST-06",
                     "title": "Implement Resource-Based Scheduling",
-                    "severity": "MEDIUM",
-                    "description": "Use placement strategies to optimize resource utilization across cluster instances",
+                    "severity": "Medium",
+                    "description": "Use task placement strategies to optimize resource utilization across ECS container instances",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure binpack placement strategy to maximize resource utilization and minimize instance count"
+                        "description": "Configure placement strategies like 'binpack' to maximize resource utilization and reduce the number of required instances"
                     }
                 },
                 {
                     "identifier": "COST-07",
-                    "title": "Use Reserved Instances for Predictable Workloads",
-                    "severity": "MEDIUM",
-                    "description": "Purchase Reserved Instances for predictable workloads to reduce costs",
+                    "title": "Monitor and Optimize Data Transfer Costs",
+                    "severity": "Medium",
+                    "description": "Minimize data transfer costs by optimizing network architecture and data flow patterns",
                     "implementation": {
-                        "type": "User",
-                        "description": "Analyze usage patterns and purchase Reserved Instances for consistent workloads running on EC2-backed ECS clusters"
+                        "type": "IaC",
+                        "description": "Deploy ECS services in same AZ when possible, use VPC endpoints for AWS services, and implement data locality strategies"
                     }
                 },
                 {
                     "identifier": "COST-08",
-                    "title": "Implement Cost Monitoring and Alerting",
-                    "severity": "LOW",
-                    "description": "Set up cost monitoring and alerting to track ECS spending",
+                    "title": "Use Reserved Capacity for Predictable Workloads",
+                    "severity": "Low",
+                    "description": "Purchase EC2 Reserved Instances or Savings Plans for predictable ECS workloads running on EC2 launch type",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Use AWS Cost Explorer, set up billing alerts, and implement cost allocation tags for ECS resources"
-                    }
-                },
-                {
-                    "identifier": "COST-09",
-                    "title": "Optimize Load Balancer Usage",
-                    "severity": "LOW",
-                    "description": "Right-size and optimize load balancer configurations to reduce costs",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Use Application Load Balancer efficiently, consider shared load balancers for multiple services, and optimize health check intervals"
-                    }
-                },
-                {
-                    "identifier": "COST-10",
-                    "title": "Schedule Non-Critical Workloads",
-                    "severity": "LOW",
-                    "description": "Schedule non-critical workloads to run during off-peak hours",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Use scheduled scaling or EventBridge rules to run batch workloads during off-peak hours when costs are lower"
+                        "description": "Analyze usage patterns and purchase Reserved Instances or Compute Savings Plans for consistent ECS workloads on EC2"
                     }
                 }
             ]

@@ -1,1 +1,348 @@
 {
+    "service": "AWS Aurora",
+    "security": [
+        {
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v4.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management",
+                    "severity": "Critical",
+                    "description": "Implement strong identity and access management controls for Aurora database access",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure IAM database authentication and use AWS IAM roles for Aurora access control"
+                    }
+                },
+                {
+                    "identifier": "DSI-02",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "Critical",
+                    "description": "Encrypt data at rest and in transit for Aurora databases",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable encryption at rest using AWS KMS and enforce SSL/TLS connections"
+                    }
+                },
+                {
+                    "identifier": "DSI-04",
+                    "title": "Data Loss Prevention",
+                    "severity": "High",
+                    "description": "Implement automated backup and point-in-time recovery for Aurora",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure automated backups with appropriate retention periods and enable backtrack feature"
+                    }
+                },
+                {
+                    "identifier": "CCM-09",
+                    "title": "Change Control and Configuration Management",
+                    "severity": "High",
+                    "description": "Manage Aurora configuration changes through controlled processes",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use CloudFormation or Terraform to manage Aurora cluster configurations"
+                    }
+                },
+                {
+                    "identifier": "IVS-01",
+                    "title": "Infrastructure and Virtualization Security",
+                    "severity": "Medium",
+                    "description": "Secure Aurora network infrastructure and isolation",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy Aurora in private subnets with appropriate security groups and NACLs"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "Critical",
+                    "description": "Manage Aurora database user accounts and access privileges",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement least privilege access and regularly review database user accounts"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "Critical",
+                    "description": "Protect data transmission to and from Aurora databases",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enforce SSL/TLS encryption for all Aurora connections"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "Critical",
+                    "description": "Encrypt Aurora data at rest using strong encryption",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable Aurora encryption using AWS KMS with customer-managed keys"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "High",
+                    "description": "Configure comprehensive logging for Aurora database activities",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable Aurora audit logging and CloudTrail for API activities"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "Information System Backup",
+                    "severity": "High",
+                    "description": "Implement comprehensive backup strategies for Aurora",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure automated backups, manual snapshots, and cross-region backup replication"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "Information System Monitoring",
+                    "severity": "High",
+                    "description": "Monitor Aurora database performance and security events",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement CloudWatch monitoring and Performance Insights for Aurora"
+                    }
+                },
+                {
+                    "identifier": "CA-7",
+                    "title": "Continuous Monitoring",
+                    "severity": "Medium",
+                    "description": "Establish continuous monitoring of Aurora security posture",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Use AWS Config rules and Security Hub for continuous Aurora compliance monitoring"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "RDS.1",
+                    "title": "RDS snapshots should be private",
+                    "severity": "Critical",
+                    "description": "Ensure Aurora snapshots are not publicly accessible",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Verify Aurora snapshots have private visibility and restrict sharing"
+                    }
+                },
+                {
+                    "identifier": "RDS.2",
+                    "title": "RDS DB instances should prohibit public read access",
+                    "severity": "Critical",
+                    "description": "Ensure Aurora clusters are not publicly accessible",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set publicly_accessible to false in Aurora cluster configuration"
+                    }
+                },
+                {
+                    "identifier": "RDS.3",
+                    "title": "RDS DB instances should have encryption at rest enabled",
+                    "severity": "Critical",
+                    "description": "Enable encryption at rest for Aurora clusters",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable storage_encrypted parameter in Aurora cluster configuration"
+                    }
+                },
+                {
+                    "identifier": "RDS.4",
+                    "title": "RDS cluster snapshots and database snapshots should be encrypted at rest",
+                    "severity": "High",
+                    "description": "Ensure Aurora snapshots are encrypted",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable encryption for Aurora cluster snapshots using KMS keys"
+                    }
+                },
+                {
+                    "identifier": "RDS.5",
+                    "title": "RDS DB instances should be configured with multiple Availability Zones",
+                    "severity": "High",
+                    "description": "Deploy Aurora clusters across multiple AZs for high availability",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Aurora cluster with multiple availability zones"
+                    }
+                },
+                {
+                    "identifier": "RDS.6",
+                    "title": "Enhanced monitoring should be configured for RDS DB instances",
+                    "severity": "Medium",
+                    "description": "Enable enhanced monitoring for Aurora instances",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure monitoring_interval parameter for Aurora instances"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "RDS.7",
+                    "title": "RDS clusters should have deletion protection enabled",
+                    "severity": "High",
+                    "description": "Enable deletion protection for Aurora clusters",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set deletion_protection to true in Aurora cluster configuration"
+                    }
+                },
+                {
+                    "identifier": "RDS.8",
+                    "title": "RDS DB instances should have deletion protection enabled",
+                    "severity": "High",
+                    "description": "Enable deletion protection for Aurora instances",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set deletion_protection to true for Aurora instances"
+                    }
+                },
+                {
+                    "identifier": "RDS.9",
+                    "title": "Database logging should be enabled",
+                    "severity": "High",
+                    "description": "Enable comprehensive logging for Aurora databases",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable Aurora audit logs, error logs, and slow query logs"
+                    }
+                },
+                {
+                    "identifier": "RDS.10",
+                    "title": "IAM authentication should be configured for RDS instances",
+                    "severity": "Medium",
+                    "description": "Enable IAM database authentication for Aurora",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable iam_database_authentication_enabled parameter for Aurora cluster"
+                    }
+                },
+                {
+                    "identifier": "RDS.11",
+                    "title": "RDS instances should have automatic backups enabled",
+                    "severity": "Medium",
+                    "description": "Configure automatic backups for Aurora clusters",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set backup_retention_period to appropriate value for Aurora cluster"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS Aurora Cost Optimization Best Practices",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "COST-02",
+                    "title": "Implement Aurora Serverless for variable workloads",
+                    "severity": "High",
+                    "description": "Use Aurora Serverless v2 for unpredictable or intermittent workloads",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Aurora Serverless v2 with appropriate scaling configuration for variable workloads"
+                    }
+                },
+                {
+                    "identifier": "COST-01",
+                    "title": "Right-size Aurora instances",
+                    "severity": "High",
+                    "description": "Monitor and adjust Aurora instance sizes based on actual workload requirements",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Use CloudWatch metrics and Performance Insights to identify oversized instances and downsize appropriately"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Optimize Aurora storage costs",
+                    "severity": "High",
+                    "description": "Monitor storage growth and implement data lifecycle management",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Regularly archive or delete old data and monitor storage metrics in CloudWatch"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Use Reserved Instances for predictable workloads",
+                    "severity": "Medium",
+                    "description": "Purchase Reserved Instances for long-term, predictable Aurora workloads",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Analyze usage patterns and purchase 1-year or 3-year Reserved Instances for consistent workloads"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Optimize backup retention and cross-region replication",
+                    "severity": "Medium",
+                    "description": "Set appropriate backup retention periods and minimize unnecessary cross-region backups",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure backup_retention_period based on business requirements and limit cross-region backup replication"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Monitor and optimize data transfer costs",
+                    "severity": "Medium",
+                    "description": "Minimize data transfer costs by optimizing application architecture and read replica placement",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Place read replicas in same regions as applications and optimize query patterns to reduce data transfer"
+                    }
+                },
+                {
+                    "identifier": "COST-07",
+                    "title": "Implement automated scaling policies",
+                    "severity": "Medium",
+                    "description": "Use Aurora Auto Scaling for read replicas to automatically adjust capacity",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Aurora Auto Scaling policies for read replicas based on CPU utilization or connection metrics"
+                    }
+                },
+                {
+                    "identifier": "COST-08",
+                    "title": "Regular cost monitoring and alerting",
+                    "severity": "Low",
+                    "description": "Set up cost monitoring and alerts for Aurora spending",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure AWS Cost Explorer alerts and budgets for Aurora service costs"
+                    }
+                }
+            ]
+        }
+    ]
+}

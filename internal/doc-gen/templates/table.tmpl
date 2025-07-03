@@ -1,12 +1,9 @@
 # {{ .Service }}
 ---
 
-{{ range .Security }}
-### {{ .Name }} {{ .Version }}
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |{{ range .Controls }}
-| {{ if or ("High" | eq .Severity) ("Critical" | eq .Severity) }}**{{ .Severity }}**{{ else }}{{ .Severity }}{{ end }} | {{ .Title }} | {{ .Identifier }} | {{ .Description }} | **{{ .Implementation.Type }}** - {{ .Implementation.Description }} |  |{{ end }}
-{{ end }}
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |{{ range $framework := .Security }}{{ range .Controls }}
+| {{ if or ("High" | eq .Severity) ("Critical" | eq .Severity) }}**{{ .Severity }}**{{ else }}{{ .Severity }}{{ end }} | {{ .Identifier }} | {{ $framework.Name }} {{ $framework.Version }} | {{ .Title }} | {{ .Description }} | **{{ .Implementation.Type }}** - {{ .Implementation.Description }} | {{ .Implementation.Code }} |{{ end }}{{ end }}
 
 ## Operational Controls
 ---
@@ -17,10 +14,7 @@
 ## Cost Controls
 ---
 
-{{ range .Cost }}
-### {{ .Name }} {{ .Version }}
-| Severity | Title | Identifier | Description | Implementation |
-| - | - | - | - | - |{{ range .Controls }}
-| {{ if or ("High" | eq .Severity) ("Critical" | eq .Severity) }}**{{ .Severity }}**{{ else }}{{ .Severity }}{{ end }} | {{ .Title }} | {{ .Identifier }} | {{ .Description }} | **{{ .Implementation.Type }}** - {{ .Implementation.Description }} |{{ end }}
-{{ end }}
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |{{ range $framework := .Cost }}{{ range .Controls }}
+| {{ if or ("High" | eq .Severity) ("Critical" | eq .Severity) }}**{{ .Severity }}**{{ else }}{{ .Severity }}{{ end }} | {{ .Identifier }} | {{ $framework.Name }} {{ $framework.Version }} | {{ .Title }} | {{ .Description }} | **{{ .Implementation.Type }}** - {{ .Implementation.Description }} | {{ .Implementation.Code }} |{{ end }}{{ end }}
 

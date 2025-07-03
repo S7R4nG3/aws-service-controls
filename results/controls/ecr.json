@@ -2,67 +2,47 @@
     "service": "AWS Elastic Container Registry",
     "security": [
         {
-            "name": "Cloud Security Alliance (CSA) Cloud Controls Matrix",
-            "version": "v5.0",
+            "name": "CSA CCM",
+            "version": "v4.0",
             "controls": [
                 {
-                    "identifier": "IAM-01",
-                    "title": "Identity and Access Management Policy and Procedures",
+                    "identifier": "IAM-02",
+                    "title": "User Access Authorization",
                     "severity": "Critical",
-                    "description": "Establish and maintain identity and access management policies for ECR resources",
+                    "description": "Ensure proper authentication and authorization controls are implemented for ECR access",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Configure ECR repository policies, IAM roles and policies for ECR access using IaC templates with least privilege principles"
+                        "type": "Platform",
+                        "description": "Configure IAM policies and roles with least privilege access to ECR repositories, implement resource-based policies for repository access control"
                     }
                 },
                 {
                     "identifier": "DSI-01",
-                    "title": "Data Security and Information Lifecycle Management",
-                    "severity": "Critical",
-                    "description": "Implement data protection controls for container images and sensitive data",
-                    "implementation": {
-                        "type": "Platform + User",
-                        "description": "Enable ECR image scanning, implement encryption at rest and in transit, establish image lifecycle policies"
-                    }
-                },
-                {
-                    "identifier": "EKM-01",
-                    "title": "Encryption and Key Management",
-                    "severity": "Critical",
-                    "description": "Implement proper encryption and key management for ECR repositories",
-                    "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Configure ECR repositories with KMS encryption using customer-managed keys, implement key rotation policies"
-                    }
-                },
-                {
-                    "identifier": "LOG-01",
-                    "title": "Audit Logging / Intrusion Detection",
+                    "title": "Data Classification",
                     "severity": "High",
-                    "description": "Enable comprehensive logging and monitoring for ECR activities",
+                    "description": "Implement encryption for data at rest and in transit for container images",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Enable CloudTrail logging for ECR API calls, configure VPC Flow Logs for ECR endpoints, set up CloudWatch monitoring"
+                        "type": "IaC",
+                        "description": "Enable encryption at rest using AWS KMS keys and ensure HTTPS/TLS for data in transit through ECR API endpoints"
                     }
                 },
                 {
-                    "identifier": "IVS-01",
-                    "title": "Vulnerability / Patch Management",
+                    "identifier": "DSI-07",
+                    "title": "Secure Disposal",
                     "severity": "High",
-                    "description": "Implement vulnerability scanning and patch management for container images",
+                    "description": "Implement secure deletion of container images and associated metadata",
                     "implementation": {
-                        "type": "Platform + User",
-                        "description": "Enable ECR enhanced scanning, implement automated vulnerability remediation workflows, establish image promotion policies"
+                        "type": "IaC",
+                        "description": "Configure lifecycle policies to automatically delete unused images and implement secure deletion procedures for sensitive container images"
                     }
                 },
                 {
-                    "identifier": "NET-01",
-                    "title": "Network Security",
-                    "severity": "High",
-                    "description": "Implement network security controls for ECR access",
+                    "identifier": "IVS-06",
+                    "title": "Network Architecture",
+                    "severity": "Medium",
+                    "description": "Ensure proper network security controls for ECR access",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Configure VPC endpoints for ECR, implement security groups and NACLs, enable private repository access"
+                        "type": "Platform",
+                        "description": "Configure VPC endpoints for ECR access and implement network access controls"
                     }
                 }
             ]
@@ -72,73 +52,63 @@
             "version": "Rev 5",
             "controls": [
                 {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "Critical",
+                    "description": "Manage ECR user accounts and access permissions systematically",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement automated account provisioning and deprovisioning for ECR access using IAM roles and policies"
+                    }
+                },
+                {
                     "identifier": "AC-3",
                     "title": "Access Enforcement",
                     "severity": "Critical",
-                    "description": "Enforce approved authorizations for logical access to ECR resources",
+                    "description": "Enforce approved authorizations for logical access to ECR repositories",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Implement resource-based policies on ECR repositories, configure cross-account access controls, use IAM conditions for fine-grained access"
+                        "type": "IaC",
+                        "description": "Configure repository policies and IAM policies to enforce least privilege access to specific ECR repositories and actions"
                     }
                 },
                 {
                     "identifier": "SC-8",
                     "title": "Transmission Confidentiality and Integrity",
-                    "severity": "Critical",
-                    "description": "Protect the confidentiality and integrity of transmitted information",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of transmitted container images",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Ensure HTTPS/TLS encryption for all ECR API communications, configure Docker clients for secure registry communication"
+                        "description": "Use HTTPS/TLS for all ECR API communications and Docker client interactions with ECR endpoints"
                     }
                 },
                 {
                     "identifier": "SC-28",
                     "title": "Protection of Information at Rest",
-                    "severity": "Critical",
-                    "description": "Protect the confidentiality and integrity of information at rest",
+                    "severity": "High",
+                    "description": "Protect confidentiality and integrity of container images stored in ECR",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Enable ECR encryption at rest using AWS KMS, implement server-side encryption for all repositories"
+                        "type": "IaC",
+                        "description": "Enable server-side encryption using AWS KMS customer-managed keys for ECR repositories"
                     }
                 },
                 {
                     "identifier": "AU-2",
                     "title": "Event Logging",
                     "severity": "High",
-                    "description": "Ensure that auditable events are being logged",
+                    "description": "Ensure ECR activities are logged for security monitoring",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Configure CloudTrail to log ECR API events, enable ECR repository access logging, implement log aggregation"
+                        "type": "Platform",
+                        "description": "Enable CloudTrail logging for ECR API calls and configure CloudWatch for ECR events monitoring"
                     }
                 },
                 {
-                    "identifier": "SI-3",
-                    "title": "Malicious Code Protection",
-                    "severity": "High",
-                    "description": "Implement malicious code protection mechanisms",
-                    "implementation": {
-                        "type": "Platform + User",
-                        "description": "Enable ECR image scanning for malware detection, implement admission controllers for Kubernetes clusters"
-                    }
-                },
-                {
-                    "identifier": "SI-4",
-                    "title": "System Monitoring",
-                    "severity": "High",
-                    "description": "Monitor the system to detect attacks and indicators of potential attacks",
-                    "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Configure CloudWatch metrics for ECR, set up GuardDuty for threat detection, implement automated alerting"
-                    }
-                },
-                {
-                    "identifier": "RA-5",
-                    "title": "Vulnerability Monitoring and Scanning",
+                    "identifier": "SI-7",
+                    "title": "Software, Firmware, and Information Integrity",
                     "severity": "Medium",
-                    "description": "Monitor and scan for vulnerabilities and remediate them",
+                    "description": "Verify integrity of container images stored in ECR",
                     "implementation": {
-                        "type": "Platform + User",
-                        "description": "Enable ECR enhanced scanning with Inspector integration, implement vulnerability management workflows"
+                        "type": "User",
+                        "description": "Implement image signing and verification using Docker Content Trust or similar mechanisms"
                     }
                 }
             ]
@@ -151,66 +121,66 @@
                     "identifier": "ECR.1",
                     "title": "ECR private repositories should have image scanning configured",
                     "severity": "High",
-                    "description": "ECR repositories should have image scanning enabled to identify software vulnerabilities",
+                    "description": "Enable vulnerability scanning for container images in ECR repositories",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Enable scan on push for ECR repositories, configure enhanced scanning for comprehensive vulnerability detection"
+                        "type": "IaC",
+                        "description": "Configure scan on push for ECR repositories and implement automated scanning policies"
                     }
                 },
                 {
                     "identifier": "ECR.2",
                     "title": "ECR private repositories should have tag immutability configured",
                     "severity": "Medium",
-                    "description": "ECR repositories should have tag immutability enabled to prevent image tags from being overwritten",
+                    "description": "Enable tag immutability to prevent image tags from being overwritten",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Configure imageTagMutability to IMMUTABLE in ECR repository configuration"
+                        "type": "IaC",
+                        "description": "Set imageTagMutability to IMMUTABLE when creating ECR repositories"
                     }
                 },
                 {
                     "identifier": "ECR.3",
                     "title": "ECR repositories should have at least one lifecycle policy configured",
                     "severity": "Medium",
-                    "description": "ECR repositories should have lifecycle policies to manage image retention and reduce storage costs",
+                    "description": "Implement lifecycle policies to manage image retention and reduce storage costs",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Implement lifecycle policies to automatically delete untagged images and old image versions"
+                        "type": "IaC",
+                        "description": "Configure lifecycle policies to automatically clean up old or unused container images based on age or count"
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "2023.1",
+            "version": "2024",
             "controls": [
                 {
                     "identifier": "ECR.1",
-                    "title": "ECR private repositories should have image scanning configured",
+                    "title": "ECR repositories should have image scanning configured",
                     "severity": "High",
-                    "description": "This control checks whether ECR private repositories have image scanning enabled",
+                    "description": "Automatically scan container images for vulnerabilities",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Enable automatic scanning on image push and configure enhanced scanning for detailed vulnerability reports"
+                        "type": "IaC",
+                        "description": "Enable enhanced scanning with Inspector or basic scanning for ECR repositories"
                     }
                 },
                 {
-                    "identifier": "ECR.2",
-                    "title": "ECR private repositories should have tag immutability configured",
+                    "identifier": "ECR.2", 
+                    "title": "ECR repositories should have tag immutability enabled",
                     "severity": "Medium",
-                    "description": "This control checks whether ECR private repositories have tag immutability enabled",
+                    "description": "Prevent accidental overwriting of container image tags",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Set repository imageTagMutability to IMMUTABLE to prevent accidental overwrites of image tags"
+                        "type": "IaC",
+                        "description": "Configure tag immutability setting to IMMUTABLE for production ECR repositories"
                     }
                 },
                 {
                     "identifier": "ECR.3",
-                    "title": "ECR repositories should have at least one lifecycle policy configured",
-                    "severity": "Low",
-                    "description": "This control checks whether ECR repositories have lifecycle policies configured",
+                    "title": "ECR repositories should have lifecycle policies",
+                    "severity": "Medium",
+                    "description": "Automatically manage image lifecycle to control storage costs and maintain security",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Create and apply lifecycle policies to automatically clean up old or unused container images"
+                        "type": "IaC",
+                        "description": "Create lifecycle policies to remove old images, untagged images, and limit repository size"
                     }
                 }
             ]
@@ -220,66 +190,66 @@
     "cost": [
         {
             "name": "AWS ECR Cost Optimization Best Practices",
-            "version": "2023",
+            "version": "2024",
             "controls": [
                 {
                     "identifier": "COST-01",
-                    "title": "Implement Repository Lifecycle Policies",
+                    "title": "Implement Lifecycle Policies",
                     "severity": "High",
-                    "description": "Configure lifecycle policies to automatically delete unused and old container images to reduce storage costs",
+                    "description": "Automatically delete old and unused container images to reduce storage costs",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Set up lifecycle rules to delete untagged images after 1 day and keep only the latest 10 tagged images per repository"
+                        "type": "IaC",
+                        "description": "Configure lifecycle policies to remove images older than specified days, limit number of images per repository, and delete untagged images"
                     }
                 },
                 {
                     "identifier": "COST-02",
-                    "title": "Optimize Image Size and Layers",
+                    "title": "Optimize Image Layers",
                     "severity": "High",
-                    "description": "Minimize container image size and optimize layers to reduce storage and data transfer costs",
+                    "description": "Reduce image size and storage costs through efficient layering and multi-stage builds",
                     "implementation": {
                         "type": "User",
-                        "description": "Use multi-stage builds, minimize base images, combine RUN commands, and remove unnecessary packages and files"
+                        "description": "Use multi-stage Docker builds, minimize layers, and remove unnecessary packages and files from container images"
                     }
                 },
                 {
                     "identifier": "COST-03",
-                    "title": "Monitor and Analyze Repository Usage",
+                    "title": "Monitor Repository Usage",
                     "severity": "Medium",
-                    "description": "Regularly monitor repository usage and costs to identify optimization opportunities",
+                    "description": "Track repository usage patterns to identify cost optimization opportunities",
                     "implementation": {
-                        "type": "Platform + User",
-                        "description": "Use CloudWatch metrics and AWS Cost Explorer to track ECR usage patterns and storage costs"
+                        "type": "Platform",
+                        "description": "Use CloudWatch metrics and AWS Cost Explorer to monitor ECR storage usage, data transfer costs, and repository access patterns"
                     }
                 },
                 {
                     "identifier": "COST-04",
-                    "title": "Use Regional Repositories",
+                    "title": "Implement Image Deduplication",
                     "severity": "Medium",
-                    "description": "Deploy ECR repositories in the same region as compute resources to minimize data transfer costs",
+                    "description": "Reduce storage costs by avoiding duplicate image layers across repositories",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Create ECR repositories in regions where container workloads are deployed to avoid cross-region data transfer charges"
+                        "type": "User",
+                        "description": "Use common base images across applications and implement consistent tagging strategies to maximize layer sharing"
                     }
                 },
                 {
                     "identifier": "COST-05",
-                    "title": "Implement Image Replication Strategy",
+                    "title": "Regular Repository Cleanup",
                     "severity": "Medium",
-                    "description": "Use ECR replication rules strategically to balance availability and cost",
+                    "description": "Periodically review and clean up unused repositories and images",
                     "implementation": {
-                        "type": "Platform + IaC",
-                        "description": "Configure selective replication rules based on image tags or repository filters rather than replicating all images"
+                        "type": "User",
+                        "description": "Establish processes to regularly audit ECR repositories, remove unused repositories, and clean up test/development images"
                     }
                 },
                 {
                     "identifier": "COST-06",
-                    "title": "Optimize Scanning Costs",
+                    "title": "Optimize Data Transfer",
                     "severity": "Low",
-                    "description": "Balance security scanning needs with cost by optimizing scanning frequency and scope",
+                    "description": "Minimize data transfer costs by using ECR in the same region as compute resources",
                     "implementation": {
-                        "type": "Platform + User",
-                        "description": "Enable scan-on-push for production images only, use basic scanning for development repositories unless enhanced scanning is required"
+                        "type": "IaC",
+                        "description": "Deploy ECR repositories in the same AWS region as ECS, EKS, or EC2 instances to avoid cross-region data transfer charges"
                     }
                 }
             ]

@@ -3,56 +3,76 @@
     "security": [
         {
             "name": "CSA Cloud Controls Matrix",
-            "version": "4.0.10",
+            "version": "v4.0",
             "controls": [
                 {
                     "identifier": "IAM-01",
-                    "title": "Identity and Access Management Policy and Procedures",
-                    "severity": "Critical",
-                    "description": "Establish comprehensive identity and access management policies for Lambda function access",
+                    "title": "Entitlement",
+                    "severity": "High",
+                    "description": "Establish comprehensive identity and access management policies for Lambda functions including least privilege access",
                     "implementation": {
-                        "type": "Platform/IaC",
-                        "description": "Implement IAM policies using least privilege principle, define execution roles with minimal required permissions, and establish service-linked roles for Lambda functions"
+                        "type": "IaC",
+                        "description": "Define IAM roles and policies in CloudFormation/Terraform templates with minimal required permissions for Lambda execution"
+                    }
+                },
+                {
+                    "identifier": "EKM-03",
+                    "title": "Sensitive Data Protection",
+                    "severity": "High", 
+                    "description": "Implement proper encryption key management for Lambda environment variables and data at rest",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure AWS KMS keys for encrypting Lambda environment variables and enable encryption at rest"
                     }
                 },
                 {
                     "identifier": "DSI-01",
-                    "title": "Data Security and Information Lifecycle Management",
-                    "severity": "Critical",
-                    "description": "Implement data classification and protection mechanisms for data processed by Lambda functions",
+                    "title": "Classification",
+                    "severity": "High",
+                    "description": "Classify and protect sensitive data processed by Lambda functions according to data classification policies",
                     "implementation": {
-                        "type": "User/IaC",
-                        "description": "Classify data processed by functions, implement encryption at rest and in transit, use AWS KMS for key management, and establish data retention policies"
+                        "type": "User",
+                        "description": "Implement data classification tagging and ensure sensitive data is encrypted in transit and at rest within Lambda code"
                     }
                 },
                 {
-                    "identifier": "EKM-01",
-                    "title": "Encryption and Key Management",
-                    "severity": "Critical",
-                    "description": "Ensure proper encryption and key management for Lambda environment variables and data",
+                    "identifier": "AIS-01",
+                    "title": "Application Security",
+                    "severity": "Medium",
+                    "description": "Secure Lambda function interfaces and APIs with proper authentication and authorization mechanisms",
                     "implementation": {
-                        "type": "User/IaC",
-                        "description": "Enable encryption for environment variables using AWS KMS, implement proper key rotation policies, and use customer-managed keys for sensitive data"
+                        "type": "IaC",
+                        "description": "Configure API Gateway with appropriate authentication methods and implement function-level security controls"
                     }
                 },
                 {
                     "identifier": "IVS-01",
-                    "title": "Infrastructure and Virtualization Security",
-                    "severity": "High",
-                    "description": "Implement network security controls and VPC configuration for Lambda functions",
+                    "title": "Network Security",
+                    "severity": "Medium",
+                    "description": "Ensure Lambda functions are deployed in secure network configurations with proper VPC settings",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure Lambda functions within VPC when accessing private resources, implement security groups and NACLs, and use VPC endpoints for AWS service communication"
+                        "description": "Configure VPC settings, security groups, and subnets for Lambda functions requiring network isolation"
                     }
                 },
                 {
-                    "identifier": "TVM-01",
-                    "title": "Threat and Vulnerability Management",
-                    "severity": "High",
-                    "description": "Implement vulnerability scanning and threat detection for Lambda functions",
+                    "identifier": "BCR-01",
+                    "title": "Business Continuity Planning",
+                    "severity": "Medium",
+                    "description": "Implement business continuity and disaster recovery procedures for Lambda-based applications",
                     "implementation": {
-                        "type": "Platform/User",
-                        "description": "Enable AWS GuardDuty, implement dependency scanning for function code, use AWS Inspector for container images, and establish vulnerability remediation processes"
+                        "type": "Platform",
+                        "description": "Deploy Lambda functions across multiple availability zones and implement cross-region backup strategies"
+                    }
+                },
+                {
+                    "identifier": "SEF-01",
+                    "title": "Contact / Personnel Security",
+                    "severity": "Low",
+                    "description": "Enable comprehensive logging and monitoring for Lambda functions to support incident response",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure CloudWatch Logs, X-Ray tracing, and CloudTrail for comprehensive Lambda function monitoring"
                     }
                 }
             ]
@@ -64,71 +84,71 @@
                 {
                     "identifier": "AC-2",
                     "title": "Account Management",
-                    "severity": "Critical",
-                    "description": "Implement proper account management for Lambda function access and execution roles",
+                    "severity": "High",
+                    "description": "Manage Lambda function service accounts and execution roles with proper lifecycle management",
                     "implementation": {
-                        "type": "Platform/IaC",
-                        "description": "Create dedicated execution roles for each Lambda function, implement role-based access control, and establish account lifecycle management procedures"
+                        "type": "IaC",
+                        "description": "Implement automated IAM role provisioning and deprovisioning using infrastructure as code with regular access reviews"
                     }
                 },
                 {
                     "identifier": "AC-3",
                     "title": "Access Enforcement",
-                    "severity": "Critical",
-                    "description": "Enforce approved authorizations for logical access to Lambda functions and resources",
+                    "severity": "High",
+                    "description": "Enforce approved authorizations for Lambda function execution and resource access",
                     "implementation": {
-                        "type": "Platform/IaC",
-                        "description": "Implement resource-based policies, use API Gateway for function access control, and configure cross-account access policies with proper conditions"
+                        "type": "Platform",
+                        "description": "Configure resource-based policies and IAM policies to enforce least privilege access for Lambda functions"
                     }
                 },
                 {
                     "identifier": "SC-8",
                     "title": "Transmission Confidentiality and Integrity",
-                    "severity": "Critical",
-                    "description": "Protect the confidentiality and integrity of transmitted information",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of transmitted information to and from Lambda functions",
                     "implementation": {
-                        "type": "User/IaC",
-                        "description": "Use HTTPS/TLS for all API communications, implement certificate pinning where applicable, and encrypt data in transit between Lambda and other services"
+                        "type": "User",
+                        "description": "Implement TLS encryption for all Lambda function communications and validate certificates in function code"
                     }
                 },
                 {
                     "identifier": "AU-2",
                     "title": "Event Logging",
-                    "severity": "High",
-                    "description": "Determine auditable events and ensure Lambda function activities are logged",
+                    "severity": "Medium",
+                    "description": "Enable comprehensive audit logging for Lambda function execution and API calls",
                     "implementation": {
-                        "type": "Platform/IaC",
-                        "description": "Enable CloudTrail for API calls, configure CloudWatch Logs for function execution logs, and implement structured logging within function code"
+                        "type": "Platform",
+                        "description": "Configure CloudWatch Logs retention policies and enable detailed monitoring for all Lambda functions"
                     }
                 },
                 {
-                    "identifier": "SC-7",
-                    "title": "Boundary Protection",
-                    "severity": "High",
-                    "description": "Monitor and control communications at external boundaries and key internal boundaries",
+                    "identifier": "CM-2",
+                    "title": "Baseline Configuration",
+                    "severity": "Medium",
+                    "description": "Establish and maintain baseline configurations for Lambda function deployments",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure VPC boundaries for Lambda functions, implement security groups as firewalls, and use AWS WAF for API Gateway protection"
+                        "description": "Use infrastructure as code templates to maintain consistent Lambda function configurations and deployment baselines"
                     }
                 },
                 {
                     "identifier": "SI-4",
                     "title": "System Monitoring",
-                    "severity": "High",
+                    "severity": "Medium",
                     "description": "Monitor Lambda functions for security events and performance anomalies",
                     "implementation": {
-                        "type": "Platform/User",
-                        "description": "Configure CloudWatch alarms for function metrics, implement AWS X-Ray for distributed tracing, and use AWS Security Hub for centralized monitoring"
+                        "type": "Platform",
+                        "description": "Configure CloudWatch alarms, AWS X-Ray, and GuardDuty for comprehensive Lambda function monitoring"
                     }
                 },
                 {
                     "identifier": "CP-9",
                     "title": "System Backup",
-                    "severity": "Medium",
-                    "description": "Conduct backups of Lambda function code and configuration",
+                    "severity": "Low",
+                    "description": "Conduct backups of Lambda function code and configuration information",
                     "implementation": {
-                        "type": "User/IaC",
-                        "description": "Store function code in version control systems, implement function versioning and aliases, and backup deployment packages to S3"
+                        "type": "User",
+                        "description": "Implement version control for Lambda function code and automated backup of function configurations to S3"
                     }
                 }
             ]
@@ -140,97 +160,51 @@
                 {
                     "identifier": "Lambda.1",
                     "title": "Lambda functions should prohibit public access by other accounts",
-                    "severity": "Critical",
-                    "description": "Ensure Lambda functions are not publicly accessible unless specifically required",
+                    "severity": "High",
+                    "description": "Ensure Lambda functions cannot be invoked by unauthorized external accounts",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Review and restrict resource-based policies, avoid wildcard principals in policies, and implement condition statements for cross-account access"
+                        "type": "Platform",
+                        "description": "Configure resource-based policies to restrict function invocation to authorized accounts and services only"
                     }
                 },
                 {
                     "identifier": "Lambda.2",
                     "title": "Lambda functions should use supported runtimes",
-                    "severity": "Critical",
-                    "description": "Ensure Lambda functions use currently supported runtime versions",
+                    "severity": "High",
+                    "description": "Ensure Lambda functions use supported and up-to-date runtime versions",
                     "implementation": {
                         "type": "User",
-                        "description": "Regularly update function runtimes to supported versions, establish runtime deprecation tracking, and test functions with new runtime versions"
+                        "description": "Regularly update Lambda function runtime versions and implement automated scanning for deprecated runtimes"
                     }
                 },
                 {
                     "identifier": "Lambda.3",
-                    "title": "Lambda functions should be in a VPC",
-                    "severity": "High",
-                    "description": "Configure Lambda functions within a VPC when accessing private resources",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Place functions requiring private resource access in VPC, configure appropriate subnets and security groups, and use VPC endpoints for AWS services"
-                    }
-                },
-                {
-                    "identifier": "Lambda.4",
-                    "title": "Lambda functions should have a dead letter queue configured",
+                    "title": "Lambda functions should use dead letter queues",
                     "severity": "Medium",
-                    "description": "Configure dead letter queues for asynchronous Lambda function invocations",
+                    "description": "Configure dead letter queues for Lambda functions to handle failed executions",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure SQS or SNS as dead letter queue destination, set appropriate retry policies, and implement monitoring for failed invocations"
+                        "description": "Configure SQS or SNS dead letter queues in Lambda function configuration for proper error handling"
                     }
                 },
                 {
                     "identifier": "Lambda.5",
                     "title": "VPC Lambda functions should operate in multiple Availability Zones",
                     "severity": "Medium",
-                    "description": "Ensure VPC-configured Lambda functions can operate across multiple AZs",
+                    "description": "Deploy Lambda functions across multiple AZs for high availability when using VPC configuration",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure function subnets in multiple availability zones, ensure proper subnet routing, and validate cross-AZ connectivity"
-                    }
-                }
-            ]
-        },
-        {
-            "name": "AWS Security Hub",
-            "version": "2023.1.0",
-            "controls": [
-                {
-                    "identifier": "Lambda.ConcurrentExecutions",
-                    "title": "Lambda functions should have reserved concurrency configured",
-                    "severity": "High",
-                    "description": "Configure reserved concurrency to prevent resource exhaustion attacks",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Set appropriate reserved concurrency limits, monitor concurrency usage, and implement throttling controls"
+                        "description": "Configure Lambda VPC settings to include subnets from multiple availability zones in infrastructure templates"
                     }
                 },
                 {
-                    "identifier": "Lambda.EnvironmentEncryption",
-                    "title": "Lambda environment variables should be encrypted",
-                    "severity": "High",
-                    "description": "Encrypt sensitive data in Lambda environment variables",
+                    "identifier": "Lambda.4",
+                    "title": "Lambda functions should have a dead letter queue configured",
+                    "severity": "Low",
+                    "description": "Ensure proper error handling and monitoring for failed Lambda function executions",
                     "implementation": {
-                        "type": "User/IaC",
-                        "description": "Enable KMS encryption for environment variables, use AWS Systems Manager Parameter Store for sensitive configuration, and implement proper key management"
-                    }
-                },
-                {
-                    "identifier": "Lambda.Tracing",
-                    "title": "Lambda functions should have tracing enabled",
-                    "severity": "Medium",
-                    "description": "Enable AWS X-Ray tracing for Lambda functions to improve observability",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Enable X-Ray tracing mode, configure sampling rules, and implement distributed tracing across services"
-                    }
-                },
-                {
-                    "identifier": "Lambda.CodeSigning",
-                    "title": "Lambda functions should use code signing",
-                    "severity": "Medium",
-                    "description": "Implement code signing to ensure function integrity",
-                    "implementation": {
-                        "type": "User/IaC",
-                        "description": "Create signing profiles, configure code signing policies, and establish code integrity verification processes"
+                        "type": "Platform",
+                        "description": "Configure CloudWatch alarms to monitor dead letter queue metrics and implement automated remediation"
                     }
                 }
             ]
@@ -240,76 +214,76 @@
     "cost": [
         {
             "name": "AWS Lambda Cost Optimization Best Practices",
-            "version": "2023",
+            "version": "2024",
             "controls": [
                 {
-                    "identifier": "COST-001",
-                    "title": "Right-size Lambda function memory allocation",
+                    "identifier": "COST-01",
+                    "title": "Right-size Lambda Function Memory",
                     "severity": "High",
-                    "description": "Optimize memory allocation to balance performance and cost",
+                    "description": "Optimize Lambda function memory allocation to balance performance and cost",
                     "implementation": {
                         "type": "User",
-                        "description": "Use AWS Lambda Power Tuning tool to find optimal memory configuration, monitor memory utilization metrics, and adjust memory based on actual usage patterns"
+                        "description": "Use AWS Lambda Power Tuning tool to determine optimal memory configuration and implement automated memory optimization"
                     }
                 },
                 {
-                    "identifier": "COST-002",
-                    "title": "Minimize Lambda function execution time",
+                    "identifier": "COST-02", 
+                    "title": "Implement Function Timeout Optimization",
                     "severity": "High",
-                    "description": "Optimize function code to reduce execution duration and associated costs",
+                    "description": "Set appropriate timeout values to prevent unnecessary charges from long-running functions",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure optimal timeout values in infrastructure templates based on function execution patterns and requirements"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Use Provisioned Concurrency Judiciously",
+                    "severity": "Medium",
+                    "description": "Apply provisioned concurrency only where cold start latency is critical to avoid unnecessary costs",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement application auto-scaling for provisioned concurrency based on usage patterns and schedule-based scaling"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Optimize Code for Efficiency",
+                    "severity": "Medium",
+                    "description": "Write efficient code to minimize execution time and memory usage",
                     "implementation": {
                         "type": "User",
-                        "description": "Optimize code performance, minimize cold start times, use connection pooling, implement efficient algorithms, and reduce package size"
+                        "description": "Implement code optimization techniques including connection reuse, efficient libraries, and minimal package sizes"
                     }
                 },
                 {
-                    "identifier": "COST-003",
-                    "title": "Use appropriate Lambda pricing model",
-                    "severity": "High",
-                    "description": "Choose between on-demand and provisioned concurrency based on usage patterns",
-                    "implementation": {
-                        "type": "IaC/User",
-                        "description": "Analyze traffic patterns, use provisioned concurrency only for predictable workloads, implement auto-scaling for provisioned concurrency, and monitor cost impact"
-                    }
-                },
-                {
-                    "identifier": "COST-004",
-                    "title": "Optimize Lambda function architecture",
+                    "identifier": "COST-05",
+                    "title": "Implement Cost Monitoring and Alerting",
                     "severity": "Medium",
-                    "description": "Design efficient architectures to minimize Lambda invocations and data transfer",
+                    "description": "Monitor Lambda costs and set up alerts for unusual spending patterns",
                     "implementation": {
-                        "type": "User",
-                        "description": "Batch process records where possible, use appropriate event sources, minimize cross-region data transfer, and implement efficient retry mechanisms"
+                        "type": "Platform",
+                        "description": "Configure AWS Cost Explorer, CloudWatch metrics, and billing alerts to monitor Lambda function costs and usage patterns"
                     }
                 },
                 {
-                    "identifier": "COST-005",
-                    "title": "Monitor and alert on Lambda costs",
-                    "severity": "Medium",
-                    "description": "Implement cost monitoring and alerting for Lambda usage",
-                    "implementation": {
-                        "type": "Platform/IaC",
-                        "description": "Set up AWS Cost Explorer reports, configure billing alerts, use AWS Budgets for cost thresholds, and implement cost allocation tags"
-                    }
-                },
-                {
-                    "identifier": "COST-006",
-                    "title": "Clean up unused Lambda resources",
-                    "severity": "Medium",
-                    "description": "Regularly review and remove unused Lambda functions and versions",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Implement automated cleanup of old function versions, remove unused functions, clean up associated resources like layers and triggers, and establish resource lifecycle policies"
-                    }
-                },
-                {
-                    "identifier": "COST-007",
-                    "title": "Optimize Lambda layers usage",
+                    "identifier": "COST-06",
+                    "title": "Use ARM-based Graviton Processors",
                     "severity": "Low",
-                    "description": "Use Lambda layers efficiently to reduce deployment package size and improve reusability",
+                    "description": "Leverage ARM-based processors for better price-performance ratio where compatible",
                     "implementation": {
-                        "type": "User/IaC",
-                        "description": "Share common libraries through layers, optimize layer sizes, version layers appropriately, and avoid duplicate dependencies across layers"
+                        "type": "IaC",
+                        "description": "Configure Lambda functions to use arm64 architecture in infrastructure templates for supported workloads"
+                    }
+                },
+                {
+                    "identifier": "COST-07",
+                    "title": "Implement Function Cleanup and Lifecycle Management",
+                    "severity": "Low",
+                    "description": "Remove unused Lambda functions and versions to avoid unnecessary storage costs",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement automated cleanup of unused function versions and aliases using lifecycle policies and AWS Config rules"
                     }
                 }
             ]

@@ -1,47 +1,32 @@
 # AWS Elastic Load Balancer
 ---
 
-
-### NIST 800-53 Rev 5
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| HIGH | Access Enforcement | AC-3 | Enforce approved authorizations for logical access to information and system resources | **IaC** - Configure IAM policies and roles with least privilege access to ELB resources using resource-based policies and condition statements |  |
-| HIGH | Boundary Protection | SC-7 | Monitor and control communications at the external boundary of the system | **IaC** - Configure security groups and NACLs to restrict traffic, implement WAF rules, and use internal load balancers for private traffic |  |
-| HIGH | Transmission Confidentiality and Integrity | SC-8 | Protect the confidentiality and integrity of transmitted information | **IaC** - Enable SSL/TLS termination on ALB/NLB with strong cipher suites and redirect HTTP to HTTPS |  |
-| HIGH | Event Logging | AU-2 | Identify the types of events that the system is capable of logging | **IaC** - Enable access logging to S3 bucket and configure CloudTrail for ELB API calls |  |
-| MEDIUM | System Monitoring | SI-4 | Monitor the system to detect attacks and indicators of potential attacks | **IaC** - Configure CloudWatch metrics and alarms for ELB performance and security events |  |
-| MEDIUM | Contingency Plan | CP-2 | Develop a contingency plan for the system that identifies essential missions and business functions | **User** - Deploy ELB across multiple AZs and implement cross-region disaster recovery procedures |  |
-
-### CSA Cloud Controls Matrix v5.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| HIGH | Identity and Access Management Policy and Procedures | IAM-01 | Establish and maintain identity and access management policies and procedures | **User** - Implement IAM policies with least privilege for ELB management and establish regular access reviews |  |
-| HIGH | Clock Synchronization | IVS-01 | Ensure system clocks are synchronized across all relevant systems | **Platform** - AWS manages clock synchronization for ELB service infrastructure |  |
-| HIGH | Data Classification | DSI-01 | Data and objects are classified according to organizational policies | **User** - Tag ELB resources with appropriate data classification labels and implement corresponding security controls |  |
-| HIGH | Encryption Key Management | EKM-01 | Encryption keys are managed throughout their lifecycle | **IaC** - Use AWS Certificate Manager for SSL/TLS certificates and implement proper key rotation policies |  |
-| MEDIUM | Policy Enforcement Point | IPY-01 | Implement policy enforcement points for network traffic | **IaC** - Configure listener rules and target group health checks to enforce traffic policies |  |
-| MEDIUM | Threat and Vulnerability Management | TVM-01 | Implement threat and vulnerability management processes | **User** - Regularly assess ELB configurations using AWS Config rules and Security Hub findings |  |
-
-### AWS Foundational Security Best Practices 1.0.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| MEDIUM | Classic Load Balancers with SSL/HTTPS listeners should use predefined security policies | ELB.2 | Classic Load Balancers should use predefined security policies that have strong ciphers | **IaC** - Configure CLB with predefined security policies like ELBSecurityPolicy-TLS-1-2-2017-01 or newer |  |
-| HIGH | Application Load Balancer should be configured to redirect HTTP requests to HTTPS | ELB.3 | ALB listeners should redirect HTTP requests to HTTPS to ensure secure communication | **IaC** - Configure ALB listener rules to redirect HTTP traffic to HTTPS using redirect actions |  |
-| MEDIUM | Application Load Balancers should be configured to drop HTTP headers | ELB.4 | ALB should be configured to drop invalid HTTP headers to prevent potential attacks | **IaC** - Enable routing.http.drop_invalid_header_fields.enabled attribute on ALB |  |
-| MEDIUM | Application and Network Load Balancers should have logging enabled | ELB.5 | Load balancers should have access logging enabled to track requests | **IaC** - Enable access logging to S3 bucket with appropriate bucket policies and lifecycle management |  |
-| LOW | Application Load Balancer deletion protection should be enabled | ELB.6 | Enable deletion protection to prevent accidental deletion of load balancers | **IaC** - Set deletion_protection attribute to true in ALB configuration |  |
-| LOW | Classic Load Balancers should have connection draining enabled | ELB.7 | Enable connection draining to complete in-flight requests during instance deregistration | **IaC** - Configure connection draining with appropriate timeout values on CLB |  |
-
-### AWS Security Hub 2023.1
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| HIGH | Classic Load Balancer listeners should be configured with HTTPS or TLS termination | ELB.1 | CLB should use secure listeners to encrypt data in transit | **IaC** - Configure HTTPS/TLS listeners on CLB with valid SSL certificates from ACM |  |
-| MEDIUM | Classic Load Balancers with SSL/HTTPS listeners should use predefined security policies | ELB.8 | Use predefined security policies with strong encryption algorithms | **IaC** - Apply security policies like ELBSecurityPolicy-TLS-1-2-2017-01 or ELBSecurityPolicy-FS-1-2-Res-2020-10 |  |
-| HIGH | Network Load Balancers should have TLS listeners for encrypted connections | ELB.9 | NLB should use TLS listeners to encrypt traffic between clients and load balancer | **IaC** - Configure TLS listeners on NLB with SSL certificates and appropriate security policies |  |
-| HIGH | Load balancers should span multiple Availability Zones | ELB.10 | Load balancers should be deployed across multiple AZs for high availability | **IaC** - Configure load balancer subnets across at least two different Availability Zones |  |
-| MEDIUM | Load balancer target groups should have health check enabled | ELB.11 | Target groups should have health checks configured to ensure traffic is routed to healthy targets | **IaC** - Configure health check settings including path, interval, timeout, and healthy/unhealthy thresholds |  |
-| LOW | Application Load Balancers should be configured with defensive or strictest desync mitigation mode | ELB.12 | ALB should be configured to handle HTTP desync attacks | **IaC** - Set routing.http.desync_mitigation_mode to defensive or strictest on ALB |  |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **High** | IAM-02 | CSA CCM v4.0 | User Access Management | Implement proper access controls for ELB management operations | **Platform** - Configure IAM policies with least privilege access for ELB operations, use resource-based policies for cross-account access |  |
+| **High** | IAM-03 | CSA CCM v4.0 | Privileged User Management | Restrict administrative access to load balancer configuration | **Platform** - Create dedicated IAM roles for ELB administration with MFA requirements and time-based access controls |  |
+| **High** | IVS-01 | CSA CCM v4.0 | Network Security | Implement network segmentation and security group controls | **IaC** - Configure security groups to restrict inbound/outbound traffic, implement VPC flow logs for network monitoring |  |
+| **High** | DSI-04 | CSA CCM v4.0 | Data Protection in Transit | Encrypt data in transit using TLS/SSL | **IaC** - Configure SSL/TLS listeners with strong cipher suites, implement SSL termination at load balancer level |  |
+| Medium | LOG-02 | CSA CCM v4.0 | Audit Logging | Enable comprehensive logging for load balancer activities | **IaC** - Enable access logging to S3, configure CloudWatch metrics and alarms for monitoring |  |
+| **High** | AC-2 | NIST 800-53 Rev 5 | Account Management | Manage accounts with access to ELB resources | **Platform** - Implement IAM account lifecycle management with regular access reviews and automated provisioning/deprovisioning |  |
+| **High** | AC-3 | NIST 800-53 Rev 5 | Access Enforcement | Enforce approved authorizations for ELB operations | **Platform** - Use IAM policies and resource tags to enforce access controls based on business requirements |  |
+| **High** | SC-7 | NIST 800-53 Rev 5 | Boundary Protection | Monitor and control communications at external boundaries | **IaC** - Configure security groups and NACLs to control traffic flow, implement WAF integration where applicable |  |
+| **High** | SC-8 | NIST 800-53 Rev 5 | Transmission Confidentiality and Integrity | Protection of transmitted information | **IaC** - Configure HTTPS listeners with TLS 1.2+ and strong cipher suites, implement SSL redirect policies |  |
+| Medium | AU-2 | NIST 800-53 Rev 5 | Event Logging | Determine auditable events for load balancer | **IaC** - Enable CloudTrail for API logging, configure access logs with appropriate attributes |  |
+| Medium | CP-9 | NIST 800-53 Rev 5 | System Backup | Backup ELB configuration and associated data | **IaC** - Implement Infrastructure as Code for configuration backup and version control |  |
+| Medium | SI-4 | NIST 800-53 Rev 5 | System Monitoring | Monitor ELB for attacks and indicators of potential attacks | **IaC** - Configure CloudWatch alarms for health checks, response times, and error rates |  |
+| **High** | ELB.3 | AWS Foundational Security Best Practices 1.0 | Classic Load Balancer listeners should be configured with HTTPS or TLS termination | Ensure encrypted connections | **IaC** - Configure HTTPS/TLS listeners and redirect HTTP traffic to HTTPS |  |
+| **High** | ELB.5 | AWS Foundational Security Best Practices 1.0 | Application and Network Load Balancers should span multiple Availability Zones | Ensure high availability and fault tolerance | **IaC** - Configure load balancer with subnets in multiple AZs for redundancy |  |
+| Medium | ELB.2 | AWS Foundational Security Best Practices 1.0 | Classic Load Balancers with SSL/HTTPS listeners should use predefined security policies | Ensure secure SSL policies are applied | **IaC** - Configure ELB with AWS predefined SSL security policies that include strong cipher suites |  |
+| Medium | ELB.4 | AWS Foundational Security Best Practices 1.0 | Application Load Balancers should be configured to drop HTTP headers | Remove unnecessary HTTP headers for security | **IaC** - Enable deletion of HTTP headers attribute on ALB configuration |  |
+| Medium | ELB.6 | AWS Foundational Security Best Practices 1.0 | Application Load Balancer deletion protection should be enabled | Prevent accidental deletion of load balancers | **IaC** - Enable deletion protection attribute in ALB configuration |  |
+| Low | ELB.7 | AWS Foundational Security Best Practices 1.0 | Classic Load Balancers should have connection draining enabled | Gracefully handle instance deregistration | **IaC** - Configure connection draining with appropriate timeout values |  |
+| **High** | ELB.10 | AWS Security Hub Current | Classic Load Balancers should span multiple Availability Zones | Ensure load balancer resilience across AZs | **IaC** - Configure ELB with instances registered in multiple availability zones |  |
+| **High** | ELB.13 | AWS Security Hub Current | Application, Network, and Gateway Load Balancers should span multiple Availability Zones | Ensure multi-AZ deployment for resilience | **IaC** - Deploy load balancer across minimum of two availability zones with appropriate subnet configuration |  |
+| Medium | ELB.8 | AWS Security Hub Current | Classic Load Balancers with SSL/HTTPS listeners should use predefined security policies | Use AWS predefined security policies for SSL configuration | **IaC** - Apply ELBSecurityPolicy with latest TLS versions and secure cipher suites |  |
+| Medium | ELB.12 | AWS Security Hub Current | Application Load Balancers should be configured with defensive or strictest desync mitigation mode | Protect against HTTP desync attacks | **IaC** - Configure desync mitigation mode to defensive or strictest in ALB attributes |  |
+| Medium | ELB.14 | AWS Security Hub Current | Classic Load Balancers should be configured with defensive or strictest desync mitigation mode | Enable desync attack protection | **IaC** - Set desync mitigation mode attribute to defensive or strictest for Classic Load Balancers |  |
+| Low | ELB.9 | AWS Security Hub Current | Classic Load Balancers should have cross-zone load balancing enabled | Distribute traffic evenly across availability zones | **IaC** - Enable cross-zone load balancing attribute in ELB configuration |  |
 
 ## Operational Controls
 ---
@@ -51,17 +36,14 @@
 ## Cost Controls
 ---
 
-
-### AWS ELB Cost Optimization Best Practices 2024
-| Severity | Title | Identifier | Description | Implementation |
-| - | - | - | - | - |
-| HIGH | Right-size Load Balancer Type | COST-01 | Choose the appropriate load balancer type based on actual requirements to avoid unnecessary costs | **User** - Evaluate traffic patterns and requirements to select between ALB, NLB, and CLB based on feature needs and cost structure |
-| HIGH | Optimize Load Balancer Capacity Units (LCU) | COST-02 | Monitor and optimize LCU usage to reduce costs for ALB and NLB | **User** - Monitor CloudWatch metrics for processed bytes, active connections, new connections, and rule evaluations to optimize LCU consumption |
-| MEDIUM | Consolidate Load Balancers | COST-03 | Consolidate multiple load balancers where possible to reduce fixed hourly costs | **IaC** - Use host-based and path-based routing rules to serve multiple applications from a single ALB instead of deploying separate load balancers |
-| MEDIUM | Optimize Cross-Zone Load Balancing | COST-04 | Evaluate cross-zone load balancing settings to optimize data transfer costs | **IaC** - Disable cross-zone load balancing for NLB if traffic distribution allows, and consider regional traffic patterns for ALB |
-| LOW | Implement Efficient Health Checks | COST-05 | Optimize health check frequency and target to reduce unnecessary load and potential costs | **IaC** - Configure appropriate health check intervals and paths to minimize resource consumption while maintaining reliability |
-| MEDIUM | Monitor and Optimize Idle Load Balancers | COST-06 | Identify and remove unused or underutilized load balancers | **User** - Set up CloudWatch alarms and regular reviews to identify load balancers with minimal traffic and evaluate their necessity |
-| LOW | Optimize Target Group Configuration | COST-07 | Configure target groups efficiently to minimize processing overhead | **IaC** - Optimize target group size, deregistration delay, and connection draining settings to reduce unnecessary resource consumption |
-| LOW | Leverage Reserved Capacity | COST-08 | Consider reserved capacity options for predictable, long-term load balancer usage | **User** - Analyze usage patterns and consider AWS Savings Plans or other commitment-based pricing models for consistent workloads |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **High** | COST-ELB-01 | AWS ELB Cost Optimization Best Practices Current | Right-size Load Balancer Type | Choose appropriate load balancer type based on requirements | **User** - Evaluate whether ALB, NLB, CLB, or GWLB best fits your use case to avoid over-provisioning costs |  |
+| **High** | COST-ELB-02 | AWS ELB Cost Optimization Best Practices Current | Optimize Load Balancer Capacity Units (LCUs) | Monitor and optimize LCU consumption for ALB and NLB | **Platform** - Use CloudWatch metrics to monitor LCU usage and optimize rules, connections, and bandwidth to reduce costs |  |
+| Medium | COST-ELB-03 | AWS ELB Cost Optimization Best Practices Current | Consolidate Load Balancers | Use host-based and path-based routing to reduce number of load balancers | **IaC** - Configure multiple target groups and routing rules on single ALB instead of deploying multiple load balancers |  |
+| Medium | COST-ELB-04 | AWS ELB Cost Optimization Best Practices Current | Remove Unused Load Balancers | Identify and decommission idle or unused load balancers | **Platform** - Implement automated monitoring to identify load balancers with zero or minimal traffic and evaluate for removal |  |
+| Medium | COST-ELB-05 | AWS ELB Cost Optimization Best Practices Current | Optimize Data Transfer Costs | Minimize cross-AZ data transfer charges | **IaC** - Enable cross-zone load balancing judiciously and consider target placement to minimize inter-AZ traffic |  |
+| Medium | COST-ELB-07 | AWS ELB Cost Optimization Best Practices Current | Implement Cost Monitoring and Alerting | Set up cost monitoring for ELB resources | **Platform** - Configure AWS Cost Explorer and CloudWatch billing alarms to monitor ELB costs and usage trends |  |
+| Low | COST-ELB-06 | AWS ELB Cost Optimization Best Practices Current | Use Reserved Capacity for Predictable Workloads | Consider reserved pricing for steady-state load balancer usage | **Platform** - Analyze usage patterns and purchase reserved capacity where applicable to reduce costs |  |
+| Low | COST-ELB-08 | AWS ELB Cost Optimization Best Practices Current | Optimize SSL Certificate Management | Use AWS Certificate Manager to avoid third-party certificate costs | **IaC** - Utilize AWS ACM for SSL certificates instead of purchasing third-party certificates |  |
 

@@ -2,265 +2,265 @@
     "service": "AWS Elastic Load Balancer",
     "security": [
         {
-            "name": "NIST 800-53",
-            "version": "Rev 5",
+            "name": "CSA CCM",
+            "version": "v4.0",
             "controls": [
                 {
-                    "identifier": "AC-3",
-                    "title": "Access Enforcement",
-                    "severity": "HIGH",
-                    "description": "Enforce approved authorizations for logical access to information and system resources",
+                    "identifier": "IAM-02",
+                    "title": "User Access Management",
+                    "severity": "High",
+                    "description": "Implement proper access controls for ELB management operations",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Configure IAM policies and roles with least privilege access to ELB resources using resource-based policies and condition statements"
+                        "type": "Platform",
+                        "description": "Configure IAM policies with least privilege access for ELB operations, use resource-based policies for cross-account access"
                     }
                 },
                 {
-                    "identifier": "SC-7",
-                    "title": "Boundary Protection",
-                    "severity": "HIGH",
-                    "description": "Monitor and control communications at the external boundary of the system",
+                    "identifier": "IAM-03",
+                    "title": "Privileged User Management",
+                    "severity": "High",
+                    "description": "Restrict administrative access to load balancer configuration",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Configure security groups and NACLs to restrict traffic, implement WAF rules, and use internal load balancers for private traffic"
+                        "type": "Platform",
+                        "description": "Create dedicated IAM roles for ELB administration with MFA requirements and time-based access controls"
                     }
                 },
                 {
-                    "identifier": "SC-8",
-                    "title": "Transmission Confidentiality and Integrity",
-                    "severity": "HIGH",
-                    "description": "Protect the confidentiality and integrity of transmitted information",
+                    "identifier": "IVS-01",
+                    "title": "Network Security",
+                    "severity": "High",
+                    "description": "Implement network segmentation and security group controls",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable SSL/TLS termination on ALB/NLB with strong cipher suites and redirect HTTP to HTTPS"
+                        "description": "Configure security groups to restrict inbound/outbound traffic, implement VPC flow logs for network monitoring"
                     }
                 },
                 {
-                    "identifier": "AU-2",
-                    "title": "Event Logging",
-                    "severity": "HIGH",
-                    "description": "Identify the types of events that the system is capable of logging",
+                    "identifier": "DSI-04",
+                    "title": "Data Protection in Transit",
+                    "severity": "High",
+                    "description": "Encrypt data in transit using TLS/SSL",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable access logging to S3 bucket and configure CloudTrail for ELB API calls"
+                        "description": "Configure SSL/TLS listeners with strong cipher suites, implement SSL termination at load balancer level"
                     }
                 },
                 {
-                    "identifier": "SI-4",
-                    "title": "System Monitoring",
-                    "severity": "MEDIUM",
-                    "description": "Monitor the system to detect attacks and indicators of potential attacks",
+                    "identifier": "LOG-02",
+                    "title": "Audit Logging",
+                    "severity": "Medium",
+                    "description": "Enable comprehensive logging for load balancer activities",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure CloudWatch metrics and alarms for ELB performance and security events"
-                    }
-                },
-                {
-                    "identifier": "CP-2",
-                    "title": "Contingency Plan",
-                    "severity": "MEDIUM",
-                    "description": "Develop a contingency plan for the system that identifies essential missions and business functions",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Deploy ELB across multiple AZs and implement cross-region disaster recovery procedures"
+                        "description": "Enable access logging to S3, configure CloudWatch metrics and alarms for monitoring"
                     }
                 }
             ]
         },
         {
-            "name": "CSA Cloud Controls Matrix",
-            "version": "v5.0",
+            "name": "NIST 800-53",
+            "version": "Rev 5",
             "controls": [
                 {
-                    "identifier": "IAM-01",
-                    "title": "Identity and Access Management Policy and Procedures",
-                    "severity": "HIGH",
-                    "description": "Establish and maintain identity and access management policies and procedures",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Implement IAM policies with least privilege for ELB management and establish regular access reviews"
-                    }
-                },
-                {
-                    "identifier": "IVS-01",
-                    "title": "Clock Synchronization",
-                    "severity": "HIGH",
-                    "description": "Ensure system clocks are synchronized across all relevant systems",
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "High",
+                    "description": "Manage accounts with access to ELB resources",
                     "implementation": {
                         "type": "Platform",
-                        "description": "AWS manages clock synchronization for ELB service infrastructure"
+                        "description": "Implement IAM account lifecycle management with regular access reviews and automated provisioning/deprovisioning"
                     }
                 },
                 {
-                    "identifier": "DSI-01",
-                    "title": "Data Classification",
-                    "severity": "HIGH",
-                    "description": "Data and objects are classified according to organizational policies",
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "High",
+                    "description": "Enforce approved authorizations for ELB operations",
                     "implementation": {
-                        "type": "User",
-                        "description": "Tag ELB resources with appropriate data classification labels and implement corresponding security controls"
+                        "type": "Platform",
+                        "description": "Use IAM policies and resource tags to enforce access controls based on business requirements"
                     }
                 },
                 {
-                    "identifier": "EKM-01",
-                    "title": "Encryption Key Management",
-                    "severity": "HIGH",
-                    "description": "Encryption keys are managed throughout their lifecycle",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Use AWS Certificate Manager for SSL/TLS certificates and implement proper key rotation policies"
-                    }
-                },
-                {
-                    "identifier": "IPY-01",
-                    "title": "Policy Enforcement Point",
-                    "severity": "MEDIUM",
-                    "description": "Implement policy enforcement points for network traffic",
+                    "identifier": "SC-7",
+                    "title": "Boundary Protection",
+                    "severity": "High",
+                    "description": "Monitor and control communications at external boundaries",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure listener rules and target group health checks to enforce traffic policies"
+                        "description": "Configure security groups and NACLs to control traffic flow, implement WAF integration where applicable"
                     }
                 },
                 {
-                    "identifier": "TVM-01",
-                    "title": "Threat and Vulnerability Management",
-                    "severity": "MEDIUM",
-                    "description": "Implement threat and vulnerability management processes",
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "High",
+                    "description": "Protection of transmitted information",
                     "implementation": {
-                        "type": "User",
-                        "description": "Regularly assess ELB configurations using AWS Config rules and Security Hub findings"
+                        "type": "IaC",
+                        "description": "Configure HTTPS listeners with TLS 1.2+ and strong cipher suites, implement SSL redirect policies"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "Medium",
+                    "description": "Determine auditable events for load balancer",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable CloudTrail for API logging, configure access logs with appropriate attributes"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "System Backup",
+                    "severity": "Medium",
+                    "description": "Backup ELB configuration and associated data",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement Infrastructure as Code for configuration backup and version control"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "Medium",
+                    "description": "Monitor ELB for attacks and indicators of potential attacks",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure CloudWatch alarms for health checks, response times, and error rates"
                     }
                 }
             ]
         },
         {
             "name": "AWS Foundational Security Best Practices",
-            "version": "1.0.0",
+            "version": "1.0",
             "controls": [
                 {
-                    "identifier": "ELB.2",
-                    "title": "Classic Load Balancers with SSL/HTTPS listeners should use predefined security policies",
-                    "severity": "MEDIUM",
-                    "description": "Classic Load Balancers should use predefined security policies that have strong ciphers",
+                    "identifier": "ELB.3",
+                    "title": "Classic Load Balancer listeners should be configured with HTTPS or TLS termination",
+                    "severity": "High",
+                    "description": "Ensure encrypted connections",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure CLB with predefined security policies like ELBSecurityPolicy-TLS-1-2-2017-01 or newer"
+                        "description": "Configure HTTPS/TLS listeners and redirect HTTP traffic to HTTPS"
                     }
                 },
                 {
-                    "identifier": "ELB.3",
-                    "title": "Application Load Balancer should be configured to redirect HTTP requests to HTTPS",
-                    "severity": "HIGH",
-                    "description": "ALB listeners should redirect HTTP requests to HTTPS to ensure secure communication",
+                    "identifier": "ELB.5",
+                    "title": "Application and Network Load Balancers should span multiple Availability Zones",
+                    "severity": "High",
+                    "description": "Ensure high availability and fault tolerance",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure ALB listener rules to redirect HTTP traffic to HTTPS using redirect actions"
+                        "description": "Configure load balancer with subnets in multiple AZs for redundancy"
+                    }
+                },
+                {
+                    "identifier": "ELB.2",
+                    "title": "Classic Load Balancers with SSL/HTTPS listeners should use predefined security policies",
+                    "severity": "Medium",
+                    "description": "Ensure secure SSL policies are applied",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure ELB with AWS predefined SSL security policies that include strong cipher suites"
                     }
                 },
                 {
                     "identifier": "ELB.4",
                     "title": "Application Load Balancers should be configured to drop HTTP headers",
-                    "severity": "MEDIUM",
-                    "description": "ALB should be configured to drop invalid HTTP headers to prevent potential attacks",
+                    "severity": "Medium",
+                    "description": "Remove unnecessary HTTP headers for security",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable routing.http.drop_invalid_header_fields.enabled attribute on ALB"
-                    }
-                },
-                {
-                    "identifier": "ELB.5",
-                    "title": "Application and Network Load Balancers should have logging enabled",
-                    "severity": "MEDIUM",
-                    "description": "Load balancers should have access logging enabled to track requests",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Enable access logging to S3 bucket with appropriate bucket policies and lifecycle management"
+                        "description": "Enable deletion of HTTP headers attribute on ALB configuration"
                     }
                 },
                 {
                     "identifier": "ELB.6",
                     "title": "Application Load Balancer deletion protection should be enabled",
-                    "severity": "LOW",
-                    "description": "Enable deletion protection to prevent accidental deletion of load balancers",
+                    "severity": "Medium",
+                    "description": "Prevent accidental deletion of load balancers",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Set deletion_protection attribute to true in ALB configuration"
+                        "description": "Enable deletion protection attribute in ALB configuration"
                     }
                 },
                 {
                     "identifier": "ELB.7",
                     "title": "Classic Load Balancers should have connection draining enabled",
-                    "severity": "LOW",
-                    "description": "Enable connection draining to complete in-flight requests during instance deregistration",
+                    "severity": "Low",
+                    "description": "Gracefully handle instance deregistration",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure connection draining with appropriate timeout values on CLB"
+                        "description": "Configure connection draining with appropriate timeout values"
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "2023.1",
+            "version": "Current",
             "controls": [
                 {
-                    "identifier": "ELB.1",
-                    "title": "Classic Load Balancer listeners should be configured with HTTPS or TLS termination",
-                    "severity": "HIGH",
-                    "description": "CLB should use secure listeners to encrypt data in transit",
+                    "identifier": "ELB.10",
+                    "title": "Classic Load Balancers should span multiple Availability Zones",
+                    "severity": "High",
+                    "description": "Ensure load balancer resilience across AZs",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure HTTPS/TLS listeners on CLB with valid SSL certificates from ACM"
+                        "description": "Configure ELB with instances registered in multiple availability zones"
+                    }
+                },
+                {
+                    "identifier": "ELB.13",
+                    "title": "Application, Network, and Gateway Load Balancers should span multiple Availability Zones",
+                    "severity": "High",
+                    "description": "Ensure multi-AZ deployment for resilience",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy load balancer across minimum of two availability zones with appropriate subnet configuration"
                     }
                 },
                 {
                     "identifier": "ELB.8",
                     "title": "Classic Load Balancers with SSL/HTTPS listeners should use predefined security policies",
-                    "severity": "MEDIUM",
-                    "description": "Use predefined security policies with strong encryption algorithms",
+                    "severity": "Medium",
+                    "description": "Use AWS predefined security policies for SSL configuration",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Apply security policies like ELBSecurityPolicy-TLS-1-2-2017-01 or ELBSecurityPolicy-FS-1-2-Res-2020-10"
-                    }
-                },
-                {
-                    "identifier": "ELB.9",
-                    "title": "Network Load Balancers should have TLS listeners for encrypted connections",
-                    "severity": "HIGH",
-                    "description": "NLB should use TLS listeners to encrypt traffic between clients and load balancer",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure TLS listeners on NLB with SSL certificates and appropriate security policies"
-                    }
-                },
-                {
-                    "identifier": "ELB.10",
-                    "title": "Load balancers should span multiple Availability Zones",
-                    "severity": "HIGH",
-                    "description": "Load balancers should be deployed across multiple AZs for high availability",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure load balancer subnets across at least two different Availability Zones"
-                    }
-                },
-                {
-                    "identifier": "ELB.11",
-                    "title": "Load balancer target groups should have health check enabled",
-                    "severity": "MEDIUM",
-                    "description": "Target groups should have health checks configured to ensure traffic is routed to healthy targets",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure health check settings including path, interval, timeout, and healthy/unhealthy thresholds"
+                        "description": "Apply ELBSecurityPolicy with latest TLS versions and secure cipher suites"
                     }
                 },
                 {
                     "identifier": "ELB.12",
                     "title": "Application Load Balancers should be configured with defensive or strictest desync mitigation mode",
-                    "severity": "LOW",
-                    "description": "ALB should be configured to handle HTTP desync attacks",
+                    "severity": "Medium",
+                    "description": "Protect against HTTP desync attacks",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Set routing.http.desync_mitigation_mode to defensive or strictest on ALB"
+                        "description": "Configure desync mitigation mode to defensive or strictest in ALB attributes"
+                    }
+                },
+                {
+                    "identifier": "ELB.14",
+                    "title": "Classic Load Balancers should be configured with defensive or strictest desync mitigation mode",
+                    "severity": "Medium",
+                    "description": "Enable desync attack protection",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set desync mitigation mode attribute to defensive or strictest for Classic Load Balancers"
+                    }
+                },
+                {
+                    "identifier": "ELB.9",
+                    "title": "Classic Load Balancers should have cross-zone load balancing enabled",
+                    "severity": "Low",
+                    "description": "Distribute traffic evenly across availability zones",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable cross-zone load balancing attribute in ELB configuration"
                     }
                 }
             ]
@@ -270,86 +270,86 @@
     "cost": [
         {
             "name": "AWS ELB Cost Optimization Best Practices",
-            "version": "2024",
+            "version": "Current",
             "controls": [
                 {
-                    "identifier": "COST-01",
+                    "identifier": "COST-ELB-01",
                     "title": "Right-size Load Balancer Type",
-                    "severity": "HIGH",
-                    "description": "Choose the appropriate load balancer type based on actual requirements to avoid unnecessary costs",
+                    "severity": "High",
+                    "description": "Choose appropriate load balancer type based on requirements",
                     "implementation": {
                         "type": "User",
-                        "description": "Evaluate traffic patterns and requirements to select between ALB, NLB, and CLB based on feature needs and cost structure"
+                        "description": "Evaluate whether ALB, NLB, CLB, or GWLB best fits your use case to avoid over-provisioning costs"
                     }
                 },
                 {
-                    "identifier": "COST-02",
-                    "title": "Optimize Load Balancer Capacity Units (LCU)",
-                    "severity": "HIGH",
-                    "description": "Monitor and optimize LCU usage to reduce costs for ALB and NLB",
+                    "identifier": "COST-ELB-02",
+                    "title": "Optimize Load Balancer Capacity Units (LCUs)",
+                    "severity": "High",
+                    "description": "Monitor and optimize LCU consumption for ALB and NLB",
                     "implementation": {
-                        "type": "User",
-                        "description": "Monitor CloudWatch metrics for processed bytes, active connections, new connections, and rule evaluations to optimize LCU consumption"
+                        "type": "Platform",
+                        "description": "Use CloudWatch metrics to monitor LCU usage and optimize rules, connections, and bandwidth to reduce costs"
                     }
                 },
                 {
-                    "identifier": "COST-03",
+                    "identifier": "COST-ELB-03",
                     "title": "Consolidate Load Balancers",
-                    "severity": "MEDIUM",
-                    "description": "Consolidate multiple load balancers where possible to reduce fixed hourly costs",
+                    "severity": "Medium",
+                    "description": "Use host-based and path-based routing to reduce number of load balancers",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Use host-based and path-based routing rules to serve multiple applications from a single ALB instead of deploying separate load balancers"
+                        "description": "Configure multiple target groups and routing rules on single ALB instead of deploying multiple load balancers"
                     }
                 },
                 {
-                    "identifier": "COST-04",
-                    "title": "Optimize Cross-Zone Load Balancing",
-                    "severity": "MEDIUM",
-                    "description": "Evaluate cross-zone load balancing settings to optimize data transfer costs",
+                    "identifier": "COST-ELB-04",
+                    "title": "Remove Unused Load Balancers",
+                    "severity": "Medium",
+                    "description": "Identify and decommission idle or unused load balancers",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement automated monitoring to identify load balancers with zero or minimal traffic and evaluate for removal"
+                    }
+                },
+                {
+                    "identifier": "COST-ELB-05",
+                    "title": "Optimize Data Transfer Costs",
+                    "severity": "Medium",
+                    "description": "Minimize cross-AZ data transfer charges",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Disable cross-zone load balancing for NLB if traffic distribution allows, and consider regional traffic patterns for ALB"
+                        "description": "Enable cross-zone load balancing judiciously and consider target placement to minimize inter-AZ traffic"
                     }
                 },
                 {
-                    "identifier": "COST-05",
-                    "title": "Implement Efficient Health Checks",
-                    "severity": "LOW",
-                    "description": "Optimize health check frequency and target to reduce unnecessary load and potential costs",
+                    "identifier": "COST-ELB-07",
+                    "title": "Implement Cost Monitoring and Alerting",
+                    "severity": "Medium",
+                    "description": "Set up cost monitoring for ELB resources",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure AWS Cost Explorer and CloudWatch billing alarms to monitor ELB costs and usage trends"
+                    }
+                },
+                {
+                    "identifier": "COST-ELB-06",
+                    "title": "Use Reserved Capacity for Predictable Workloads",
+                    "severity": "Low",
+                    "description": "Consider reserved pricing for steady-state load balancer usage",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Analyze usage patterns and purchase reserved capacity where applicable to reduce costs"
+                    }
+                },
+                {
+                    "identifier": "COST-ELB-08",
+                    "title": "Optimize SSL Certificate Management",
+                    "severity": "Low",
+                    "description": "Use AWS Certificate Manager to avoid third-party certificate costs",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure appropriate health check intervals and paths to minimize resource consumption while maintaining reliability"
-                    }
-                },
-                {
-                    "identifier": "COST-06",
-                    "title": "Monitor and Optimize Idle Load Balancers",
-                    "severity": "MEDIUM",
-                    "description": "Identify and remove unused or underutilized load balancers",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Set up CloudWatch alarms and regular reviews to identify load balancers with minimal traffic and evaluate their necessity"
-                    }
-                },
-                {
-                    "identifier": "COST-07",
-                    "title": "Optimize Target Group Configuration",
-                    "severity": "LOW",
-                    "description": "Configure target groups efficiently to minimize processing overhead",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Optimize target group size, deregistration delay, and connection draining settings to reduce unnecessary resource consumption"
-                    }
-                },
-                {
-                    "identifier": "COST-08",
-                    "title": "Leverage Reserved Capacity",
-                    "severity": "LOW",
-                    "description": "Consider reserved capacity options for predictable, long-term load balancer usage",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Analyze usage patterns and consider AWS Savings Plans or other commitment-based pricing models for consistent workloads"
+                        "description": "Utilize AWS ACM for SSL certificates instead of purchasing third-party certificates"
                     }
                 }
             ]

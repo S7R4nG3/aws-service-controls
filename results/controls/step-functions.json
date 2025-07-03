@@ -3,174 +3,224 @@
     "security": [
         {
             "name": "CSA Cloud Controls Matrix",
-            "version": "v5.0",
+            "version": "v4.0",
             "controls": [
                 {
                     "identifier": "IAM-01",
-                    "title": "Identity and Access Management Policy and Procedures",
-                    "severity": "High",
-                    "description": "Establish and maintain identity and access management policies for Step Functions resources",
+                    "title": "Entitlement",
+                    "severity": "Critical",
+                    "description": "Implement strong identity verification and access controls for Step Functions execution and management",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement IAM policies with least privilege access, define roles for Step Functions execution, and establish proper resource-based policies"
-                    }
-                },
-                {
-                    "identifier": "DCS-01",
-                    "title": "Data Classification",
-                    "severity": "High",
-                    "description": "Classify data processed by Step Functions workflows and apply appropriate protection measures",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Identify sensitive data in state machines, implement data sanitization in workflow definitions, and ensure proper data handling procedures"
+                        "description": "Use AWS IAM roles with least privilege principles for Step Functions execution roles and user access"
                     }
                 },
                 {
                     "identifier": "EKM-01",
-                    "title": "Encryption Key Management",
+                    "title": "Encryption & Key Management",
+                    "severity": "Critical",
+                    "description": "Implement proper encryption and key management for Step Functions state data",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure KMS encryption for Step Functions state machines and use customer-managed keys"
+                    }
+                },
+                {
+                    "identifier": "DSI-02",
+                    "title": "Data Security & Information Lifecycle Management",
                     "severity": "High",
-                    "description": "Implement proper encryption key management for Step Functions data at rest and in transit",
+                    "description": "Implement data classification and protection measures for Step Functions workflows",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Configure KMS keys for encrypting Step Functions logs and state data, implement key rotation policies, and manage key access permissions"
+                        "type": "User",
+                        "description": "Classify data processed by Step Functions and implement appropriate security controls based on sensitivity"
                     }
                 },
                 {
-                    "identifier": "LOG-01",
-                    "title": "Audit Logging Policy and Procedures",
-                    "severity": "Medium",
-                    "description": "Enable comprehensive logging for Step Functions activities and state changes",
+                    "identifier": "GRM-01",
+                    "title": "Governance and Risk Management",
+                    "severity": "High",
+                    "description": "Enable comprehensive logging for Step Functions execution and API calls",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Enable CloudWatch Logs for Step Functions, configure CloudTrail for API logging, and implement log retention policies"
+                        "type": "Platform",
+                        "description": "Enable CloudWatch Logs for Step Functions and configure CloudTrail for API logging"
                     }
                 },
                 {
-                    "identifier": "NET-01",
-                    "title": "Network Security Policy",
+                    "identifier": "BCR-01",
+                    "title": "Business Continuity Management & Operational Resilience",
                     "severity": "Medium",
-                    "description": "Implement network security controls for Step Functions VPC endpoints and service communications",
+                    "description": "Implement business continuity and disaster recovery for Step Functions",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure VPC endpoints for Step Functions, implement security groups and NACLs, and ensure encrypted communications"
+                        "description": "Design Step Functions with cross-region failover capabilities and backup strategies"
                     }
                 }
             ]
         },
         {
-            "name": "NIST SP 800-53",
-            "version": "Rev. 5",
+            "name": "NIST 800-53",
+            "version": "Rev 5",
             "controls": [
                 {
-                    "identifier": "AC-3",
-                    "title": "Access Enforcement",
-                    "severity": "High",
-                    "description": "Enforce approved authorizations for logical access to Step Functions resources",
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "Critical",
+                    "description": "Manage accounts with access to Step Functions resources",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Implement resource-based policies, IAM roles with least privilege, and condition-based access controls for Step Functions"
+                        "type": "Platform",
+                        "description": "Use AWS Organizations and IAM to manage accounts and roles accessing Step Functions"
                     }
                 },
                 {
                     "identifier": "SC-8",
                     "title": "Transmission Confidentiality and Integrity",
-                    "severity": "High",
-                    "description": "Protect the confidentiality and integrity of transmitted information in Step Functions workflows",
+                    "severity": "Critical",
+                    "description": "Protect data in transit for Step Functions communications",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Leverage AWS native encryption in transit, ensure HTTPS endpoints for integrations, and validate SSL/TLS configurations"
-                    }
-                },
-                {
-                    "identifier": "SC-28",
-                    "title": "Protection of Information at Rest",
-                    "severity": "High",
-                    "description": "Protect the confidentiality and integrity of information at rest in Step Functions",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Enable encryption for Step Functions state data and logs using AWS KMS, configure appropriate encryption keys and access policies"
+                        "description": "Ensure all Step Functions communications use HTTPS/TLS encryption"
                     }
                 },
                 {
                     "identifier": "AU-2",
                     "title": "Event Logging",
-                    "severity": "Medium",
-                    "description": "Identify the types of events to be logged for Step Functions activities",
+                    "severity": "High",
+                    "description": "Generate audit records for Step Functions events",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure CloudWatch Logs for execution history, enable CloudTrail for API calls, and implement structured logging for workflow events"
+                        "description": "Configure CloudWatch Logs and CloudTrail to capture Step Functions execution events"
                     }
                 },
                 {
                     "identifier": "SI-4",
                     "title": "System Monitoring",
-                    "severity": "Medium",
-                    "description": "Monitor Step Functions for attacks, intrusions, and unauthorized activities",
+                    "severity": "High",
+                    "description": "Monitor Step Functions for security events and anomalies",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Implement CloudWatch metrics and alarms, configure AWS Config rules for compliance monitoring, and set up security event detection"
+                        "type": "Platform",
+                        "description": "Use CloudWatch metrics and alarms to monitor Step Functions execution patterns"
                     }
                 },
                 {
-                    "identifier": "CP-9",
-                    "title": "System Backup",
-                    "severity": "Low",
-                    "description": "Conduct backups of Step Functions configurations and state machine definitions",
+                    "identifier": "CP-2",
+                    "title": "Contingency Plan",
+                    "severity": "Medium",
+                    "description": "Develop contingency plans for Step Functions failures",
                     "implementation": {
                         "type": "User",
-                        "description": "Version control state machine definitions, backup IAM policies and configurations, and maintain disaster recovery procedures"
+                        "description": "Create documented procedures for Step Functions failure scenarios and recovery"
                     }
                 }
             ]
         },
         {
             "name": "AWS Foundational Security Best Practices",
-            "version": "1.0",
+            "version": "1.0.0",
             "controls": [
                 {
                     "identifier": "StepFunctions.1",
                     "title": "Step Functions state machines should have logging turned on",
-                    "severity": "Medium",
-                    "description": "Step Functions state machines should have logging enabled to CloudWatch Logs for monitoring and troubleshooting",
+                    "severity": "Critical",
+                    "description": "Step Functions state machines should have logging enabled to CloudWatch Logs",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure loggingConfiguration in state machine definition with appropriate log level (ALL, ERROR, FATAL, or OFF) and CloudWatch Logs destination"
+                        "description": "Configure loggingConfiguration in Step Functions state machine definition with CloudWatch Logs destination"
                     }
                 },
                 {
-                    "identifier": "StepFunctions.2",
-                    "title": "Step Functions state machines should not have a dangling IAM role",
-                    "severity": "High",
-                    "description": "Step Functions state machines should have valid IAM roles that exist and can be assumed by the service",
+                    "identifier": "IAM.1",
+                    "title": "IAM policies should not allow full administrative privileges",
+                    "severity": "Critical",
+                    "description": "Step Functions execution roles should follow least privilege principle",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Ensure IAM roles referenced in state machines exist, have proper trust policies, and include necessary permissions for integrated services"
+                        "description": "Create specific IAM policies for Step Functions with only required permissions"
+                    }
+                },
+                {
+                    "identifier": "CloudTrail.1",
+                    "title": "CloudTrail should be enabled and configured with at least one multi-Region trail",
+                    "severity": "High",
+                    "description": "Enable CloudTrail to log Step Functions API calls",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure CloudTrail to capture Step Functions API calls across all regions"
+                    }
+                },
+                {
+                    "identifier": "KMS.1",
+                    "title": "Customer managed keys should be rotated annually",
+                    "severity": "High",
+                    "description": "Enable automatic key rotation for KMS keys used with Step Functions",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure automatic key rotation for KMS keys used to encrypt Step Functions data"
+                    }
+                },
+                {
+                    "identifier": "CloudWatch.1",
+                    "title": "CloudWatch alarms should be configured for Step Functions metrics",
+                    "severity": "Medium",
+                    "description": "Set up CloudWatch alarms for Step Functions execution failures and performance",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create CloudWatch alarms for ExecutionsFailed, ExecutionsTimedOut, and other critical metrics"
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "Latest",
+            "version": "2024.1",
             "controls": [
                 {
                     "identifier": "StepFunctions.1",
                     "title": "Step Functions state machines should have logging turned on",
-                    "severity": "Medium",
-                    "description": "This control checks whether an AWS Step Functions state machine has logging turned on",
+                    "severity": "Critical",
+                    "description": "Step Functions state machines should have logging enabled to CloudWatch Logs",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable logging in Step Functions state machine definition by configuring loggingConfiguration with appropriate CloudWatch Logs ARN and log level"
+                        "description": "Configure loggingConfiguration in Step Functions state machine definition with CloudWatch Logs destination"
                     }
                 },
                 {
-                    "identifier": "StepFunctions.2",
-                    "title": "Step Functions state machines should not have a dangling IAM role",
-                    "severity": "High",
-                    "description": "This control checks whether Step Functions state machines have IAM roles that can be assumed by the service",
+                    "identifier": "IAM.1",
+                    "title": "IAM policies should not allow full administrative privileges",
+                    "severity": "Critical",
+                    "description": "Step Functions execution roles should follow least privilege principle",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Validate IAM role ARNs in state machine definitions, ensure roles exist and have proper trust relationships with states.amazonaws.com"
+                        "description": "Review and minimize IAM permissions for Step Functions execution roles regularly"
+                    }
+                },
+                {
+                    "identifier": "CloudTrail.2",
+                    "title": "CloudTrail should have encryption at-rest enabled",
+                    "severity": "High",
+                    "description": "Encrypt CloudTrail logs that capture Step Functions API calls",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure CloudTrail with KMS encryption for Step Functions API audit logs"
+                    }
+                },
+                {
+                    "identifier": "KMS.4",
+                    "title": "AWS KMS key rotation should be enabled",
+                    "severity": "High",
+                    "description": "Enable automatic key rotation for KMS keys used with Step Functions",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure automatic key rotation for KMS keys used to encrypt Step Functions data"
+                    }
+                },
+                {
+                    "identifier": "CloudWatch.13",
+                    "title": "Route 53 public hosted zones should log DNS queries",
+                    "severity": "Medium",
+                    "description": "Configure comprehensive monitoring for Step Functions execution and performance",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Set up CloudWatch dashboards and SNS notifications for Step Functions monitoring"
                     }
                 }
             ]
@@ -180,76 +230,76 @@
     "cost": [
         {
             "name": "AWS Step Functions Cost Optimization Best Practices",
-            "version": "Latest",
+            "version": "2024.1",
             "controls": [
                 {
-                    "identifier": "COST-01",
-                    "title": "Choose appropriate Step Functions workflow type",
+                    "identifier": "COST-SF-01",
+                    "title": "Use Express Workflows for high-volume, short-duration workloads",
                     "severity": "High",
-                    "description": "Select Standard or Express workflows based on execution patterns and duration to optimize costs",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Use Express workflows for high-volume, short-duration workloads (under 5 minutes) and Standard workflows for long-running processes with complex error handling"
-                    }
-                },
-                {
-                    "identifier": "COST-02",
-                    "title": "Optimize state transitions",
-                    "severity": "High",
-                    "description": "Minimize the number of state transitions to reduce Step Functions charges",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Combine multiple simple states into single states where possible, use parallel states efficiently, and avoid unnecessary pass states"
-                    }
-                },
-                {
-                    "identifier": "COST-03",
-                    "title": "Implement efficient error handling",
-                    "severity": "Medium",
-                    "description": "Design error handling to minimize retry costs and failed state transitions",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Configure appropriate retry intervals and maximum attempts, implement circuit breaker patterns, and use exponential backoff for retries"
-                    }
-                },
-                {
-                    "identifier": "COST-04",
-                    "title": "Monitor and analyze execution patterns",
-                    "severity": "Medium",
-                    "description": "Use CloudWatch metrics to monitor execution costs and identify optimization opportunities",
+                    "description": "Implement Express Workflows instead of Standard Workflows for high-frequency, short-duration executions",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Set up CloudWatch dashboards for execution metrics, implement cost alerts for unexpected charges, and regularly review execution patterns"
+                        "description": "Configure Step Functions with Express Workflow type for workloads with execution duration under 5 minutes and high frequency"
                     }
                 },
                 {
-                    "identifier": "COST-05",
-                    "title": "Optimize payload sizes",
+                    "identifier": "COST-SF-02",
+                    "title": "Optimize state transitions and reduce unnecessary steps",
+                    "severity": "High",
+                    "description": "Minimize the number of state transitions to reduce per-transition costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Review workflow definitions to combine states where possible and eliminate unnecessary Pass states"
+                    }
+                },
+                {
+                    "identifier": "COST-SF-03",
+                    "title": "Implement proper timeout configurations",
                     "severity": "Medium",
-                    "description": "Minimize data passed between states to reduce execution costs and improve performance",
+                    "description": "Set appropriate timeouts to prevent long-running executions that increase costs",
                     "implementation": {
-                        "type": "User",
-                        "description": "Use ResultPath and Parameters to filter data between states, store large payloads in S3 and pass references, and implement data compression where appropriate"
+                        "type": "IaC",
+                        "description": "Configure TimeoutSeconds for tasks and overall execution to prevent runaway costs"
                     }
                 },
                 {
-                    "identifier": "COST-06",
-                    "title": "Use appropriate timeout values",
-                    "severity": "Low",
-                    "description": "Set reasonable timeout values to prevent long-running executions that incur unnecessary costs",
+                    "identifier": "COST-SF-04",
+                    "title": "Use Map state efficiently for parallel processing",
+                    "severity": "Medium",
+                    "description": "Optimize Map state configurations to balance performance and cost",
                     "implementation": {
                         "type": "User",
-                        "description": "Configure TimeoutSeconds for states and workflows based on expected execution times, implement heartbeat timeouts for activities, and monitor timeout patterns"
+                        "description": "Configure MaxConcurrency in Map states to control parallel execution costs"
                     }
                 },
                 {
-                    "identifier": "COST-07",
-                    "title": "Implement workflow versioning and cleanup",
+                    "identifier": "COST-SF-05",
+                    "title": "Monitor and analyze Step Functions costs regularly",
+                    "severity": "Medium",
+                    "description": "Implement cost monitoring and analysis for Step Functions usage",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Use AWS Cost Explorer and CloudWatch metrics to track Step Functions costs and optimize based on usage patterns"
+                    }
+                },
+                {
+                    "identifier": "COST-SF-06",
+                    "title": "Optimize data payload sizes",
                     "severity": "Low",
-                    "description": "Manage state machine versions and clean up unused resources to avoid unnecessary storage costs",
+                    "description": "Minimize data passed between states to reduce storage and transfer costs",
                     "implementation": {
                         "type": "User",
-                        "description": "Regularly review and delete unused state machine versions, implement automated cleanup procedures, and archive old execution history data"
+                        "description": "Use S3 or other storage services for large payloads and pass references instead of full data"
+                    }
+                },
+                {
+                    "identifier": "COST-SF-07",
+                    "title": "Implement execution history retention policies",
+                    "severity": "Low",
+                    "description": "Configure appropriate retention policies for Step Functions execution history",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Use CloudWatch Logs retention settings to manage Step Functions log retention and associated costs"
                     }
                 }
             ]

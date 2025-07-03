@@ -2,47 +2,27 @@
     "service": "AWS Kinesis Data Streams",
     "security": [
         {
-            "name": "CSA CCM v5",
-            "version": "5.0",
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
             "controls": [
                 {
-                    "identifier": "IAM-01",
-                    "title": "Identity and Access Management",
-                    "severity": "high",
-                    "description": "Implement proper identity and access management controls for Kinesis Data Streams access",
+                    "identifier": "Kinesis.2",
+                    "title": "Kinesis Data Streams should have server-side encryption enabled",
+                    "severity": "Medium",
+                    "description": "This control checks whether server-side encryption is enabled for Amazon Kinesis Data Streams",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure IAM policies with least privilege access using specific Kinesis actions and resource ARNs in CloudFormation/Terraform templates"
+                        "description": "Configure server-side encryption using AWS KMS keys in Terraform or CloudFormation templates with encryption_type parameter"
                     }
                 },
                 {
-                    "identifier": "DSI-01",
-                    "title": "Data Security and Information Lifecycle Management",
-                    "severity": "high",
-                    "description": "Ensure data encryption at rest and in transit for streaming data",
+                    "identifier": "Kinesis.1",
+                    "title": "Kinesis Data Streams should be encrypted at rest",
+                    "severity": "Medium",
+                    "description": "This control checks whether Amazon Kinesis Data Streams are encrypted at rest with server-side encryption",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable server-side encryption using AWS KMS keys and enforce HTTPS/TLS for data producers and consumers"
-                    }
-                },
-                {
-                    "identifier": "DSI-02",
-                    "title": "Data Classification",
-                    "severity": "medium",
-                    "description": "Classify and tag streaming data based on sensitivity levels",
-                    "implementation": {
-                        "type": "user",
-                        "description": "Implement data classification tags on Kinesis streams and establish data handling procedures based on classification"
-                    }
-                },
-                {
-                    "identifier": "LOG-01",
-                    "title": "Audit Logging and Monitoring",
-                    "severity": "medium",
-                    "description": "Enable comprehensive logging and monitoring of Kinesis Data Streams activities",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure CloudTrail, CloudWatch metrics, and VPC Flow Logs for comprehensive monitoring of stream access and operations"
+                        "description": "Define IAM roles and policies with minimal required permissions for producers and consumers in IaC templates"
                     }
                 }
             ]
@@ -52,155 +32,155 @@
             "version": "Rev 5",
             "controls": [
                 {
-                    "identifier": "AC-3",
-                    "title": "Access Enforcement",
-                    "severity": "high",
-                    "description": "Enforce approved authorizations for logical access to Kinesis streams",
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "Critical",
+                    "description": "Manage user accounts and access to Kinesis Data Streams with proper authentication and authorization",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Implement resource-based policies and IAM roles with condition statements to control access to specific streams and operations"
+                        "type": "Platform",
+                        "description": "Configure AWS IAM with MFA enforcement and regular access reviews for Kinesis stream access"
                     }
                 },
                 {
                     "identifier": "SC-8",
                     "title": "Transmission Confidentiality and Integrity",
-                    "severity": "high",
-                    "description": "Protect the confidentiality and integrity of transmitted information",
+                    "severity": "Critical",
+                    "description": "Protect data in transit to and from Kinesis Data Streams using encryption",
                     "implementation": {
-                        "type": "platform",
-                        "description": "AWS provides TLS encryption for data in transit by default; ensure client applications use HTTPS endpoints"
+                        "type": "User",
+                        "description": "Use HTTPS/TLS for all API calls and configure client-side encryption for sensitive data"
                     }
                 },
                 {
-                    "identifier": "SC-28",
-                    "title": "Protection of Information at Rest",
-                    "severity": "high",
-                    "description": "Protect the confidentiality and integrity of information at rest",
+                    "identifier": "SC-13",
+                    "title": "Cryptographic Protection",
+                    "severity": "High",
+                    "description": "Use FIPS 140-2 validated cryptographic modules for data protection",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure server-side encryption with customer-managed KMS keys for data at rest in Kinesis streams"
+                        "description": "Configure AWS KMS with customer-managed keys and enable encryption for all streams"
                     }
                 },
                 {
                     "identifier": "AU-2",
                     "title": "Event Logging",
-                    "severity": "medium",
-                    "description": "Ensure auditable events are defined and logging is configured",
+                    "severity": "High",
+                    "description": "Enable comprehensive logging of all Kinesis Data Streams activities",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable CloudTrail logging for all Kinesis API calls and configure CloudWatch for operational metrics"
-                    }
-                },
-                {
-                    "identifier": "CP-9",
-                    "title": "Information System Backup",
-                    "severity": "medium",
-                    "description": "Conduct backups of user-level information contained in the information system",
-                    "implementation": {
-                        "type": "user",
-                        "description": "Implement application-level data archival to S3 or other durable storage for critical streaming data"
+                        "description": "Enable CloudTrail logging for all Kinesis API calls and configure CloudWatch for stream metrics"
                     }
                 },
                 {
                     "identifier": "SI-4",
-                    "title": "Information System Monitoring",
-                    "severity": "medium",
-                    "description": "Monitor the information system to detect attacks and indicators of potential attacks",
+                    "title": "System Monitoring",
+                    "severity": "High",
+                    "description": "Monitor Kinesis Data Streams for unauthorized access and anomalous activities",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure CloudWatch alarms for unusual access patterns and integrate with AWS Security Hub"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "System Backup",
+                    "severity": "Medium",
+                    "description": "Implement backup and recovery procedures for critical stream configurations",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure CloudWatch alarms for anomalous activity, failed API calls, and unusual data patterns in streams"
+                        "description": "Version control all stream configurations and implement automated backup of stream metadata"
                     }
                 }
             ]
         },
         {
-            "name": "AWS Foundational Security Best Practices",
-            "version": "1.0",
+            "name": "CSA CCM",
+            "version": "v4.0.10",
             "controls": [
                 {
-                    "identifier": "Kinesis.1",
-                    "title": "Kinesis Data Streams should be encrypted at rest",
-                    "severity": "high",
-                    "description": "Kinesis Data Streams should have server-side encryption enabled",
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management",
+                    "severity": "Critical",
+                    "description": "Implement strong identity and access management controls for Kinesis Data Streams",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Enable server-side encryption using AWS managed keys or customer managed KMS keys in stream configuration"
+                        "type": "Platform",
+                        "description": "Configure AWS IAM with role-based access control, MFA, and regular access certifications"
                     }
                 },
                 {
-                    "identifier": "IAM.1",
-                    "title": "IAM policies should not allow full administrative privileges",
-                    "severity": "high",
-                    "description": "Avoid overly permissive IAM policies for Kinesis access",
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "Critical",
+                    "description": "Classify and protect data throughout its lifecycle in Kinesis Data Streams",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Create specific IAM policies with minimal required permissions for Kinesis operations, avoiding wildcard permissions"
+                        "type": "User",
+                        "description": "Implement data classification tags and configure appropriate retention policies based on data sensitivity"
                     }
                 },
                 {
-                    "identifier": "CloudTrail.1",
-                    "title": "CloudTrail should be enabled and configured with at least one multi-Region trail",
-                    "severity": "medium",
-                    "description": "Enable CloudTrail to log Kinesis API activities across regions",
+                    "identifier": "EKM-01",
+                    "title": "Encryption and Key Management",
+                    "severity": "High",
+                    "description": "Implement proper encryption and key management for Kinesis Data Streams",
                     "implementation": {
-                        "type": "platform",
-                        "description": "Ensure CloudTrail is enabled at the account level to capture all Kinesis API calls and management events"
+                        "type": "IaC",
+                        "description": "Use AWS KMS with customer-managed keys and implement key rotation policies"
                     }
                 },
                 {
-                    "identifier": "CloudWatch.1",
-                    "title": "CloudWatch should be configured to monitor Kinesis streams",
-                    "severity": "medium",
-                    "description": "Monitor Kinesis streams performance and security metrics",
+                    "identifier": "IVS-01",
+                    "title": "Infrastructure and Virtualization Security",
+                    "severity": "High",
+                    "description": "Secure the underlying infrastructure supporting Kinesis Data Streams",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure CloudWatch dashboards and alarms for key Kinesis metrics including throughput, errors, and iterator age"
+                        "description": "Deploy streams in private subnets with proper security groups and NACLs"
+                    }
+                },
+                {
+                    "identifier": "BCR-01",
+                    "title": "Business Continuity Management and Operational Resilience",
+                    "severity": "Medium",
+                    "description": "Ensure business continuity and operational resilience of Kinesis Data Streams",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure cross-region replication and implement disaster recovery procedures"
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "Current",
+            "version": "Latest",
             "controls": [
                 {
-                    "identifier": "KDS.1",
-                    "title": "Kinesis Data Streams should be encrypted at rest with AWS KMS",
-                    "severity": "high",
-                    "description": "Ensure Kinesis streams are encrypted using AWS KMS for data protection",
+                    "identifier": "Kinesis.1",
+                    "title": "Kinesis Data Streams should be encrypted at rest",
+                    "severity": "Medium",
+                    "description": "This control checks whether Amazon Kinesis Data Streams are encrypted at rest with server-side encryption",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure StreamEncryption property with KMS key ARN in infrastructure templates"
+                        "description": "Enable server-side encryption using AWS KMS in stream configuration templates"
                     }
                 },
                 {
-                    "identifier": "VPC.1",
-                    "title": "VPC endpoints should be used for Kinesis access from private subnets",
-                    "severity": "medium",
-                    "description": "Use VPC endpoints to access Kinesis without internet gateway",
+                    "identifier": "CloudTrail.1",
+                    "title": "CloudTrail should be enabled and configured with at least one multi-Region trail that includes read and write management events",
+                    "severity": "High",
+                    "description": "AWS CloudTrail can help in non-repudiation by recording AWS Management Console actions and API calls",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Create VPC endpoints for Kinesis service and configure route tables to use private connectivity"
+                        "type": "Platform",
+                        "description": "Configure CloudTrail with S3 bucket logging and log file validation enabled"
                     }
                 },
                 {
-                    "identifier": "IAM.2",
-                    "title": "Cross-account access should use roles not users",
-                    "severity": "medium",
-                    "description": "Use IAM roles for cross-account Kinesis access instead of IAM users",
+                    "identifier": "Config.1",
+                    "title": "AWS Config should be enabled",
+                    "severity": "Medium",
+                    "description": "This control checks whether AWS Config is enabled in the account for the local Region and is recording all resources",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Create cross-account IAM roles with trust policies for external account access to Kinesis streams"
-                    }
-                },
-                {
-                    "identifier": "LOG.1",
-                    "title": "API logging should be enabled for security monitoring",
-                    "severity": "low",
-                    "description": "Enable comprehensive API logging for security analysis",
-                    "implementation": {
-                        "type": "platform",
-                        "description": "Ensure CloudTrail data events are enabled for Kinesis streams to capture detailed API activity"
+                        "type": "Platform",
+                        "description": "Enable AWS Config rules to monitor Kinesis stream configuration compliance"
                     }
                 }
             ]
@@ -210,76 +190,76 @@
     "cost": [
         {
             "name": "AWS Kinesis Data Streams Cost Optimization",
-            "version": "Current",
+            "version": "Latest",
             "controls": [
                 {
                     "identifier": "COST-01",
-                    "title": "Right-size shard capacity",
-                    "severity": "high",
-                    "description": "Monitor and adjust the number of shards based on actual throughput requirements",
+                    "title": "Right-size shard capacity based on throughput requirements",
+                    "severity": "High",
+                    "description": "Monitor and adjust shard count to match actual data throughput to avoid over-provisioning",
                     "implementation": {
-                        "type": "user",
-                        "description": "Use CloudWatch metrics to monitor IncomingRecords, OutgoingRecords, and IteratorAgeMilliseconds to determine optimal shard count and implement auto-scaling policies"
+                        "type": "Platform",
+                        "description": "Use CloudWatch metrics to monitor shard utilization and implement auto-scaling or manual adjustments"
                     }
                 },
                 {
                     "identifier": "COST-02",
                     "title": "Optimize data retention period",
-                    "severity": "high",
-                    "description": "Set appropriate retention periods to balance operational needs with storage costs",
+                    "severity": "High",
+                    "description": "Set appropriate retention periods to balance data availability with storage costs",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure RetentionPeriodHours parameter based on business requirements, default is 24 hours but can be extended up to 365 days"
+                        "description": "Configure retention period parameter in stream configuration based on business requirements"
                     }
                 },
                 {
                     "identifier": "COST-03",
-                    "title": "Use on-demand capacity mode judiciously",
-                    "severity": "medium",
-                    "description": "Evaluate on-demand vs provisioned capacity modes based on usage patterns",
+                    "title": "Use On-Demand capacity for variable workloads",
+                    "severity": "Medium",
+                    "description": "Consider On-Demand capacity mode for streams with unpredictable or variable traffic patterns",
                     "implementation": {
-                        "type": "user",
-                        "description": "Use on-demand mode for unpredictable workloads and provisioned mode for steady, predictable traffic to optimize costs"
+                        "type": "IaC",
+                        "description": "Configure stream mode as ON_DEMAND in templates for variable workloads"
                     }
                 },
                 {
                     "identifier": "COST-04",
-                    "title": "Implement efficient consumer patterns",
-                    "severity": "medium",
-                    "description": "Optimize consumer applications to reduce unnecessary API calls and data transfer",
+                    "title": "Implement efficient data compression",
+                    "severity": "Medium",
+                    "description": "Compress data before sending to Kinesis to reduce payload size and associated costs",
                     "implementation": {
-                        "type": "user",
-                        "description": "Use enhanced fan-out for multiple consumers, implement proper checkpointing, and batch record processing to reduce costs"
+                        "type": "User",
+                        "description": "Implement data compression in producer applications before putting records to streams"
                     }
                 },
                 {
                     "identifier": "COST-05",
-                    "title": "Monitor and alert on cost metrics",
-                    "severity": "medium",
-                    "description": "Set up cost monitoring and budgets for Kinesis usage",
+                    "title": "Monitor and optimize PUT requests",
+                    "severity": "Medium",
+                    "description": "Batch multiple records in single PUT requests to reduce API call costs",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Configure AWS Budgets and Cost Explorer alerts for Kinesis spend, and use cost allocation tags for tracking"
+                        "type": "User",
+                        "description": "Use PutRecords API instead of PutRecord for batch operations in producer applications"
                     }
                 },
                 {
                     "identifier": "COST-06",
-                    "title": "Optimize cross-region data transfer",
-                    "severity": "low",
-                    "description": "Minimize cross-region data transfer costs by co-locating resources",
+                    "title": "Implement proper tagging for cost allocation",
+                    "severity": "Low",
+                    "description": "Tag Kinesis streams appropriately for cost tracking and allocation across teams or projects",
                     "implementation": {
-                        "type": "user",
-                        "description": "Deploy Kinesis streams, producers, and consumers in the same AWS region when possible to avoid data transfer charges"
+                        "type": "IaC",
+                        "description": "Define consistent tagging strategy in IaC templates for cost center, environment, and project identification"
                     }
                 },
                 {
                     "identifier": "COST-07",
-                    "title": "Archive historical data efficiently",
-                    "severity": "low",
-                    "description": "Use cost-effective storage for long-term data archival instead of extended retention",
+                    "title": "Regular cost review and optimization",
+                    "severity": "Low",
+                    "description": "Regularly review Kinesis costs and usage patterns to identify optimization opportunities",
                     "implementation": {
-                        "type": "user",
-                        "description": "Implement Kinesis Data Firehose or custom consumers to archive data to S3 with appropriate storage classes for long-term retention"
+                        "type": "Platform",
+                        "description": "Set up AWS Cost Explorer reports and budgets to monitor Kinesis spending trends"
                     }
                 }
             ]

@@ -1,45 +1,28 @@
 # AWS Aurora Serverless
 ---
 
-
-### CSA Cloud Controls Matrix v5.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **High** | Identity and Access Management | IAM-01 | Implement strong identity and access management controls for Aurora Serverless access | **IaC** - Configure IAM policies with least privilege principles, implement MFA, and use IAM database authentication |  |
-| **High** | Data Security and Information Lifecycle Management | DSI-01 | Ensure data at rest and in transit encryption for Aurora Serverless | **IaC** - Enable encryption at rest using AWS KMS and enforce SSL/TLS for data in transit |  |
-| **High** | Infrastructure and Virtualization Security | IVS-01 | Secure network infrastructure and virtual environments | **IaC** - Deploy Aurora Serverless in private subnets with VPC security groups and NACLs |  |
-| Medium | Application and Interface Security | AIS-01 | Secure application interfaces and APIs | **User** - Implement secure connection strings and API authentication mechanisms |  |
-| Medium | Business Continuity Management and Operational Resilience | BCR-01 | Ensure business continuity and disaster recovery capabilities | **IaC** - Configure automated backups, cross-region replication, and point-in-time recovery |  |
-
-### NIST 800-53 Rev 5
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **High** | Access Enforcement | AC-3 | Enforce approved authorizations for logical access to Aurora Serverless | **IaC** - Implement IAM policies and database-level access controls with role-based permissions |  |
-| **High** | Transmission Confidentiality and Integrity | SC-8 | Protect the confidentiality and integrity of transmitted information | **IaC** - Enable SSL/TLS encryption for all database connections and configure certificate validation |  |
-| **High** | Protection of Information at Rest | SC-28 | Protect the confidentiality and integrity of information at rest | **IaC** - Enable Aurora encryption at rest using AWS KMS with customer-managed keys |  |
-| Medium | Audit Generation | AU-12 | Generate audit records for events with defined auditable content | **IaC** - Enable Aurora database activity monitoring and CloudTrail logging |  |
-| Medium | Information System Backup | CP-9 | Conduct backups of user-level information and system-level information | **IaC** - Configure automated backups with appropriate retention periods and cross-region backup copies |  |
-| Medium | Information System Monitoring | SI-4 | Monitor the information system to detect attacks and indicators of potential attacks | **IaC** - Enable CloudWatch monitoring, Performance Insights, and GuardDuty for threat detection |  |
-
-### AWS Foundational Security Best Practices 1.0.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **High** | RDS DB instances should have encryption at rest enabled | RDS.3 | Aurora Serverless clusters should have encryption at rest enabled | **IaC** - Enable encryption when creating Aurora Serverless cluster using AWS KMS keys |  |
-| **High** | RDS cluster snapshots and database snapshots should be encrypted | RDS.4 | Ensure Aurora Serverless snapshots are encrypted | **IaC** - Enable snapshot encryption through cluster encryption configuration |  |
-| **High** | RDS DB instances should be configured with multiple Availability Zones | RDS.5 | Configure Aurora Serverless for high availability across multiple AZs | **IaC** - Deploy Aurora Serverless cluster across multiple AZs within the VPC |  |
-| Medium | Enhanced monitoring should be configured for RDS DB instances | RDS.6 | Enable enhanced monitoring for Aurora Serverless clusters | **IaC** - Configure Performance Insights and CloudWatch enhanced monitoring |  |
-| Medium | IAM authentication should be configured for RDS clusters | RDS.12 | Enable IAM database authentication for Aurora Serverless | **IaC** - Enable IAM database authentication in cluster configuration and create database users that use IAM authentication |  |
-| Low | RDS automatic minor version upgrades should be enabled | RDS.13 | Enable automatic minor version upgrades for Aurora Serverless | **IaC** - Set auto_minor_version_upgrade parameter to true in cluster configuration |  |
-
-### AWS Security Hub 2023.1.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | RDS DB instances should prohibit public read access | RDS.2 | Ensure Aurora Serverless clusters are not publicly accessible | **IaC** - Set publicly_accessible parameter to false and deploy in private subnets |  |
-| **Critical** | RDS snapshots should be private | RDS.1 | Ensure Aurora Serverless snapshots are not shared publicly | **Platform** - AWS ensures snapshots are private by default, verify no public sharing is configured |  |
-| Medium | RDS clusters should have deletion protection enabled | RDS.7 | Enable deletion protection for Aurora Serverless clusters | **IaC** - Set deletion_protection parameter to true in cluster configuration |  |
-| Medium | RDS DB instances should have deletion protection enabled | RDS.8 | Enable deletion protection for production Aurora Serverless clusters | **IaC** - Configure deletion protection through cluster settings and IaC templates |  |
-| Medium | RDS instances should have logging enabled | RDS.11 | Enable appropriate logging for Aurora Serverless clusters | **IaC** - Enable audit logs, error logs, general logs, and slow query logs as appropriate |  |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| critical | IAM-01 | CSA CCM v4.0 | Identity and Access Management Policy and Procedures | Establish, document, approve, communicate, apply, evaluate and maintain policies and procedures for identity and access management | **organizational** - Implement comprehensive IAM policies defining Aurora Serverless access roles, database user management, and administrative privileges with regular review cycles |  |
+| critical | DSI-05 | CSA CCM v4.0 | Data Loss Prevention | Data loss prevention (DLP) policies and procedures shall be established, documented, approved, communicated, applied, evaluated and maintained | **platform** - Configure Aurora Serverless with encryption at rest and in transit, implement data classification tags, and enable automated backup with point-in-time recovery |  |
+| high | IVS-01 | CSA CCM v4.0 | Vulnerability Management | Vulnerability assessments and threat management shall be conducted | **iac** - Implement automated security scanning of Aurora Serverless configurations using AWS Config rules and Security Hub findings |  |
+| high | DCS-08 | CSA CCM v4.0 | Logical Storage Segregation | Logical segregation of data shall be implemented to protect against unauthorized information disclosure and modification | **iac** - Deploy Aurora Serverless in dedicated VPC with proper subnet isolation and security group configurations |  |
+| medium | BCR-04 | CSA CCM v4.0 | Business Continuity Planning and Testing | Business continuity plans shall be tested to ensure effectiveness and completeness | **organizational** - Regularly test Aurora Serverless disaster recovery procedures including cross-region backup restoration and failover scenarios |  |
+| critical | AC-2 | NIST 800-53 Rev 5 | Account Management | Manage information system accounts including establishing, activating, modifying, reviewing, disabling, and removing accounts | **iac** - Configure Aurora Serverless with AWS IAM database authentication, implement least privilege access with database-specific roles and resource-based policies |  |
+| critical | SC-8 | NIST 800-53 Rev 5 | Transmission Confidentiality and Integrity | Protect the confidentiality and integrity of transmitted information | **platform** - Enable SSL/TLS encryption for all Aurora Serverless connections and configure force SSL parameter in database parameter groups |  |
+| high | AU-2 | NIST 800-53 Rev 5 | Audit Events | Identify the types of events that the system is capable of auditing and coordinate the audit function with other organizational entities | **iac** - Enable Aurora Serverless audit logging, CloudTrail API logging, and configure log exports to CloudWatch Logs for centralized monitoring |  |
+| high | CP-9 | NIST 800-53 Rev 5 | Information System Backup | Conduct backups of user-level information contained in the information system | **iac** - Configure automated Aurora Serverless backups with appropriate retention periods and enable continuous backup for point-in-time recovery |  |
+| medium | SI-4 | NIST 800-53 Rev 5 | Information System Monitoring | Monitor the information system to detect attacks and indicators of potential attacks | **iac** - Implement CloudWatch alarms for Aurora Serverless performance metrics and security events, integrate with AWS Security Hub for centralized monitoring |  |
+| critical | RDS.1 | AWS Foundational Security Best Practices v1.0.0 | RDS snapshots should be private | RDS DB snapshots should not be public to prevent unauthorized access to database content | **iac** - Ensure Aurora Serverless cluster snapshots are configured as private and implement resource-based policies to control snapshot access |  |
+| critical | RDS.3 | AWS Foundational Security Best Practices v1.0.0 | RDS DB instances should have encryption at rest enabled | RDS DB instances should be encrypted at rest to add another layer of data protection | **iac** - Enable encryption at rest for Aurora Serverless clusters using AWS KMS keys with proper key rotation policies |  |
+| high | RDS.4 | AWS Foundational Security Best Practices v1.0.0 | RDS cluster snapshots and database snapshots should be encrypted at rest | RDS snapshots should be encrypted at rest for data protection | **iac** - Configure Aurora Serverless to create encrypted snapshots automatically when the source cluster is encrypted |  |
+| high | RDS.5 | AWS Foundational Security Best Practices v1.0.0 | RDS DB instances should be configured with multiple Availability Zones | RDS DB instances should be configured for high availability across multiple Availability Zones | **iac** - Deploy Aurora Serverless v2 across multiple AZs and configure appropriate subnet groups for high availability |  |
+| medium | RDS.6 | AWS Foundational Security Best Practices v1.0.0 | Enhanced monitoring should be configured for RDS DB instances | Enable enhanced monitoring for RDS instances to provide detailed metrics | **iac** - Enable Performance Insights and enhanced monitoring for Aurora Serverless clusters to gain visibility into database performance and resource utilization |  |
+| critical | RDS.2 | AWS Security Hub 2024 | RDS DB instances should prohibit public read access | RDS DB instances should not have public read access to prevent data exposure | **iac** - Configure Aurora Serverless clusters with PubliclyAccessible set to false and deploy within private subnets with proper security group restrictions |  |
+| high | RDS.10 | AWS Security Hub 2024 | RDS instances should have deletion protection enabled | RDS instances should have deletion protection enabled to prevent accidental database deletion | **iac** - Enable deletion protection on Aurora Serverless clusters and implement IAM policies with explicit deny for cluster deletion operations |  |
+| high | RDS.11 | AWS Security Hub 2024 | RDS instances should have automatic backups enabled | RDS instances should have automatic backups enabled for data recovery purposes | **iac** - Configure Aurora Serverless with automated backup enabled, set appropriate backup retention period (7-35 days), and enable continuous backup |  |
+| medium | RDS.13 | AWS Security Hub 2024 | RDS automatic minor version upgrades should be enabled | RDS instances should have automatic minor version upgrades enabled for security patches | **iac** - Enable auto minor version upgrades for Aurora Serverless clusters and configure maintenance windows during low-usage periods |  |
+| medium | RDS.25 | AWS Security Hub 2024 | RDS database instances should use a custom administrator username | RDS database instances should use custom administrator usernames instead of default names | **iac** - Configure Aurora Serverless clusters with custom master usernames instead of default 'admin' or 'root', and manage credentials using AWS Secrets Manager |  |
 
 ## Operational Controls
 ---
@@ -49,16 +32,13 @@
 ## Cost Controls
 ---
 
-
-### AWS Aurora Serverless Cost Optimization 2023
-| Severity | Title | Identifier | Description | Implementation |
-| - | - | - | - | - |
-| **High** | Right-size Aurora Serverless capacity settings | COST-01 | Configure appropriate minimum and maximum Aurora Capacity Units (ACUs) based on workload requirements | **IaC** - Set min_capacity and max_capacity parameters based on performance testing and monitoring data |
-| **High** | Implement auto-pause functionality | COST-02 | Enable auto-pause for development and testing environments to reduce costs during inactivity | **IaC** - Configure auto_pause and seconds_until_auto_pause parameters for non-production clusters |
-| Medium | Optimize backup retention policies | COST-03 | Set appropriate backup retention periods to balance cost and recovery requirements | **IaC** - Configure backup_retention_period based on business requirements, typically 7-35 days |
-| Medium | Monitor and optimize Aurora Serverless usage patterns | COST-04 | Regularly review CloudWatch metrics to optimize capacity settings and identify cost savings opportunities | **User** - Set up CloudWatch dashboards and alarms to monitor ACU utilization and costs |
-| Medium | Use appropriate storage optimization | COST-05 | Implement data lifecycle policies and remove unnecessary data to optimize storage costs | **User** - Implement database maintenance procedures to archive or delete old data and optimize storage usage |
-| Low | Implement cost allocation and tagging | COST-06 | Use consistent tagging strategy for cost allocation and tracking | **IaC** - Apply standardized tags for environment, project, cost center, and owner to enable cost tracking and allocation |
-| Low | Optimize cross-region backup strategy | COST-07 | Evaluate the need for cross-region backups and snapshots to optimize data transfer costs | **IaC** - Configure cross-region automated backups only when required for disaster recovery, considering data transfer costs |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| high | COST-01 | AWS Aurora Serverless Cost Optimization 2024 | Right-size Aurora Serverless Capacity | Configure appropriate minimum and maximum Aurora Capacity Units (ACUs) based on workload patterns to avoid over-provisioning | **iac** - Analyze workload patterns using CloudWatch metrics and set minimum ACUs to 0.5 for infrequent workloads, configure maximum ACUs based on peak demand requirements |  |
+| high | COST-02 | AWS Aurora Serverless Cost Optimization 2024 | Optimize Auto Pause Configuration | Configure auto-pause settings to automatically pause Aurora Serverless v1 clusters during periods of inactivity to reduce costs | **iac** - Enable auto-pause with appropriate timeout periods (5-10 minutes for development, longer for production) and ensure applications can handle cold start delays |  |
+| medium | COST-03 | AWS Aurora Serverless Cost Optimization 2024 | Monitor and Optimize Storage Costs | Regularly monitor Aurora storage usage and implement data lifecycle policies to manage storage costs | **organizational** - Set up CloudWatch alarms for storage growth, implement data archiving strategies, and regularly review backup retention policies to optimize storage costs |  |
+| medium | COST-04 | AWS Aurora Serverless Cost Optimization 2024 | Implement Resource Tagging for Cost Allocation | Apply consistent resource tagging to Aurora Serverless clusters for accurate cost tracking and allocation | **iac** - Implement standardized tagging strategy including Environment, Project, Owner, and CostCenter tags for Aurora clusters and related resources |  |
+| medium | COST-05 | AWS Aurora Serverless Cost Optimization 2024 | Use Aurora Serverless v2 for Predictable Workloads | Evaluate workload patterns and migrate to Aurora Serverless v2 for better cost optimization with more granular scaling | **organizational** - Analyze workload patterns and consider Aurora Serverless v2 for workloads requiring faster scaling, better performance, and more cost-effective scaling granularity |  |
+| low | COST-06 | AWS Aurora Serverless Cost Optimization 2024 | Optimize Data Transfer Costs | Minimize data transfer costs by optimizing application placement and database access patterns | **iac** - Deploy Aurora Serverless clusters in the same region as applications, use VPC endpoints for AWS service access, and implement connection pooling to reduce connection overhead |  |
+| low | COST-07 | AWS Aurora Serverless Cost Optimization 2024 | Regular Cost Review and Optimization | Establish regular cost review processes to identify optimization opportunities for Aurora Serverless usage | **organizational** - Schedule monthly cost reviews using AWS Cost Explorer and Trusted Advisor recommendations, analyze Aurora CloudWatch metrics to identify underutilized resources |  |
 

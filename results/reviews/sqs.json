@@ -1,6 +1,0 @@
-{
-    "service": "AWS Simple Queue Service (SQS)",
-    "security": [
-        {
-            "name": "CSA Cloud Controls Matrix",
-            "version": "v4.

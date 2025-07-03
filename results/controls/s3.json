@@ -2,185 +2,185 @@
     "service": "AWS Simple Storage Service (S3)",
     "security": [
         {
-            "name": "NIST SP 800-53",
-            "version": "Rev. 5",
+            "name": "CSA CCM",
+            "version": "v4.0.10",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy",
+                    "severity": "High",
+                    "description": "Establish comprehensive identity and access management policies for S3 resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement IAM policies and roles using CloudFormation or Terraform templates with least privilege access principles"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "High",
+                    "description": "Implement data classification and lifecycle management for S3 objects",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure S3 lifecycle policies and implement object tagging for data classification"
+                    }
+                },
+                {
+                    "identifier": "EKM-01",
+                    "title": "Encryption and Key Management",
+                    "severity": "High",
+                    "description": "Ensure all S3 data is encrypted at rest and in transit using appropriate key management",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable S3 default encryption with AWS KMS or SSE-S3 and enforce SSL/TLS for data in transit"
+                    }
+                },
+                {
+                    "identifier": "LOG-01",
+                    "title": "Logging and Monitoring",
+                    "severity": "Medium",
+                    "description": "Enable comprehensive logging and monitoring for S3 access and operations",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable S3 access logging, CloudTrail, and CloudWatch monitoring for all buckets"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
             "controls": [
                 {
                     "identifier": "AC-3",
                     "title": "Access Enforcement",
                     "severity": "High",
-                    "description": "Enforce approved authorizations for logical access to S3 resources based on applicable access control policies",
+                    "description": "Enforce approved authorizations for logical access to S3 resources",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure IAM policies, bucket policies, and ACLs through CloudFormation or Terraform templates to enforce least privilege access"
+                        "description": "Implement bucket policies, ACLs, and IAM policies to enforce access controls with deny-by-default approach"
                     }
                 },
                 {
-                    "identifier": "SC-13",
-                    "title": "Cryptographic Protection",
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
                     "severity": "High",
-                    "description": "Implement cryptographic mechanisms to protect the confidentiality and integrity of data stored in S3",
+                    "description": "Protect the confidentiality and integrity of transmitted information to and from S3",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enforce HTTPS-only access through bucket policies and use SSL/TLS encryption for all data transfers"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of information stored in S3",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable S3 default encryption using AWS KMS or SSE-S3, configure encryption in transit via HTTPS-only bucket policies"
+                        "description": "Enable server-side encryption for all S3 buckets using AES-256 or AWS KMS encryption"
                     }
                 },
                 {
                     "identifier": "AU-2",
                     "title": "Event Logging",
-                    "severity": "High",
-                    "description": "Determine and configure auditable events for S3 operations",
+                    "severity": "Medium",
+                    "description": "Ensure S3 events are logged and auditable",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Enable CloudTrail for S3 API calls, configure S3 server access logging, and enable AWS Config for compliance monitoring"
+                        "description": "Configure S3 server access logging and AWS CloudTrail for comprehensive audit trails"
                     }
                 },
                 {
                     "identifier": "CP-9",
-                    "title": "System Backup",
+                    "title": "Information System Backup",
                     "severity": "Medium",
                     "description": "Conduct backups of S3 data and ensure backup integrity",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure S3 Cross-Region Replication (CRR) and versioning through infrastructure templates"
-                    }
-                },
-                {
-                    "identifier": "AC-6",
-                    "title": "Least Privilege",
-                    "severity": "Medium",
-                    "description": "Employ the principle of least privilege for S3 access permissions",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Regularly review and audit IAM policies and S3 bucket permissions to ensure minimal necessary access"
+                        "description": "Enable S3 versioning and implement cross-region replication for critical data"
                     }
                 }
             ]
         },
         {
-            "name": "CSA CCM",
-            "version": "v4.0.6",
-            "controls": [
-                {
-                    "identifier": "IVS-01",
-                    "title": "Baseline Requirements",
-                    "severity": "High",
-                    "description": "Establish security baselines for S3 service configuration",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Create standardized S3 bucket templates with security controls including encryption, versioning, and access logging"
-                    }
-                },
-                {
-                    "identifier": "DSI-02",
-                    "title": "Data Classification",
-                    "severity": "High",
-                    "description": "Classify data stored in S3 buckets according to sensitivity levels",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Implement S3 object tagging strategy to classify data and apply appropriate security controls based on classification"
-                    }
-                },
-                {
-                    "identifier": "EKM-01",
-                    "title": "Encryption Key Management",
-                    "severity": "High",
-                    "description": "Securely manage encryption keys used for S3 data protection",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Use AWS KMS for key management with appropriate key rotation policies and access controls"
-                    }
-                },
-                {
-                    "identifier": "BCR-03",
-                    "title": "Data Backup and Recovery",
-                    "severity": "Medium",
-                    "description": "Implement backup and recovery procedures for S3 data",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure automated backup strategies using S3 versioning, MFA delete, and cross-region replication"
-                    }
-                },
-                {
-                    "identifier": "TVM-01",
-                    "title": "Vulnerability Management",
-                    "severity": "Medium",
-                    "description": "Manage vulnerabilities in S3 service configuration and access patterns",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Use AWS Security Hub and AWS Config Rules to continuously monitor S3 configurations for security vulnerabilities"
-                    }
-                }
-            ]
-        },
-        {
-            "name": "AWS Foundational Security Standard",
-            "version": "v1.0.0",
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
             "controls": [
                 {
                     "identifier": "S3.1",
                     "title": "S3 Block Public Access",
                     "severity": "High",
-                    "description": "S3 Block Public Access setting should be enabled at the account and bucket level",
+                    "description": "S3 buckets should prohibit public read access",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure S3 Block Public Access settings in CloudFormation templates and apply at both account and bucket levels"
+                        "description": "Enable S3 Block Public Access settings at both account and bucket level"
                     }
                 },
                 {
                     "identifier": "S3.2",
-                    "title": "S3 Bucket Public Read",
+                    "title": "S3 Block Public Write Access",
                     "severity": "High",
-                    "description": "S3 buckets should not allow public read access",
+                    "description": "S3 buckets should prohibit public write access",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Monitor bucket policies and ACLs using AWS Config Rules to prevent public read access"
+                        "type": "IaC",
+                        "description": "Configure bucket policies and ACLs to prevent public write access"
                     }
                 },
                 {
                     "identifier": "S3.3",
-                    "title": "S3 Bucket Public Write",
+                    "title": "S3 Bucket SSL Requests Only",
                     "severity": "High",
-                    "description": "S3 buckets should not allow public write access",
+                    "description": "S3 buckets should deny insecure HTTP requests",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Use AWS Config Rules to monitor and alert on buckets with public write permissions"
+                        "type": "IaC",
+                        "description": "Implement bucket policy with aws:SecureTransport condition to deny non-SSL requests"
                     }
                 },
                 {
                     "identifier": "S3.4",
-                    "title": "S3 Server Side Encryption",
-                    "severity": "Medium",
+                    "title": "S3 Server-side Encryption",
+                    "severity": "High",
                     "description": "S3 buckets should have server-side encryption configured",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure default bucket encryption using AWS KMS or AES-256 in infrastructure templates"
+                        "description": "Enable default encryption on all S3 buckets using SSE-S3 or SSE-KMS"
                     }
                 },
                 {
                     "identifier": "S3.5",
-                    "title": "S3 SSL Requests Only",
+                    "title": "S3 Access Logging",
                     "severity": "Medium",
-                    "description": "S3 buckets should require requests to use SSL",
+                    "description": "S3 buckets should have access logging configured",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Implement bucket policies that deny all non-SSL requests using aws:SecureTransport condition"
+                        "type": "Platform",
+                        "description": "Enable server access logging for all S3 buckets to track access requests"
+                    }
+                },
+                {
+                    "identifier": "S3.6",
+                    "title": "S3 MFA Delete",
+                    "severity": "Medium",
+                    "description": "S3 buckets should have MFA Delete enabled for versioned buckets",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Enable MFA Delete on versioned S3 buckets containing sensitive data"
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "v2.0",
+            "version": "2024.1.0",
             "controls": [
                 {
                     "identifier": "S3.8",
-                    "title": "S3 MFA Delete",
+                    "title": "S3 Block Public Access - Account Level",
                     "severity": "High",
-                    "description": "S3 buckets should have MFA delete enabled for versioned buckets",
+                    "description": "S3 Block Public Access setting should be enabled at account level",
                     "implementation": {
-                        "type": "User",
-                        "description": "Enable MFA delete on S3 buckets containing sensitive data through AWS CLI or SDK with root account credentials"
+                        "type": "Platform",
+                        "description": "Enable S3 Block Public Access settings at the AWS account level through S3 console or CLI"
                     }
                 },
                 {
@@ -190,37 +190,37 @@
                     "description": "S3 bucket server access logging should be enabled",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure S3 server access logging in CloudFormation templates with dedicated logging bucket"
+                        "description": "Configure server access logging for S3 buckets with appropriate target bucket and prefix"
                     }
                 },
                 {
                     "identifier": "S3.10",
                     "title": "S3 Versioning",
                     "severity": "Medium",
-                    "description": "S3 buckets with versioning enabled should have lifecycle policies configured",
+                    "description": "S3 buckets with versioning enabled should not allow write access to the Everyone group or Any Authenticated AWS users",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Define lifecycle policies in infrastructure templates to manage version retention and transition to lower-cost storage classes"
+                        "description": "Review and restrict bucket policies and ACLs for versioned buckets"
                     }
                 },
                 {
                     "identifier": "S3.11",
                     "title": "S3 Event Notifications",
                     "severity": "Low",
-                    "description": "S3 buckets should have event notifications configured for security monitoring",
+                    "description": "S3 buckets should have event notifications enabled for security monitoring",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Configure S3 event notifications to trigger Lambda functions or SNS topics for security event processing"
+                        "description": "Configure S3 event notifications to SNS, SQS, or Lambda for security event monitoring"
                     }
                 },
                 {
                     "identifier": "S3.12",
-                    "title": "S3 Cross-Region Replication",
+                    "title": "S3 Access Control Lists",
                     "severity": "Low",
-                    "description": "S3 buckets should have cross-region replication configured for disaster recovery",
+                    "description": "S3 access control lists (ACLs) should not be used to manage user access to buckets",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Configure cross-region replication rules in CloudFormation templates with appropriate IAM roles"
+                        "type": "User",
+                        "description": "Use IAM policies and bucket policies instead of ACLs for access management"
                     }
                 }
             ]
@@ -230,76 +230,66 @@
     "cost": [
         {
             "name": "AWS S3 Cost Optimization Best Practices",
-            "version": "2024",
+            "version": "2023",
             "controls": [
                 {
-                    "identifier": "COST-01",
-                    "title": "Storage Class Optimization",
+                    "identifier": "COST-S3-01",
+                    "title": "S3 Storage Class Optimization",
                     "severity": "High",
                     "description": "Use appropriate S3 storage classes based on access patterns to minimize storage costs",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure S3 Intelligent Tiering and lifecycle policies to automatically transition objects to cost-effective storage classes"
+                        "description": "Implement S3 Intelligent-Tiering or lifecycle policies to automatically transition objects to cheaper storage classes"
                     }
                 },
                 {
-                    "identifier": "COST-02",
-                    "title": "Lifecycle Policy Management",
+                    "identifier": "COST-S3-02",
+                    "title": "S3 Lifecycle Management",
                     "severity": "High",
-                    "description": "Implement lifecycle policies to automatically delete or archive old data",
+                    "description": "Implement lifecycle policies to automatically delete or archive old objects",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Define lifecycle rules in CloudFormation templates to transition objects through storage classes and expire unnecessary data"
+                        "type": "Platform",
+                        "description": "Configure S3 lifecycle rules to transition objects to IA, Glacier, or delete after specified periods"
                     }
                 },
                 {
-                    "identifier": "COST-03",
-                    "title": "Incomplete Multipart Upload Cleanup",
+                    "identifier": "COST-S3-03",
+                    "title": "S3 Incomplete Multipart Upload Cleanup",
                     "severity": "Medium",
                     "description": "Clean up incomplete multipart uploads to avoid unnecessary storage charges",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure lifecycle policies to automatically abort incomplete multipart uploads after a specified number of days"
+                        "description": "Configure lifecycle policies to abort incomplete multipart uploads after 7 days"
                     }
                 },
                 {
-                    "identifier": "COST-04",
-                    "title": "Data Transfer Optimization",
+                    "identifier": "COST-S3-04",
+                    "title": "S3 Request Cost Optimization",
                     "severity": "Medium",
-                    "description": "Optimize data transfer costs by using CloudFront and VPC endpoints",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Deploy CloudFront distributions for frequently accessed content and VPC endpoints for internal AWS service communication"
-                    }
-                },
-                {
-                    "identifier": "COST-05",
-                    "title": "Request Cost Optimization",
-                    "severity": "Medium",
-                    "description": "Minimize request costs by optimizing application access patterns",
+                    "description": "Optimize request patterns to minimize request charges",
                     "implementation": {
                         "type": "User",
-                        "description": "Implement efficient data retrieval patterns, use S3 Select for partial data retrieval, and batch operations where possible"
+                        "description": "Use CloudFront for frequently accessed content and batch operations for bulk requests"
                     }
                 },
                 {
-                    "identifier": "COST-06",
-                    "title": "Storage Analytics and Monitoring",
-                    "severity": "Low",
-                    "description": "Use S3 Storage Lens and analytics to monitor and optimize storage usage",
+                    "identifier": "COST-S3-05",
+                    "title": "S3 Data Transfer Optimization",
+                    "severity": "Medium",
+                    "description": "Minimize data transfer costs through strategic placement and caching",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Enable S3 Storage Lens organization-wide to gain visibility into storage usage patterns and cost optimization opportunities"
+                        "description": "Use same region for S3 and compute resources, implement CloudFront for global distribution"
                     }
                 },
                 {
-                    "identifier": "COST-07",
-                    "title": "Reserved Capacity Planning",
+                    "identifier": "COST-S3-06",
+                    "title": "S3 Storage Analytics and Monitoring",
                     "severity": "Low",
-                    "description": "Consider S3 One Zone-IA or Glacier for predictable, long-term storage needs",
+                    "description": "Use S3 analytics and monitoring tools to identify cost optimization opportunities",
                     "implementation": {
-                        "type": "User",
-                        "description": "Analyze storage patterns using S3 analytics and migrate appropriate data to lower-cost storage classes based on access frequency"
+                        "type": "Platform",
+                        "description": "Enable S3 Storage Class Analysis and use AWS Cost Explorer to monitor S3 spending patterns"
                     }
                 }
             ]

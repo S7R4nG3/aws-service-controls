@@ -2,235 +2,215 @@
     "service": "AWS API Gateway",
     "security": [
         {
-            "name": "Cloud Security Alliance (CSA) Cloud Controls Matrix",
-            "version": "v5.0",
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v4.0",
             "controls": [
                 {
                     "identifier": "IAM-01",
-                    "title": "Identity and Access Management Policy and Procedures",
+                    "title": "Entitlement",
                     "severity": "High",
-                    "description": "Establish and maintain policies and procedures for identity and access management for API Gateway resources",
+                    "description": "Provision and manage user account entitlements to enterprise assets and resources",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement IAM policies in CloudFormation/Terraform templates that define least privilege access to API Gateway resources, including resource-based policies and execution roles"
+                        "description": "Configure IAM policies, resource-based policies, and API Gateway authorizers (Lambda, Cognito, or IAM) to control access to APIs"
                     }
                 },
                 {
-                    "identifier": "IAM-05",
-                    "title": "Multi-Factor Authentication",
+                    "identifier": "DSI-05",
+                    "title": "Data Transmission",
                     "severity": "High",
-                    "description": "Require multi-factor authentication for administrative access to API Gateway console and APIs",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Configure AWS IAM to require MFA for users accessing API Gateway management console and administrative APIs"
-                    }
-                },
-                {
-                    "identifier": "DSI-01",
-                    "title": "Data Security and Information Lifecycle Management",
-                    "severity": "High",
-                    "description": "Implement data classification and protection mechanisms for data passing through API Gateway",
+                    "description": "Encrypt data in transit using strong cryptographic protocols and algorithms",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure request/response data transformation and validation rules in API Gateway to sanitize and protect sensitive data"
+                        "description": "Configure custom domain names with SSL/TLS certificates and enforce HTTPS-only communication through API Gateway settings"
                     }
                 },
                 {
-                    "identifier": "EKM-01",
-                    "title": "Encryption Key Management",
+                    "identifier": "IVS-06",
+                    "title": "Network Architecture",
                     "severity": "High",
-                    "description": "Implement proper encryption key management for API Gateway TLS certificates and custom domain names",
+                    "description": "Design and implement network security architecture",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Use AWS Certificate Manager or AWS KMS to manage TLS certificates and encryption keys for custom domains and client certificates"
+                        "description": "Deploy private API Gateway endpoints within VPC, configure VPC endpoints, and implement WAF rules for protection"
                     }
                 },
                 {
-                    "identifier": "IVS-04",
-                    "title": "Network Security",
+                    "identifier": "STA-04",
+                    "title": "Denial of Service Protection",
                     "severity": "Medium",
-                    "description": "Implement network-level security controls for API Gateway endpoints",
+                    "description": "Implement protective measures against denial of service attacks",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure VPC endpoints for private API access and implement resource policies to restrict access based on IP ranges or VPC endpoints"
+                        "description": "Configure throttling limits, usage plans, and integrate with AWS WAF for advanced threat protection"
                     }
                 },
                 {
-                    "identifier": "SEF-01",
-                    "title": "Security Event Logging",
+                    "identifier": "GRM-02",
+                    "title": "Information System Regulatory Mapping",
                     "severity": "Medium",
-                    "description": "Enable comprehensive logging of API Gateway security events and access patterns",
+                    "description": "Map applicable regulatory requirements to information systems and associated controls",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Configure CloudTrail, CloudWatch Logs, and AWS Config to capture API Gateway management events, execution logs, and access logs"
+                        "type": "User",
+                        "description": "Implement API versioning strategies, deployment stages, and approval workflows for API changes"
                     }
                 }
             ]
         },
         {
-            "name": "NIST 800-53",
+            "name": "NIST SP 800-53",
             "version": "Rev 5",
             "controls": [
                 {
                     "identifier": "AC-3",
                     "title": "Access Enforcement",
                     "severity": "High",
-                    "description": "Enforce approved authorizations for logical access to API Gateway resources and APIs",
+                    "description": "Enforce approved authorizations for logical access to information and system resources",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement API Gateway authorizers (Lambda, Cognito, or IAM) and resource policies to enforce granular access control"
-                    }
-                },
-                {
-                    "identifier": "IA-2",
-                    "title": "Identification and Authentication",
-                    "severity": "High",
-                    "description": "Uniquely identify and authenticate organizational users accessing API Gateway",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Configure appropriate authentication mechanisms such as API keys, AWS IAM, Amazon Cognito, or custom authorizers based on use case"
+                        "description": "Implement API Gateway authorizers with fine-grained access control using IAM roles, Lambda authorizers, or Cognito User Pools"
                     }
                 },
                 {
                     "identifier": "SC-8",
                     "title": "Transmission Confidentiality and Integrity",
                     "severity": "High",
-                    "description": "Protect the confidentiality and integrity of transmitted information through API Gateway",
+                    "description": "Protect the confidentiality and integrity of transmitted information",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enforce HTTPS/TLS 1.2+ for all API Gateway endpoints and configure minimum TLS version and cipher suites"
+                        "description": "Configure TLS 1.2+ encryption, certificate management, and mutual TLS authentication for sensitive APIs"
                     }
                 },
                 {
                     "identifier": "AU-2",
                     "title": "Event Logging",
                     "severity": "High",
-                    "description": "Ensure API Gateway generates audit records for security-relevant events",
+                    "description": "Identify the types of events that the system is capable of logging",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable CloudTrail for API Gateway management events and configure execution logging and access logging for runtime events"
+                        "description": "Enable CloudTrail logging, API Gateway execution logs, and access logs with comprehensive event capture"
                     }
                 },
                 {
-                    "identifier": "SC-7",
-                    "title": "Boundary Protection",
+                    "identifier": "SI-3",
+                    "title": "Malicious Code Protection",
                     "severity": "Medium",
-                    "description": "Monitor and control communications at the external boundary of API Gateway",
+                    "description": "Implement malicious code protection mechanisms",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement resource policies, WAF integration, and VPC endpoints to control network access to API Gateway"
+                        "description": "Deploy AWS WAF with API Gateway to filter malicious requests and implement request validation"
                     }
                 },
                 {
-                    "identifier": "SI-4",
-                    "title": "Information System Monitoring",
+                    "identifier": "CP-2",
+                    "title": "Contingency Plan",
                     "severity": "Medium",
-                    "description": "Monitor API Gateway for attacks and indicators of potential attacks",
+                    "description": "Develop, document, and maintain a contingency plan for information systems",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Configure CloudWatch metrics, alarms, and AWS X-Ray tracing to monitor API performance, errors, and suspicious activity"
+                        "type": "User",
+                        "description": "Implement multi-region deployments, backup strategies, and disaster recovery procedures for API Gateway configurations"
                     }
                 }
             ]
         },
         {
             "name": "AWS Foundational Security Best Practices",
-            "version": "1.0.0",
+            "version": "v1.0.0",
             "controls": [
+                {
+                    "identifier": "APIGateway.2",
+                    "title": "API Gateway REST API stages should be configured to use SSL certificates for backend authentication",
+                    "severity": "High",
+                    "description": "Configure SSL certificates for backend authentication to ensure secure communication",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy SSL certificates via ACM and configure custom domain names with HTTPS endpoints"
+                    }
+                },
                 {
                     "identifier": "APIGateway.1",
                     "title": "API Gateway REST API execution logging should be enabled",
                     "severity": "Medium",
-                    "description": "Ensure execution logging is enabled for API Gateway REST APIs to capture detailed information about requests and responses",
+                    "description": "Enable execution logging for REST APIs to capture detailed information about requests and responses",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure stage-level execution logging in API Gateway deployment templates with appropriate log level (INFO or ERROR)"
-                    }
-                },
-                {
-                    "identifier": "APIGateway.2",
-                    "title": "API Gateway REST API stages should be configured to use SSL certificates for backend authentication",
-                    "severity": "Medium",
-                    "description": "Configure SSL certificates for backend authentication to ensure secure communication between API Gateway and backend services",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure client certificates in API Gateway stage settings and ensure backend services validate these certificates"
-                    }
-                },
-                {
-                    "identifier": "APIGateway.3",
-                    "title": "API Gateway REST API stages should have AWS X-Ray tracing enabled",
-                    "severity": "Low",
-                    "description": "Enable X-Ray tracing for API Gateway stages to provide detailed tracing information for debugging and monitoring",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Enable X-Ray tracing in API Gateway stage configuration and ensure proper IAM permissions for X-Ray service"
+                        "description": "Configure CloudWatch Logs integration with API Gateway stages to enable INFO or ERROR level execution logging"
                     }
                 },
                 {
                     "identifier": "APIGateway.4",
-                    "title": "API Gateway should be associated with an AWS WAF",
+                    "title": "API Gateway should be associated with a WAF Web ACL",
                     "severity": "Medium",
-                    "description": "Associate API Gateway with AWS WAF to protect against common web exploits and attacks",
+                    "description": "Associate API Gateway with AWS WAF to protect against common web exploits",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Create and associate AWS WAF WebACL with API Gateway stage, implementing rules for common attack patterns and rate limiting"
+                        "description": "Create WAF web ACL with appropriate rules and associate it with API Gateway stages"
                     }
                 },
                 {
                     "identifier": "APIGateway.5",
                     "title": "API Gateway REST API cache data should be encrypted at rest",
                     "severity": "Medium",
-                    "description": "Enable encryption at rest for API Gateway cache data to protect cached responses",
+                    "description": "Enable encryption for API Gateway caching to protect cached data at rest",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure cache encryption in API Gateway method settings when caching is enabled"
+                        "description": "Configure cache encryption settings in API Gateway method responses and stage configurations"
+                    }
+                },
+                {
+                    "identifier": "APIGateway.3",
+                    "title": "API Gateway REST API stages should have AWS X-Ray tracing enabled",
+                    "severity": "Low",
+                    "description": "Enable AWS X-Ray tracing to analyze and debug distributed API applications",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable X-Ray tracing at the API Gateway stage level and configure sampling rules"
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "2023.1",
+            "version": "2023.04.0",
             "controls": [
+                {
+                    "identifier": "APIGateway.10",
+                    "title": "API Gateway REST APIs should prohibit public read access",
+                    "severity": "High",
+                    "description": "Ensure REST APIs do not allow unrestricted public read access",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure proper authorization and resource policies to prevent anonymous public access to sensitive API operations"
+                    }
+                },
+                {
+                    "identifier": "APIGateway.11",
+                    "title": "API Gateway REST APIs should prohibit public write access",
+                    "severity": "High",
+                    "description": "Ensure REST APIs do not allow unrestricted public write access",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement strong authorization controls for write operations including POST, PUT, DELETE methods"
+                    }
+                },
                 {
                     "identifier": "APIGateway.8",
                     "title": "API Gateway routes should specify an authorization type",
                     "severity": "Medium",
-                    "description": "Ensure all API Gateway routes have an appropriate authorization type configured to prevent unauthorized access",
+                    "description": "Ensure all API Gateway routes have appropriate authorization configured",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure authorization type (AWS_IAM, COGNITO_USER_POOLS, CUSTOM, or JWT) for all API Gateway routes and methods"
+                        "description": "Configure authorization type (IAM, Lambda, Cognito, or JWT) for all API Gateway routes and methods"
                     }
                 },
                 {
                     "identifier": "APIGateway.9",
                     "title": "Access logging should be configured for API Gateway V2 Stages",
                     "severity": "Medium",
-                    "description": "Configure access logging for API Gateway V2 stages to capture client access patterns and troubleshoot issues",
+                    "description": "Enable access logging for HTTP API and WebSocket API stages",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure access logging settings in API Gateway V2 stage with CloudWatch Logs destination and appropriate log format"
-                    }
-                },
-                {
-                    "identifier": "CloudTrail.1",
-                    "title": "CloudTrail should be enabled and configured with at least one multi-Region trail",
-                    "severity": "High",
-                    "description": "Enable CloudTrail to capture API Gateway management events across all regions",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Configure CloudTrail with multi-region trail to capture API Gateway management API calls and configuration changes"
-                    }
-                },
-                {
-                    "identifier": "Config.1",
-                    "title": "AWS Config should be enabled",
-                    "severity": "Medium",
-                    "description": "Enable AWS Config to track configuration changes to API Gateway resources",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Configure AWS Config to monitor API Gateway resource configurations and detect configuration drift"
+                        "description": "Configure access logging with CloudWatch Logs destination and appropriate log format for API Gateway v2 stages"
                     }
                 }
             ]
@@ -244,72 +224,62 @@
             "controls": [
                 {
                     "identifier": "COST-01",
-                    "title": "Implement Response Caching",
+                    "title": "Implement Caching Strategy",
                     "severity": "High",
-                    "description": "Enable response caching to reduce backend calls and API Gateway request charges for frequently accessed data",
+                    "description": "Enable API Gateway caching to reduce backend calls and improve performance while reducing costs",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure caching at the stage or method level with appropriate TTL values and cache key parameters to optimize cache hit ratios"
+                        "description": "Configure method-level caching with appropriate TTL values and cache key parameters to minimize redundant backend requests"
                     }
                 },
                 {
                     "identifier": "COST-02",
                     "title": "Optimize API Gateway Type Selection",
                     "severity": "High",
-                    "description": "Choose the appropriate API Gateway type (REST vs HTTP vs WebSocket) based on feature requirements and cost considerations",
+                    "description": "Choose the appropriate API Gateway type (HTTP API vs REST API) based on feature requirements",
                     "implementation": {
                         "type": "User",
-                        "description": "Evaluate using HTTP APIs instead of REST APIs when advanced features are not needed, as HTTP APIs cost up to 70% less"
+                        "description": "Use HTTP APIs for simple proxy integrations as they are up to 70% cheaper than REST APIs with lower latency"
                     }
                 },
                 {
                     "identifier": "COST-03",
-                    "title": "Implement Request Throttling and Rate Limiting",
+                    "title": "Implement Usage Plans and API Keys",
                     "severity": "Medium",
-                    "description": "Configure throttling and rate limiting to control API usage and prevent unexpected cost spikes",
+                    "description": "Control API usage and prevent unexpected costs through usage plans and throttling",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Set up usage plans with throttling limits and quotas to control API consumption and implement burst limits"
+                        "description": "Configure usage plans with quotas and throttling limits to control API consumption and associated backend costs"
                     }
                 },
                 {
                     "identifier": "COST-04",
-                    "title": "Optimize Data Transfer",
+                    "title": "Monitor and Optimize Request Routing",
                     "severity": "Medium",
-                    "description": "Minimize data transfer costs by implementing response compression and optimizing payload sizes",
+                    "description": "Optimize request routing to minimize data transfer and processing costs",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Enable content encoding (gzip) and implement request/response transformation to reduce payload sizes"
+                        "type": "User",
+                        "description": "Use regional endpoints instead of edge-optimized when clients are in the same region, and implement request/response transformations efficiently"
                     }
                 },
                 {
                     "identifier": "COST-05",
-                    "title": "Monitor and Alert on Usage Patterns",
+                    "title": "Implement Efficient Error Handling",
                     "severity": "Medium",
-                    "description": "Implement monitoring and alerting for API usage to identify cost optimization opportunities and usage anomalies",
+                    "description": "Optimize error handling to reduce unnecessary backend invocations and associated costs",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Configure CloudWatch metrics and billing alerts to monitor API Gateway usage, costs, and set up notifications for unusual patterns"
+                        "type": "IaC",
+                        "description": "Configure gateway responses and request validation to catch errors early and avoid backend processing costs"
                     }
                 },
                 {
                     "identifier": "COST-06",
-                    "title": "Implement Regional Optimization",
+                    "title": "Regular Cost Monitoring and Analysis",
                     "severity": "Low",
-                    "description": "Deploy API Gateway in regions closest to users and integrate with CloudFront for global optimization",
+                    "description": "Implement regular monitoring of API Gateway costs and usage patterns",
                     "implementation": {
-                        "type": "IaC",
-                        "description": "Use regional API endpoints and configure CloudFront distribution for caching and global edge optimization"
-                    }
-                },
-                {
-                    "identifier": "COST-07",
-                    "title": "Optimize Custom Domain and Certificate Usage",
-                    "severity": "Low",
-                    "description": "Consolidate APIs under fewer custom domains to reduce certificate and domain management costs",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Use path-based routing to serve multiple APIs from a single custom domain rather than creating separate domains for each API"
+                        "type": "Platform",
+                        "description": "Set up CloudWatch dashboards and billing alerts to monitor API Gateway usage, costs, and identify optimization opportunities"
                     }
                 }
             ]

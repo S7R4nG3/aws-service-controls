@@ -1,42 +1,27 @@
 # AWS Data Firehose
 ---
 
-
-### CSA Cloud Controls Matrix v5.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Identity and Access Management | IAM-01 | Implement proper identity and access management controls for Firehose delivery streams | **IaC** - Define IAM roles and policies with least privilege access to Firehose delivery streams using CloudFormation or Terraform |  |
-| **Critical** | Data Security and Information Lifecycle Management | DSI-01 | Ensure data encryption in transit and at rest for all Firehose delivery streams | **IaC** - Configure server-side encryption using AWS KMS keys and enable SSL/TLS encryption for data in transit |  |
-| **High** | Governance and Risk Management | GRM-01 | Establish governance framework for Firehose stream management and data handling | **Platform** - Implement AWS Config rules to monitor Firehose configuration compliance and AWS Organizations policies |  |
-| **High** | Data Classification | DSI-02 | Classify data flowing through Firehose streams and apply appropriate protection measures | **User** - Tag Firehose delivery streams with data classification labels and implement data loss prevention measures |  |
-| Medium | Application and Interface Security | AIS-01 | Secure APIs and interfaces used to interact with Firehose | **IaC** - Implement VPC endpoints for Firehose API calls and configure API throttling limits |  |
-
-### NIST 800-53 Rev 5
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Access Enforcement | AC-3 | Enforce approved authorizations for logical access to Firehose resources | **IaC** - Implement resource-based policies and IAM policies with explicit deny statements for unauthorized access |  |
-| **Critical** | Transmission Confidentiality and Integrity | SC-8 | Protect the confidentiality and integrity of transmitted information through Firehose | **IaC** - Enable SSL/TLS encryption for all data transmission and configure encryption parameters in delivery stream settings |  |
-| **High** | Event Logging | AU-2 | Ensure Firehose activities are logged and auditable | **Platform** - Enable CloudTrail logging for all Firehose API calls and configure CloudWatch logging for delivery stream events |  |
-| **High** | Protection of Information at Rest | SC-28 | Protect information at rest in Firehose buffers and destination storage | **IaC** - Configure KMS encryption for Firehose delivery streams and ensure destination storage encryption |  |
-| **High** | System Monitoring | SI-4 | Monitor Firehose delivery streams for security events and anomalies | **Platform** - Configure CloudWatch alarms for delivery failures, data transformation errors, and unusual traffic patterns |  |
-| Medium | System Backup | CP-9 | Ensure backup capabilities for critical Firehose configurations | **IaC** - Version control Firehose configurations in Infrastructure as Code templates and implement cross-region replication |  |
-
-### AWS Foundational Security Best Practices 1.0.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Firehose delivery streams should be encrypted at rest | Firehose.1 | Ensure all Firehose delivery streams have server-side encryption enabled | **IaC** - Configure SSEConfiguration with KMS encryption in delivery stream definition |  |
-| **High** | Firehose delivery streams should have error logging enabled | Firehose.2 | Enable error logging for Firehose delivery streams to CloudWatch Logs | **IaC** - Configure CloudWatchLoggingOptions in the delivery stream configuration |  |
-| **High** | Firehose delivery streams should use VPC endpoints | Firehose.3 | Use VPC endpoints for Firehose to keep traffic within AWS network | **IaC** - Create VPC endpoints for Firehose service and configure route tables appropriately |  |
-| Medium | Firehose should have proper IAM roles and policies | Firehose.4 | Configure least privilege IAM roles for Firehose service operations | **IaC** - Create dedicated IAM roles with minimal required permissions for Firehose delivery stream operations |  |
-
-### AWS Security Hub 2023.1
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Kinesis Data Firehose delivery streams should be encrypted at rest | KinesisFirehose.1 | This control checks whether Amazon Kinesis Data Firehose delivery streams are encrypted at rest | **IaC** - Enable server-side encryption using AWS KMS customer managed keys in delivery stream configuration |  |
-| **High** | Kinesis Data Firehose delivery streams should have server access logging enabled | KinesisFirehose.2 | Enable server access logging for S3 destinations of Firehose delivery streams | **IaC** - Configure S3 bucket logging for destination buckets and enable CloudWatch Logs for delivery stream errors |  |
-| **High** | Kinesis Data Firehose delivery streams should not be publicly accessible | KinesisFirehose.3 | Ensure Firehose delivery streams are not accessible from public networks | **Platform** - Configure VPC endpoints and security groups to restrict access to authorized networks only |  |
-| Medium | Kinesis Data Firehose should have monitoring enabled | KinesisFirehose.4 | Enable comprehensive monitoring for Firehose delivery streams | **Platform** - Configure CloudWatch metrics and alarms for delivery success rates, error rates, and data freshness |  |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **Critical** | IAM-01 | CSA Cloud Controls Matrix v4.0 | Identity and Access Management Policy | Implement comprehensive identity and access management policies for Firehose streams and related resources | **IaC** - Define IAM policies with least privilege principles using CloudFormation or Terraform templates for Firehose access |  |
+| **Critical** | DSI-01 | CSA Cloud Controls Matrix v4.0 | Data Security and Information Lifecycle Management | Ensure data encryption in transit and at rest for all Firehose delivery streams | **IaC** - Configure server-side encryption using AWS KMS keys and enforce HTTPS/TLS for data transmission in Firehose configuration |  |
+| **High** | AIS-01 | CSA Cloud Controls Matrix v4.0 | Audit Logging / Intrusion Detection | Enable comprehensive logging and monitoring for Firehose activities | **IaC** - Configure CloudTrail logging for Firehose API calls and enable CloudWatch monitoring for delivery metrics |  |
+| **High** | DSI-05 | CSA Cloud Controls Matrix v4.0 | Data Loss Prevention | Implement data loss prevention mechanisms to protect sensitive data in Firehose streams | **Platform** - Enable error record handling and configure backup S3 bucket for failed deliveries |  |
+| Medium | TVM-01 | CSA Cloud Controls Matrix v4.0 | Vulnerability Management | Regularly assess and remediate vulnerabilities in Firehose configurations | **User** - Conduct periodic security assessments of Firehose configurations and access patterns |  |
+| **Critical** | AC-2 | NIST 800-53 Rev 5 | Account Management | Manage accounts with access to Firehose resources with proper provisioning and deprovisioning procedures | **User** - Implement automated account lifecycle management for users accessing Firehose resources through IAM roles and policies |  |
+| **Critical** | SC-8 | NIST 800-53 Rev 5 | Transmission Confidentiality and Integrity | Protect data transmission confidentiality and integrity for Firehose streams | **IaC** - Configure TLS encryption for all data sources and destinations, and enable server-side encryption for delivery streams |  |
+| **Critical** | SC-28 | NIST 800-53 Rev 5 | Protection of Information at Rest | Protect information at rest in Firehose temporary storage and destination systems | **IaC** - Enable server-side encryption using AWS KMS customer-managed keys for all Firehose delivery streams |  |
+| **High** | AU-2 | NIST 800-53 Rev 5 | Event Logging | Log auditable events for Firehose service usage and access | **Platform** - Enable CloudTrail for Firehose API logging and configure CloudWatch Logs for delivery stream events |  |
+| **High** | SI-4 | NIST 800-53 Rev 5 | System Monitoring | Monitor Firehose systems for security-relevant events and anomalies | **IaC** - Set up CloudWatch alarms for Firehose delivery failures, throttling, and unusual access patterns |  |
+| Medium | CP-9 | NIST 800-53 Rev 5 | System Backup | Implement backup procedures for Firehose configuration and data recovery | **IaC** - Configure error record processing with S3 backup bucket and implement cross-region replication for critical streams |  |
+| **Critical** | KinesisFirehose.1 | AWS Foundational Security Standard 1.0 | Kinesis Data Firehose delivery streams should be encrypted at rest | Firehose delivery streams should have server-side encryption enabled to protect data at rest | **IaC** - Configure SSEDescription parameter with KMS encryption in Firehose delivery stream configuration |  |
+| **High** | CloudTrail.1 | AWS Foundational Security Standard 1.0 | CloudTrail should be enabled and configured with at least one multi-Region trail | Enable CloudTrail to log Firehose API calls for security monitoring and compliance | **Platform** - Ensure CloudTrail is enabled with multi-region configuration to capture all Firehose API activities |  |
+| **High** | IAM.1 | AWS Foundational Security Standard 1.0 | IAM policies should not allow full '*:*' administrative privileges | Restrict IAM policies for Firehose to follow least privilege principle | **IaC** - Create specific IAM policies for Firehose operations without wildcard permissions, scoped to specific resources |  |
+| Medium | CloudWatch.1 | AWS Foundational Security Standard 1.0 | CloudWatch alarms should be configured for critical metrics | Configure CloudWatch alarms for Firehose delivery failures and performance metrics | **IaC** - Set up CloudWatch alarms for DeliveryToS3.Success, DeliveryToS3.Records, and other critical Firehose metrics |  |
+| **Critical** | KinesisFirehose.1 | AWS Security Hub 2023 | Kinesis Data Firehose delivery streams should be encrypted at rest | Kinesis Data Firehose delivery streams should be encrypted at rest to protect sensitive data | **IaC** - Enable server-side encryption using AWS KMS keys in Firehose delivery stream configuration |  |
+| **High** | Config.1 | AWS Security Hub 2023 | AWS Config should be enabled | Enable AWS Config to track configuration changes for Firehose resources | **Platform** - Configure AWS Config rules to monitor Firehose delivery stream configurations and compliance status |  |
+| **High** | GuardDuty.1 | AWS Security Hub 2023 | GuardDuty should be enabled | Enable GuardDuty to detect malicious activity related to Firehose resources | **Platform** - Enable GuardDuty in all regions where Firehose is deployed for threat detection |  |
+| Medium | AccessAnalyzer.1 | AWS Security Hub 2023 | IAM Access Analyzer should be enabled | Use IAM Access Analyzer to review and validate Firehose resource access policies | **Platform** - Enable IAM Access Analyzer to identify unintended access to Firehose resources from external entities |  |
 
 ## Operational Controls
 ---
@@ -46,16 +31,13 @@
 ## Cost Controls
 ---
 
-
-### AWS Kinesis Data Firehose Cost Optimization 2023
-| Severity | Title | Identifier | Description | Implementation |
-| - | - | - | - | - |
-| **High** | Optimize buffer settings | COST-001 | Configure appropriate buffer size and interval to minimize costs while meeting delivery requirements | **IaC** - Set buffer size to maximum (128 MB) and buffer interval to maximum (900 seconds) when latency requirements allow |
-| **High** | Implement data compression | COST-002 | Enable data compression to reduce data transfer and storage costs | **IaC** - Configure GZIP compression in the delivery stream configuration for supported destinations |
-| Medium | Optimize data transformation | COST-003 | Minimize data transformation overhead and Lambda invocation costs | **User** - Use efficient Lambda functions for data transformation and consider batch processing to reduce invocation frequency |
-| Medium | Right-size delivery stream configuration | COST-004 | Monitor and adjust delivery stream settings based on actual usage patterns | **Platform** - Use CloudWatch metrics to analyze throughput patterns and adjust buffer settings and scaling accordingly |
-| Medium | Implement data lifecycle policies | COST-005 | Configure appropriate storage classes and lifecycle policies for destination storage | **IaC** - Configure S3 Intelligent Tiering or lifecycle transitions for long-term data storage cost optimization |
-| Low | Monitor and alert on cost anomalies | COST-006 | Implement cost monitoring and alerting for Firehose usage | **Platform** - Set up AWS Budgets and Cost Anomaly Detection for Firehose service costs with appropriate alert thresholds |
-| Low | Optimize error handling and retry logic | COST-007 | Implement efficient error handling to minimize retry costs and failed delivery charges | **IaC** - Configure appropriate retry duration and error output prefix to minimize processing costs for failed records |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **High** | COST-01 | AWS Data Firehose Cost Optimization Best Practices 2024 | Optimize Data Compression | Enable data compression to reduce storage costs and improve delivery performance | **IaC** - Configure compression settings (GZIP, Snappy, or ZIP) in Firehose delivery stream to reduce data size and associated costs |  |
+| **High** | COST-02 | AWS Data Firehose Cost Optimization Best Practices 2024 | Right-size Buffer Intervals and Sizes | Optimize buffer size and interval settings to minimize per-record costs while meeting latency requirements | **IaC** - Configure appropriate BufferSize (1-128 MB) and BufferInterval (60-900 seconds) based on data volume patterns to optimize cost per GB |  |
+| Medium | COST-03 | AWS Data Firehose Cost Optimization Best Practices 2024 | Implement Data Format Conversion | Convert data to columnar formats like Parquet or ORC to reduce storage costs and improve query performance | **IaC** - Enable format conversion to Parquet or ORC in Firehose configuration to optimize downstream storage and analytics costs |  |
+| Medium | COST-04 | AWS Data Firehose Cost Optimization Best Practices 2024 | Monitor and Optimize Data Processing | Optimize Lambda data transformation functions to reduce processing costs and improve efficiency | **User** - Review and optimize Lambda function code for data transformation, right-size memory allocation, and minimize execution time |  |
+| Medium | COST-05 | AWS Data Firehose Cost Optimization Best Practices 2024 | Implement Lifecycle Policies for Destinations | Configure lifecycle policies for S3 destinations to automatically transition data to lower-cost storage classes | **IaC** - Set up S3 lifecycle policies to transition delivered data to IA, Glacier, or Deep Archive storage classes based on access patterns |  |
+| Low | COST-06 | AWS Data Firehose Cost Optimization Best Practices 2024 | Monitor Usage with Cost Allocation Tags | Implement comprehensive tagging strategy for cost tracking and allocation | **IaC** - Apply consistent tags to Firehose resources including environment, project, team, and cost center for detailed cost analysis |  |
+| Low | COST-07 | AWS Data Firehose Cost Optimization Best Practices 2024 | Optimize Error Record Handling | Configure efficient error record processing to minimize retry costs and failed delivery charges | **IaC** - Set appropriate retry duration and configure error record processing to S3 bucket with lifecycle policies for cost optimization |  |
 

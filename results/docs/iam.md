@@ -1,46 +1,30 @@
 # AWS Identity and Access Management (IAM)
 ---
 
-
-### CSA Cloud Controls Matrix v5.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **High** | Identity and Access Management Policy | IAM-01 | Establish comprehensive identity and access management policies with role-based access controls | **IaC** - Define IAM policies, roles, and groups using CloudFormation or Terraform templates with least privilege principles |  |
-| **High** | Multi-Factor Authentication | IAM-02 | Enforce multi-factor authentication for all privileged accounts and sensitive operations | **User** - Configure MFA devices for root and IAM users through AWS Console or CLI, enforce via IAM policies |  |
-| **High** | Privileged Account Management | IAM-03 | Implement strict controls and monitoring for privileged administrative accounts | **Platform** - Use AWS Organizations SCPs and IAM Access Analyzer to monitor and restrict privileged access |  |
-| Medium | Access Reviews and Certification | IAM-04 | Conduct regular access reviews and certifications to ensure appropriate permissions | **Platform** - Implement automated access reviews using AWS Access Analyzer and IAM credential reports |  |
-| Medium | Identity Federation | IAM-05 | Implement federated identity management for centralized authentication | **IaC** - Configure SAML 2.0 or OIDC identity providers and IAM roles for federated access |  |
-
-### NIST SP 800-53 Rev 5
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **High** | Account Management | AC-2 | Implement comprehensive account management procedures including creation, modification, and deletion | **Platform** - Use AWS Organizations and CloudTrail to track account lifecycle events and implement automated account provisioning |  |
-| **High** | Access Enforcement | AC-3 | Enforce approved authorizations for logical access to information and system resources | **IaC** - Implement IAM policies with explicit deny statements and service control policies to enforce access boundaries |  |
-| **High** | Least Privilege | AC-6 | Employ the principle of least privilege for specific security functions and privileged accounts | **IaC** - Create granular IAM policies with minimal required permissions and use IAM Access Analyzer for policy validation |  |
-| **High** | Identification and Authentication | IA-2 | Uniquely identify and authenticate organizational users and associate with accounts | **User** - Implement strong password policies and MFA requirements through IAM password policy and MFA enforcement |  |
-| Medium | Event Logging | AU-2 | Identify the types of events that the system is capable of logging | **Platform** - Enable CloudTrail logging for all IAM API calls and integrate with CloudWatch for monitoring |  |
-| Medium | Session Authenticity | SC-23 | Protect the authenticity of communications sessions | **Platform** - Use AWS STS temporary credentials and implement session duration limits in IAM roles |  |
-
-### AWS Foundational Security Best Practices Standard 1.0.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **High** | IAM policies should not allow full '*' administrative privileges | IAM.1 | Avoid granting full administrative privileges using wildcard permissions | **IaC** - Review and remediate IAM policies to remove wildcard permissions and implement specific resource-based permissions |  |
-| **High** | IAM users should not have IAM policies attached | IAM.2 | Avoid attaching policies directly to IAM users, use groups or roles instead | **IaC** - Migrate user-attached policies to IAM groups and implement role-based access patterns |  |
-| **High** | IAM users' access keys should be rotated every 90 days or less | IAM.3 | Regularly rotate IAM user access keys to reduce security risks | **User** - Implement automated access key rotation using AWS Secrets Manager or custom Lambda functions |  |
-| **Critical** | IAM root access key should not exist | IAM.4 | Remove and do not create access keys for the root account | **User** - Delete existing root access keys and implement IAM users with appropriate permissions for administrative tasks |  |
-| **High** | MFA should be enabled for all IAM users that have a console password | IAM.5 | Enable multi-factor authentication for console access to enhance security | **User** - Configure virtual or hardware MFA devices for all console users and enforce through IAM policies |  |
-| **Critical** | Hardware MFA should be enabled for the root user | IAM.6 | Enable hardware-based MFA for the root account for maximum security | **User** - Configure hardware MFA device for root account through AWS Console account settings |  |
-| Medium | Password policies for IAM users should have strong configurations | IAM.7 | Implement strong password policies including length, complexity, and rotation requirements | **IaC** - Configure IAM account password policy with minimum length, complexity requirements, and rotation policies |  |
-| Medium | Unused IAM user credentials should be removed | IAM.8 | Identify and remove unused IAM user credentials to reduce attack surface | **Platform** - Use IAM credential reports and Access Analyzer to identify and remove unused credentials automatically |  |
-
-### AWS Security Hub 2023.04.04
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **High** | IAM customer managed policies should not allow decryption actions on all KMS keys | IAM.21 | Restrict IAM policies from allowing broad KMS decryption permissions | **IaC** - Review and update IAM policies to specify explicit KMS key ARNs instead of wildcard permissions for KMS actions |  |
-| Medium | IAM user credentials unused for 45 days should be removed | IAM.22 | Remove IAM user credentials that have not been used for 45 days or more | **Platform** - Implement automated credential cleanup using Lambda functions triggered by CloudWatch Events based on credential reports |  |
-| Medium | Security contact information should be provided for an AWS account | Account.1 | Ensure security contact information is configured for incident response | **User** - Configure security contact information in AWS account settings through the AWS Console |  |
-| Medium | AWS accounts should be part of an AWS Organizations organization | Account.2 | Use AWS Organizations for centralized account management and governance | **Platform** - Create or join an AWS Organizations structure and implement service control policies for governance |  |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **High** | AC-2 | NIST 800-53 Rev 5 | Account Management | Manage information system accounts including account creation, enabling, modification, disabling, and removal | **IaC** - Implement automated account provisioning and deprovisioning using IAM roles, policies, and AWS Organizations SCPs |  |
+| **High** | AC-3 | NIST 800-53 Rev 5 | Access Enforcement | Enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies | **IaC** - Define and enforce least privilege access through IAM policies, resource-based policies, and permission boundaries |  |
+| **High** | AC-6 | NIST 800-53 Rev 5 | Least Privilege | Employ the principle of least privilege, allowing only authorized accesses for users which are necessary to accomplish assigned organizational tasks | **IaC** - Implement fine-grained IAM policies with minimal required permissions and regular access reviews |  |
+| **High** | IA-2 | NIST 800-53 Rev 5 | Identification and Authentication (Organizational Users) | Uniquely identify and authenticate organizational users and associate that identity with processes acting on behalf of those users | **Platform** - Configure multi-factor authentication (MFA) for all IAM users and enforce strong password policies |  |
+| Medium | AC-4 | NIST 800-53 Rev 5 | Information Flow Enforcement | Control information flows within the system and between interconnected systems in accordance with applicable policy | **IaC** - Implement IAM condition keys and resource-based policies to control cross-account access |  |
+| Medium | AU-2 | NIST 800-53 Rev 5 | Event Logging | Identify the types of events that the system is capable of logging in support of the audit function | **IaC** - Enable CloudTrail logging for all IAM API calls and integrate with CloudWatch for monitoring |  |
+| **High** | IAM-01 | CSA CCM v4.0.6 | Identity and Access Management Policy and Procedures | Policies and procedures shall be established to manage privileged user access rights and entitlements for cloud service customers, business partners, and third parties | **User** - Establish IAM governance procedures including regular access reviews and privileged access management |  |
+| **High** | IAM-02 | CSA CCM v4.0.6 | Credential Lifecycle/Provision Management | User access credentials shall be provisioned and managed through their entire lifecycle | **IaC** - Implement automatic credential rotation using AWS Secrets Manager and IAM access key rotation policies |  |
+| **High** | IAM-03 | CSA CCM v4.0.6 | Multi-Factor Authentication | Multi-factor authentication shall be implemented where technically feasible for user access to the organization's systems and/or applications | **Platform** - Enable MFA for all IAM users and enforce MFA requirements through IAM policies |  |
+| Medium | IAM-11 | CSA CCM v4.0.6 | Segregation of Duties | User-access policies and procedures shall be designed to support segregation of duties | **IaC** - Design IAM roles and policies that enforce separation of duties between development, staging, and production environments |  |
+| Medium | LOG-02 | CSA CCM v4.0.6 | Audit Log Monitoring and Alerting | Audit logs shall be reviewed and security events shall be monitored on an ongoing basis | **IaC** - Configure CloudWatch alarms for suspicious IAM activities and implement automated incident response |  |
+| **High** | IAM.1 | AWS Foundational Security Best Practices v1.0.0 | IAM policies should not allow full '*' administrative privileges | Checks whether the default version of AWS managed policies do not have administrator access with a statement having Effect Allow with Action of * over Resource of * | **IaC** - Review and restrict IAM policies to follow least privilege principle, avoiding wildcard permissions |  |
+| **High** | IAM.4 | AWS Foundational Security Best Practices v1.0.0 | IAM root access key should not exist | Checks whether users have access keys associated with the root user of their AWS account | **User** - Remove or disable root access keys and use IAM users or roles for programmatic access |  |
+| Medium | IAM.2 | AWS Foundational Security Best Practices v1.0.0 | IAM users should not have IAM policies attached | Checks that none of your IAM users have policies attached directly to them | **IaC** - Attach policies to IAM groups or roles instead of individual users to improve manageability |  |
+| Medium | IAM.3 | AWS Foundational Security Best Practices v1.0.0 | IAM users' access keys should be rotated every 90 days or less | Checks whether the active access keys are rotated within the number of days specified in maxAccessKeyAge | **User** - Implement regular access key rotation schedule and automate key rotation where possible |  |
+| Medium | IAM.5 | AWS Foundational Security Best Practices v1.0.0 | MFA should be enabled for all IAM users that have a console password | Checks whether AWS Multi-Factor Authentication (MFA) is enabled for all IAM users that have a console password | **Platform** - Enable MFA for all IAM users with console access and enforce through IAM policies |  |
+| **High** | IAM.6 | AWS Foundational Security Best Practices v1.0.0 | Hardware MFA should be enabled for the root user | Checks whether your AWS account is enabled to use multi-factor authentication (MFA) hardware device to sign in with root credentials | **User** - Enable hardware MFA device for root account and secure the device appropriately |  |
+| **High** | IAM.9 | AWS Security Hub 2023.1 | Virtual MFA should be enabled for the root user | Checks whether users have a virtual multi-factor authentication (MFA) device enabled | **User** - Enable virtual MFA for root user if hardware MFA is not available |  |
+| Medium | IAM.7 | AWS Security Hub 2023.1 | Password policies for IAM users should have strong configurations | Checks whether the account password policy for IAM users meets the specified requirements | **Platform** - Configure IAM password policy with minimum length, complexity requirements, and password expiration |  |
+| Medium | IAM.8 | AWS Security Hub 2023.1 | Unused IAM user credentials should be removed | Checks whether your IAM users have passwords or active access keys that have not been used within the specified number of days | **User** - Regularly review and remove unused IAM credentials and implement automated cleanup processes |  |
+| Medium | IAM.21 | AWS Security Hub 2023.1 | IAM customer managed policies should not allow wildcard actions for services | Checks whether AWS Identity and Access Management (IAM) customer managed policies allow wildcard actions for services | **IaC** - Review and refine IAM policies to specify explicit actions instead of using wildcard permissions |  |
+| Low | IAM.22 | AWS Security Hub 2023.1 | IAM user credentials unused for 45 days should be removed | Checks whether IAM user credentials (passwords and access keys) that have not been used for 45 days or greater exist | **User** - Implement automated processes to identify and remove unused IAM credentials after 45 days |  |
 
 ## Operational Controls
 ---
@@ -50,15 +34,12 @@
 ## Cost Controls
 ---
 
-
-### AWS IAM Cost Optimization Best Practices 2023
-| Severity | Title | Identifier | Description | Implementation |
-| - | - | - | - | - |
-| **High** | Eliminate Unused IAM Users and Roles | COST-IAM-01 | Regularly identify and remove unused IAM users, roles, and policies to reduce management overhead | **Platform** - Use IAM Access Analyzer and credential reports to identify unused identities and implement automated cleanup processes |
-| Medium | Optimize Cross-Account Role Usage | COST-IAM-02 | Use cross-account IAM roles instead of creating duplicate users across multiple accounts | **IaC** - Implement cross-account trust relationships and assume role patterns to reduce user proliferation |
-| Medium | Leverage AWS SSO for User Management | COST-IAM-03 | Use AWS IAM Identity Center (SSO) to reduce IAM user management overhead and costs | **Platform** - Migrate from individual IAM users to AWS SSO for centralized identity management and reduced operational costs |
-| Medium | Implement Policy Consolidation | COST-IAM-04 | Consolidate similar IAM policies to reduce management complexity and overhead | **IaC** - Review and merge similar IAM policies using IAM Access Analyzer policy validation and optimization recommendations |
-| Low | Use Service-Linked Roles | COST-IAM-05 | Utilize AWS service-linked roles instead of custom roles where possible to reduce management overhead | **Platform** - Replace custom service roles with AWS-managed service-linked roles when supported by the service |
-| Medium | Implement Automated Access Reviews | COST-IAM-06 | Automate access reviews to reduce manual effort and operational costs | **Platform** - Use AWS Config rules and Lambda functions to automate access certification and policy compliance checks |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| Medium | COST-1 | AWS IAM Cost Optimization Best Practices 2023 | Minimize IAM Users and Prefer Roles | Reduce the number of IAM users by using roles for applications and federated access | **IaC** - Implement IAM roles for EC2 instances, Lambda functions, and cross-account access instead of creating individual IAM users |  |
+| Medium | COST-3 | AWS IAM Cost Optimization Best Practices 2023 | Use AWS Organizations for Centralized IAM Management | Leverage AWS Organizations and SCPs to reduce IAM management complexity across accounts | **Platform** - Implement centralized identity management using AWS Organizations, reducing per-account IAM administrative overhead |  |
+| Medium | COST-4 | AWS IAM Cost Optimization Best Practices 2023 | Implement IAM Identity Center for SSO | Use AWS IAM Identity Center to reduce the need for multiple IAM users across accounts | **Platform** - Deploy AWS IAM Identity Center for single sign-on to reduce IAM user provisioning and management costs |  |
+| Low | COST-2 | AWS IAM Cost Optimization Best Practices 2023 | Implement Access Key Lifecycle Management | Regularly rotate and remove unused access keys to reduce security overhead | **User** - Establish automated processes for access key rotation and removal of unused keys to reduce management overhead |  |
+| Low | COST-5 | AWS IAM Cost Optimization Best Practices 2023 | Regular IAM Policy Cleanup | Remove unused IAM policies, roles, and groups to reduce management overhead | **User** - Implement regular reviews and cleanup of unused IAM resources using AWS IAM Access Analyzer |  |
+| Low | COST-6 | AWS IAM Cost Optimization Best Practices 2023 | Automate IAM Compliance Monitoring | Use AWS Config and Security Hub to automate IAM compliance monitoring and reduce manual effort | **IaC** - Deploy automated compliance monitoring using AWS Config rules and Security Hub to reduce manual IAM auditing costs |  |
 

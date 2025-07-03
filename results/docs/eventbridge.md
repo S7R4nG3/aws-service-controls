@@ -1,40 +1,22 @@
 # AWS EventBridge
 ---
 
-
-### Cloud Security Alliance Cloud Controls Matrix v5.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Identity and Access Management | IAM-01 | Implement strong identity and access management controls for EventBridge resources | **IaC** - Configure IAM policies with least privilege principles, use resource-based policies for event buses, and implement cross-account access controls |  |
-| **High** | Encryption Key Management | EKM-01 | Implement proper encryption key management for EventBridge data protection | **IaC** - Configure customer-managed KMS keys for EventBridge encryption at rest and in transit |  |
-| **High** | Audit Logging | LOG-01 | Enable comprehensive audit logging for all EventBridge operations | **Platform** - Enable CloudTrail logging for EventBridge API calls and configure log retention policies |  |
-| Medium | Data Security and Information Lifecycle Management | DSI-01 | Implement data classification and lifecycle management for event data | **User** - Classify event data based on sensitivity and implement appropriate retention policies |  |
-
-### NIST 800-53 Rev 5
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | Access Enforcement | AC-3 | Enforce approved authorizations for logical access to EventBridge resources | **IaC** - Implement resource-based policies and IAM roles with condition-based access controls |  |
-| **Critical** | Transmission Confidentiality and Integrity | SC-8 | Protect the confidentiality and integrity of transmitted information | **Platform** - Ensure all EventBridge communications use TLS encryption and configure VPC endpoints where required |  |
-| **High** | Event Logging | AU-2 | Determine which events are to be logged by EventBridge | **IaC** - Configure comprehensive CloudTrail logging and enable EventBridge rule execution logging |  |
-| **High** | Boundary Protection | SC-7 | Monitor and control communications at external boundaries | **IaC** - Implement VPC endpoints for EventBridge and configure security groups for target services |  |
-| Medium | System Backup | CP-9 | Conduct backups of EventBridge configurations and rules | **User** - Implement automated backup of EventBridge rules and configurations using infrastructure as code |  |
-
-### AWS Foundational Security Best Practices v1.0.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | EventBridge custom event buses should have resource-based policy attached | EventBridge.1 | Custom event buses should have resource-based policies to control access | **IaC** - Attach resource-based policies to custom event buses defining allowed principals and actions |  |
-| **High** | EventBridge rules should have targets configured | EventBridge.2 | EventBridge rules without targets may indicate misconfigurations | **User** - Ensure all EventBridge rules have appropriate targets configured and remove unused rules |  |
-| **High** | EventBridge custom event buses should be encrypted | EventBridge.3 | Custom event buses should use encryption at rest | **IaC** - Configure KMS encryption for custom event buses using customer-managed keys |  |
-| Medium | EventBridge should not allow public access | EventBridge.4 | EventBridge resources should not be publicly accessible | **IaC** - Review and restrict resource-based policies to prevent public access |  |
-
-### AWS Security Hub 2023.04.0
-| Severity | Title | Identifier | Description | Implementation | Code |
-| - | - | - | - | - | - |
-| **Critical** | EventBridge custom event buses should have a resource-based policy attached | EventBridge.1 | This control checks whether EventBridge custom event buses have resource-based policies attached | **IaC** - Create and attach resource-based policies to custom event buses with appropriate access controls |  |
-| **High** | EventBridge rules should have targets | EventBridge.2 | This control checks whether EventBridge rules have targets configured | **User** - Configure appropriate targets for all EventBridge rules and remove orphaned rules |  |
-| **High** | EventBridge custom event buses should be encrypted | EventBridge.3 | This control checks whether EventBridge custom event buses are encrypted | **IaC** - Enable encryption for custom event buses using AWS KMS customer-managed keys |  |
-| Medium | EventBridge global endpoints should be encrypted | EventBridge.4 | This control checks whether EventBridge global endpoints use encryption | **Platform** - Ensure EventBridge global endpoints are configured with encryption enabled |  |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **Critical** | IAM-02 | CSA Cloud Controls Matrix v4.0.6 | User Access Management | Establish and maintain proper identity and access management controls for EventBridge resources | **IaC** - Implement IAM policies with least privilege principles, define resource-based policies for event buses, and establish proper role-based access controls |  |
+| **High** | DSI-02 | CSA Cloud Controls Matrix v4.0.6 | Data Security and Encryption | Protect sensitive data within EventBridge events and implement proper data classification | **Platform** - Enable encryption at rest and in transit, implement event content filtering, and establish data retention policies |  |
+| **High** | IVS-01 | CSA Cloud Controls Matrix v4.0.6 | Network Security | Secure the underlying infrastructure and network communications for EventBridge | **IaC** - Configure VPC endpoints for private connectivity, implement network ACLs, and establish secure communication channels |  |
+| Medium | BCR-02 | CSA Cloud Controls Matrix v4.0.6 | Business Continuity Planning | Ensure EventBridge service availability and implement disaster recovery procedures | **Platform** - Configure cross-region replication for critical event buses, implement dead letter queues, and establish backup procedures |  |
+| Medium | STA-01 | CSA Cloud Controls Matrix v4.0.6 | Supply Chain Management | Maintain visibility and control over EventBridge integrations and third-party connections | **User** - Document all event sources and targets, maintain inventory of integrations, and establish approval processes for new connections |  |
+| **Critical** | AC-2 | NIST 800-53 Rev 5 | Account Management | Manage EventBridge access through proper account management procedures | **IaC** - Implement automated account provisioning/deprovisioning, regular access reviews, and principle of least privilege for EventBridge permissions |  |
+| **Critical** | SC-8 | NIST 800-53 Rev 5 | Transmission Confidentiality and Integrity | Protect the confidentiality and integrity of transmitted information in EventBridge | **Platform** - Enable TLS encryption for all EventBridge communications, implement message authentication codes, and use encrypted channels |  |
+| **High** | AU-2 | NIST 800-53 Rev 5 | Event Logging | Implement comprehensive auditing for EventBridge activities | **Platform** - Enable CloudTrail logging for EventBridge API calls, configure detailed event logging, and implement log integrity protection |  |
+| **High** | SC-7 | NIST 800-53 Rev 5 | Boundary Protection | Implement network boundary protection for EventBridge communications | **IaC** - Configure VPC endpoints, implement security groups with restrictive rules, and establish network segmentation |  |
+| Medium | CP-9 | NIST 800-53 Rev 5 | System Backup | Implement backup procedures for EventBridge configurations and critical data | **IaC** - Backup event bus configurations, rules, and targets using Infrastructure as Code, implement cross-region backup strategies |  |
+| **Critical** | EventBridge.1 | AWS Foundational Security Standard 1.0.0 | EventBridge custom event buses should have resource-based policy attached | Custom EventBridge event buses should have resource-based policies to control access | **IaC** - Attach resource-based policies to custom event buses defining who can publish events, create rules, or manage the bus |  |
+| **High** | EventBridge.2 | AWS Foundational Security Standard 1.0.0 | EventBridge rules should have targets configured | EventBridge rules should have at least one target to ensure events are properly processed | **IaC** - Configure appropriate targets for all EventBridge rules and implement dead letter queues for failed event processing |  |
+| **High** | EventBridge.3 | AWS Foundational Security Standard 1.0.0 | EventBridge should use encryption at rest | EventBridge event buses should be encrypted at rest using AWS KMS | **Platform** - Enable server-side encryption for EventBridge using AWS managed keys or customer managed KMS keys |  |
+| Medium | EventBridge.4 | AWS Foundational Security Standard 1.0.0 | EventBridge API calls should be logged | All EventBridge API calls should be logged for security monitoring and compliance | **Platform** - Enable AWS CloudTrail to log all EventBridge API calls and configure log analysis for security events |  |
 
 ## Operational Controls
 ---
@@ -44,16 +26,13 @@
 ## Cost Controls
 ---
 
-
-### AWS EventBridge Cost Optimization Best Practices 2024
-| Severity | Title | Identifier | Description | Implementation |
-| - | - | - | - | - |
-| **High** | Optimize Event Pattern Matching | COST-01 | Use specific event patterns to reduce unnecessary rule evaluations and processing costs | **User** - Design event patterns with specific filters to minimize rule evaluations and avoid broad pattern matching |
-| **High** | Implement Event Deduplication | COST-02 | Prevent duplicate events to reduce processing costs and downstream resource consumption | **User** - Implement event deduplication logic and use idempotency tokens where applicable |
-| Medium | Monitor and Remove Unused Rules | COST-03 | Regularly audit and remove unused EventBridge rules to reduce costs | **User** - Implement automated monitoring to identify and remove unused rules and event buses |
-| Medium | Optimize Cross-Region Replication | COST-04 | Minimize unnecessary cross-region event replication to reduce data transfer costs | **IaC** - Configure replication rules to replicate only necessary events across regions |
-| Medium | Use Event Batching | COST-05 | Implement event batching for high-volume scenarios to reduce per-event costs | **User** - Configure target services to process events in batches where supported |
-| Low | Implement Event Filtering at Source | COST-06 | Filter events at the source to reduce the number of events sent to EventBridge | **User** - Configure event sources to filter events before sending to EventBridge |
-| Low | Monitor Event Processing Costs | COST-07 | Implement cost monitoring and alerting for EventBridge usage | **Platform** - Set up CloudWatch billing alarms and cost budgets for EventBridge service usage |
-
+| Severity | Identifier | Framework | Title | Description | Implementation | Code |
+| - | - | - | - | - | - | - |
+| **High** | COST-EB-01 | AWS EventBridge Cost Optimization Best Practices 2024.1 | Optimize Event Filtering | Implement precise event filtering to reduce unnecessary event processing and associated costs | **User** - Use specific event patterns in rules to filter events at the source, reducing downstream processing costs and improving efficiency |  |
+| **High** | COST-EB-02 | AWS EventBridge Cost Optimization Best Practices 2024.1 | Monitor and Optimize Cross-Region Data Transfer | Minimize cross-region data transfer costs by optimizing event routing and replication strategies | **IaC** - Design event architectures to minimize cross-region transfers, use regional event buses where possible, and implement cost-effective replication strategies |  |
+| Medium | COST-EB-03 | AWS EventBridge Cost Optimization Best Practices 2024.1 | Implement Event Batching | Use event batching where appropriate to reduce the number of individual event invocations and associated costs | **User** - Configure targets like Lambda functions and SQS queues to handle batched events when possible to reduce per-invocation costs |  |
+| Medium | COST-EB-04 | AWS EventBridge Cost Optimization Best Practices 2024.1 | Right-size Target Resources | Ensure target resources are appropriately sized for the event volume and processing requirements | **IaC** - Monitor target resource utilization and adjust Lambda function memory, ECS task sizes, and other compute resources based on actual event processing needs |  |
+| Medium | COST-EB-05 | AWS EventBridge Cost Optimization Best Practices 2024.1 | Implement Dead Letter Queues Efficiently | Configure dead letter queues to minimize storage costs while maintaining error handling capabilities | **IaC** - Set appropriate message retention periods for dead letter queues, implement automated cleanup processes, and monitor DLQ usage to optimize storage costs |  |
+| Low | COST-EB-06 | AWS EventBridge Cost Optimization Best Practices 2024.1 | Use Custom Event Buses Strategically | Evaluate the cost-benefit of custom event buses versus using the default event bus | **User** - Assess whether custom event buses provide sufficient value for the additional management overhead and costs, consolidate where appropriate |  |
+| Low | COST-EB-07 | AWS EventBridge Cost Optimization Best Practices 2024.1 | Monitor Event Volume and Costs | Implement comprehensive monitoring of EventBridge usage and costs to identify optimization opportunities | **Platform** - Set up CloudWatch metrics and billing alerts for EventBridge usage, create dashboards to track event volumes and costs over time |  |
 

@@ -2,73 +2,27 @@
     "service": "AWS ElastiCache",
     "security": [
         {
-            "name": "CSA Cloud Controls Matrix",
-            "version": "v5.0",
-            "controls": [
-                {
-                    "identifier": "IAM-01",
-                    "title": "Identity and Access Management",
-                    "severity": "Critical",
-                    "description": "Implement proper identity and access management controls for ElastiCache resources",
-                    "implementation": {
-                        "type": "Platform",
-                        "description": "Configure IAM policies with least privilege access, use resource-based policies, and implement MFA for administrative access"
-                    }
-                },
-                {
-                    "identifier": "EKM-02",
-                    "title": "Encryption Key Management",
-                    "severity": "Critical",
-                    "description": "Implement proper encryption key management for data at rest and in transit",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure encryption at rest using AWS KMS customer-managed keys and enable encryption in transit using TLS"
-                    }
-                },
-                {
-                    "identifier": "DSI-01",
-                    "title": "Data Security and Information Lifecycle Management",
-                    "severity": "High",
-                    "description": "Classify and protect data stored in ElastiCache according to sensitivity levels",
-                    "implementation": {
-                        "type": "User",
-                        "description": "Implement data classification policies and ensure sensitive data is properly encrypted and access controlled"
-                    }
-                },
-                {
-                    "identifier": "IVS-01",
-                    "title": "Infrastructure & Virtualization Security",
-                    "severity": "High",
-                    "description": "Secure ElastiCache infrastructure and network configurations",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Deploy ElastiCache in private subnets, configure security groups with minimal required access, and use VPC endpoints"
-                    }
-                },
-                {
-                    "identifier": "STA-01",
-                    "title": "Secure Network Architecture",
-                    "severity": "Medium",
-                    "description": "Implement secure network architecture for ElastiCache deployments",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Configure network ACLs, implement network segmentation, and use transit gateways for multi-VPC connectivity"
-                    }
-                }
-            ]
-        },
-        {
             "name": "NIST 800-53",
             "version": "Rev 5",
             "controls": [
                 {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "Critical",
+                    "description": "Manage information system accounts, group memberships, and associated access authorizations",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Configure IAM policies and roles with least privilege access to ElastiCache resources. Use IAM groups for role-based access management."
+                    }
+                },
+                {
                     "identifier": "AC-3",
                     "title": "Access Enforcement",
                     "severity": "Critical",
-                    "description": "Enforce approved authorizations for logical access to ElastiCache resources",
+                    "description": "Enforce approved authorizations for logical access to information and system resources",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Implement IAM policies with condition-based access controls and resource-level permissions"
+                        "type": "IaC",
+                        "description": "Implement VPC security groups and NACLs to restrict network access. Configure Redis AUTH and Memcached SASL authentication."
                     }
                 },
                 {
@@ -78,7 +32,7 @@
                     "description": "Protect the confidentiality and integrity of transmitted information",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable encryption in transit using TLS 1.2 or higher for all ElastiCache connections"
+                        "description": "Enable encryption in transit using TLS for all client connections and inter-node communication in ElastiCache clusters."
                     }
                 },
                 {
@@ -88,53 +42,169 @@
                     "description": "Protect the confidentiality and integrity of information at rest",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable encryption at rest using AWS KMS with customer-managed keys for ElastiCache clusters"
+                        "description": "Enable encryption at rest for ElastiCache clusters using AWS KMS keys with proper key rotation policies."
                     }
                 },
                 {
                     "identifier": "AU-2",
-                    "title": "Event Logging",
+                    "title": "Audit Events",
                     "severity": "High",
-                    "description": "Determine which events are to be logged by ElastiCache",
+                    "description": "Identify the types of events that the system is capable of logging in support of the audit function",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Enable CloudTrail logging for ElastiCache API calls and configure slow log for Redis clusters"
+                        "type": "Platform/IaC",
+                        "description": "Enable CloudTrail for API logging and configure slow log for Redis clusters. Enable VPC Flow Logs for network monitoring."
                     }
                 },
                 {
-                    "identifier": "SI-4",
-                    "title": "System Monitoring",
+                    "identifier": "AU-6",
+                    "title": "Audit Record Review, Analysis, and Reporting",
                     "severity": "High",
-                    "description": "Monitor ElastiCache systems to detect attacks and indicators of potential attacks",
+                    "description": "Review and analyze information system audit records for indications of inappropriate or unusual activity",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Configure CloudWatch monitoring, set up alarms for key metrics, and integrate with AWS Security Hub"
+                        "type": "Platform/IaC",
+                        "description": "Configure CloudWatch Logs analysis and set up automated alerting for suspicious activities using CloudWatch Alarms."
+                    }
+                },
+                {
+                    "identifier": "CA-7",
+                    "title": "Continuous Monitoring",
+                    "severity": "High",
+                    "description": "Develop a continuous monitoring strategy and implement continuous monitoring program",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Implement CloudWatch monitoring with custom metrics and alarms for ElastiCache performance and security events."
                     }
                 },
                 {
                     "identifier": "CP-9",
                     "title": "System Backup",
-                    "severity": "Medium",
-                    "description": "Conduct backups of ElastiCache data and configuration information",
+                    "severity": "High",
+                    "description": "Conduct backups of user-level information contained in the information system",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable automatic backups with appropriate retention periods and configure backup windows"
+                        "description": "Configure automated backups for Redis clusters with appropriate retention periods and cross-region backup replication."
+                    }
+                },
+                {
+                    "identifier": "SC-7",
+                    "title": "Boundary Protection",
+                    "severity": "High",
+                    "description": "Monitor and control communications at the external boundary and at key internal boundaries",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy ElastiCache clusters in private subnets with properly configured security groups allowing only necessary traffic."
+                    }
+                },
+                {
+                    "identifier": "IA-5",
+                    "title": "Authenticator Management",
+                    "severity": "Medium",
+                    "description": "Manage information system authenticators by verifying the identity of the individual, group, role, service, or device seeking access",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Implement strong authentication tokens for Redis AUTH and rotate credentials regularly using AWS Secrets Manager."
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "Medium",
+                    "description": "Monitor the information system to detect attacks and indicators of potential attacks in accordance with monitoring objectives",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Configure CloudWatch monitoring and integrate with AWS Security Hub for centralized security monitoring."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "CSA CCM",
+            "version": "v4.0.10",
+            "controls": [
+                {
+                    "identifier": "DSP-01",
+                    "title": "Data Security and Privacy Policies",
+                    "severity": "Critical",
+                    "description": "Policies and procedures shall be established, documented, approved, communicated, applied, evaluated and maintained for data security and privacy",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Implement data classification and lifecycle policies including encryption, backup, and secure deletion procedures."
+                    }
+                },
+                {
+                    "identifier": "EKM-01",
+                    "title": "Encryption and Key Management Policies and Procedures",
+                    "severity": "Critical",
+                    "description": "Policies and procedures shall be established for encryption and cryptographic key management",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Use AWS KMS for encryption key management with proper key rotation and access policies for ElastiCache encryption."
+                    }
+                },
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy",
+                    "severity": "Critical",
+                    "description": "Policies and procedures shall be established, documented, approved, communicated, applied, evaluated and maintained for identity and access management",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Establish IAM policies for ElastiCache access with documented procedures for access requests, approvals, and reviews."
+                    }
+                },
+                {
+                    "identifier": "BCR-01",
+                    "title": "Business Continuity Management and Operational Resilience",
+                    "severity": "High",
+                    "description": "Policies and procedures shall be established for business continuity management",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure multi-AZ deployments and automated failover capabilities with documented recovery procedures."
+                    }
+                },
+                {
+                    "identifier": "IVS-01",
+                    "title": "Infrastructure and Virtualization Security Policy and Procedures",
+                    "severity": "High",
+                    "description": "Policies and procedures shall be established for infrastructure and virtualization security",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy ElastiCache in secure VPC configurations with proper network segmentation and security hardening."
+                    }
+                },
+                {
+                    "identifier": "LOG-01",
+                    "title": "Logging and Monitoring Policy",
+                    "severity": "High",
+                    "description": "Policies and procedures shall be established for logging and monitoring activities",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Implement comprehensive logging strategy including API calls, slow logs, and security events with centralized log management."
+                    }
+                },
+                {
+                    "identifier": "TVM-01",
+                    "title": "Threat and Vulnerability Management",
+                    "severity": "Medium",
+                    "description": "Policies and procedures shall be established for threat and vulnerability management",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Regularly assess ElastiCache configurations using AWS Security Hub and implement security patches through managed updates."
                     }
                 }
             ]
         },
         {
             "name": "AWS Foundational Security Best Practices",
-            "version": "1.0.0",
+            "version": "v1.0.0",
             "controls": [
                 {
                     "identifier": "ElastiCache.1",
                     "title": "ElastiCache Redis clusters should have automatic backup enabled",
-                    "severity": "Medium",
+                    "severity": "Critical",
                     "description": "ElastiCache Redis clusters should have automatic backup enabled to ensure data durability",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure automatic backup retention period of at least 1 day for Redis clusters in CloudFormation/Terraform templates"
+                        "description": "Configure automatic backup with retention period of at least 7 days and enable backup to S3 for long-term retention."
                     }
                 },
                 {
@@ -144,103 +214,123 @@
                     "description": "ElastiCache Redis clusters should encrypt data at rest to protect sensitive information",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Set AtRestEncryptionEnabled to true and specify KMS key ID in cluster configuration"
+                        "description": "Enable at-rest encryption using customer-managed KMS keys with appropriate key policies and rotation."
                     }
                 },
                 {
                     "identifier": "ElastiCache.3",
                     "title": "ElastiCache Redis clusters should have encryption in transit enabled",
                     "severity": "Critical",
-                    "description": "ElastiCache Redis clusters should encrypt data in transit to protect against network-based attacks",
+                    "description": "ElastiCache Redis clusters should encrypt data in transit between clients and the cluster",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Set TransitEncryptionEnabled to true and configure AUTH token for Redis clusters"
+                        "description": "Enable TLS encryption for client connections and inter-node communication in cluster mode."
                     }
                 },
                 {
                     "identifier": "ElastiCache.4",
-                    "title": "ElastiCache Redis clusters should not use the default subnet group",
+                    "title": "ElastiCache Redis clusters should have AUTH enabled",
                     "severity": "High",
-                    "description": "ElastiCache Redis clusters should use custom subnet groups for proper network isolation",
+                    "description": "ElastiCache Redis clusters should have Redis AUTH enabled to control access",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Create custom subnet groups in private subnets and assign to ElastiCache clusters"
+                        "description": "Configure Redis AUTH with strong passwords stored in AWS Secrets Manager and enable automatic rotation."
                     }
                 },
                 {
                     "identifier": "ElastiCache.5",
-                    "title": "ElastiCache Redis clusters should have AUTH enabled",
+                    "title": "ElastiCache Redis clusters should be deployed in a VPC",
                     "severity": "High",
-                    "description": "ElastiCache Redis clusters should use AUTH tokens for authentication",
+                    "description": "ElastiCache Redis clusters should be deployed within a VPC for network isolation",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure AUTH token using AWS Secrets Manager or parameter store for Redis authentication"
+                        "description": "Deploy ElastiCache clusters in private subnets within a VPC with appropriate security group configurations."
                     }
                 },
                 {
                     "identifier": "ElastiCache.6",
-                    "title": "ElastiCache Redis clusters should be deployed in a VPC",
-                    "severity": "Medium",
-                    "description": "ElastiCache Redis clusters should be deployed within a VPC for network isolation",
+                    "title": "ElastiCache clusters should have logging enabled",
+                    "severity": "High",
+                    "description": "ElastiCache clusters should have appropriate logging enabled for monitoring and troubleshooting",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Deploy ElastiCache clusters within VPC using subnet groups and security groups"
+                        "description": "Enable slow log for Redis clusters and configure CloudWatch Logs for centralized log management."
+                    }
+                },
+                {
+                    "identifier": "ElastiCache.7",
+                    "title": "ElastiCache clusters should have Multi-AZ enabled",
+                    "severity": "Medium",
+                    "description": "ElastiCache clusters should be configured for high availability across multiple Availability Zones",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure cluster mode with replicas distributed across multiple AZs and enable automatic failover."
                     }
                 }
             ]
         },
         {
             "name": "AWS Security Hub",
-            "version": "2023.1",
+            "version": "2023",
             "controls": [
                 {
-                    "identifier": "ElastiCache.7",
-                    "title": "ElastiCache clusters should have deletion protection enabled",
-                    "severity": "Medium",
-                    "description": "ElastiCache clusters should have deletion protection enabled to prevent accidental deletion",
+                    "identifier": "ElastiCache.1",
+                    "title": "ElastiCache for Redis clusters should have automatic backup enabled",
+                    "severity": "Critical",
+                    "description": "This control checks whether ElastiCache for Redis clusters have automatic backup enabled",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Set DeletionProtection parameter to true in cluster configuration"
+                        "description": "Enable automatic backup with appropriate retention period and configure backup window during low-usage periods."
                     }
                 },
                 {
-                    "identifier": "ElastiCache.8",
-                    "title": "ElastiCache Redis clusters should have multi-AZ enabled",
+                    "identifier": "ElastiCache.2",
+                    "title": "ElastiCache for Redis clusters should have encryption at rest enabled",
+                    "severity": "Critical",
+                    "description": "This control checks whether ElastiCache for Redis clusters have encryption at rest enabled",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure encryption at rest using AWS managed or customer managed KMS keys with proper access controls."
+                    }
+                },
+                {
+                    "identifier": "ElastiCache.3",
+                    "title": "ElastiCache for Redis clusters should have encryption in transit enabled",
+                    "severity": "Critical",
+                    "description": "This control checks whether ElastiCache for Redis clusters have encryption in transit enabled",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable TLS encryption for all client connections and configure certificate-based authentication where applicable."
+                    }
+                },
+                {
+                    "identifier": "ElastiCache.4",
+                    "title": "ElastiCache for Redis clusters should have AUTH enabled",
                     "severity": "High",
-                    "description": "ElastiCache Redis clusters should be configured with multi-AZ for high availability",
+                    "description": "This control checks whether ElastiCache for Redis clusters have Redis AUTH enabled",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure automatic failover and deploy nodes across multiple availability zones"
+                        "description": "Configure Redis AUTH with complex passwords and integrate with AWS Secrets Manager for credential management."
                     }
                 },
                 {
-                    "identifier": "ElastiCache.9",
-                    "title": "ElastiCache parameter groups should have secure configurations",
-                    "severity": "Medium",
-                    "description": "ElastiCache parameter groups should be configured with security-focused parameters",
-                    "implementation": {
-                        "type": "IaC",
-                        "description": "Create custom parameter groups with secure defaults and disable unnecessary features"
-                    }
-                },
-                {
-                    "identifier": "ElastiCache.10",
-                    "title": "ElastiCache clusters should have appropriate security group rules",
+                    "identifier": "ElastiCache.5",
+                    "title": "ElastiCache for Redis clusters should not use the default subnet group",
                     "severity": "High",
-                    "description": "ElastiCache clusters should have restrictive security group rules limiting access",
+                    "description": "This control checks whether ElastiCache for Redis clusters are using custom subnet groups",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure security groups with specific source IP ranges or security groups, avoid 0.0.0.0/0"
+                        "description": "Create custom subnet groups with private subnets and appropriate network ACLs for better security isolation."
                     }
                 },
                 {
-                    "identifier": "ElastiCache.11",
-                    "title": "ElastiCache clusters should have logging enabled",
+                    "identifier": "ElastiCache.6",
+                    "title": "ElastiCache clusters should have notifications enabled",
                     "severity": "Medium",
-                    "description": "ElastiCache Redis clusters should have slow log enabled for monitoring",
+                    "description": "This control checks whether ElastiCache clusters have SNS notifications enabled",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Enable slow log and configure log delivery to CloudWatch Logs for analysis"
+                        "type": "IaC",
+                        "description": "Configure SNS notifications for cluster events and integrate with incident response procedures."
                     }
                 }
             ]
@@ -253,83 +343,83 @@
             "version": "2023",
             "controls": [
                 {
-                    "identifier": "COST-001",
+                    "identifier": "COST-01",
                     "title": "Right-size ElastiCache instances",
                     "severity": "High",
                     "description": "Monitor and optimize ElastiCache instance types and sizes based on actual usage patterns",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Use CloudWatch metrics to analyze CPU, memory, and network utilization to identify over-provisioned instances and downsize appropriately"
+                        "type": "Platform/IaC",
+                        "description": "Use CloudWatch metrics to analyze CPU, memory, and network utilization to identify oversized instances and implement auto-scaling where appropriate."
                     }
                 },
                 {
-                    "identifier": "COST-002",
-                    "title": "Implement Reserved Instances for predictable workloads",
+                    "identifier": "COST-02", 
+                    "title": "Use Reserved Instances for predictable workloads",
                     "severity": "High",
-                    "description": "Purchase Reserved Instances for ElastiCache clusters with predictable usage patterns",
+                    "description": "Purchase Reserved Instances for ElastiCache clusters with consistent usage patterns to reduce costs",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Analyze historical usage patterns and purchase 1-year or 3-year Reserved Instances for steady-state workloads"
+                        "description": "Analyze usage patterns over 30-90 days and purchase 1-year or 3-year Reserved Instances for stable workloads with up to 75% cost savings."
                     }
                 },
                 {
-                    "identifier": "COST-003",
-                    "title": "Optimize data transfer costs",
+                    "identifier": "COST-03",
+                    "title": "Optimize backup retention and frequency",
                     "severity": "Medium",
-                    "description": "Minimize data transfer charges by optimizing network architecture and data access patterns",
+                    "description": "Configure backup retention periods based on business requirements to minimize storage costs",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Deploy ElastiCache clusters in the same AZ as application servers and use VPC endpoints to avoid internet gateway charges"
+                        "description": "Set backup retention to minimum required period (1-35 days) and schedule backups during low-usage periods to reduce performance impact."
                     }
                 },
                 {
-                    "identifier": "COST-004",
-                    "title": "Configure appropriate backup retention periods",
+                    "identifier": "COST-04",
+                    "title": "Implement cluster mode for Redis to optimize memory usage",
                     "severity": "Medium",
-                    "description": "Set backup retention periods based on business requirements to avoid unnecessary storage costs",
+                    "description": "Use Redis cluster mode to distribute data across multiple nodes for better memory utilization",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Configure backup retention periods to match RTO/RPO requirements, typically 1-7 days for most use cases"
+                        "description": "Configure Redis cluster mode with appropriate shard count and replica configuration to optimize memory usage and reduce overall instance requirements."
                     }
                 },
                 {
-                    "identifier": "COST-005",
-                    "title": "Implement cluster scaling strategies",
+                    "identifier": "COST-05",
+                    "title": "Monitor and eliminate idle or underutilized clusters",
                     "severity": "Medium",
-                    "description": "Use appropriate scaling strategies to match capacity with demand patterns",
+                    "description": "Regularly review cluster utilization and terminate or downsize underutilized resources",
                     "implementation": {
                         "type": "Platform",
-                        "description": "Implement CloudWatch alarms and Lambda functions for automated scaling based on CPU and memory metrics"
+                        "description": "Set up CloudWatch alarms for low utilization metrics and implement automated reporting for cost optimization opportunities."
                     }
                 },
                 {
-                    "identifier": "COST-006",
-                    "title": "Monitor and eliminate unused resources",
+                    "identifier": "COST-06",
+                    "title": "Use appropriate data eviction policies",
                     "severity": "Medium",
-                    "description": "Regularly identify and terminate unused or underutilized ElastiCache clusters",
+                    "description": "Configure proper eviction policies to optimize memory usage and avoid unnecessary scaling",
                     "implementation": {
-                        "type": "Platform",
-                        "description": "Use AWS Cost Explorer and CloudWatch metrics to identify clusters with low utilization and implement automated cleanup processes"
+                        "type": "IaC",
+                        "description": "Configure appropriate eviction policies (allkeys-lru, volatile-lru) based on application access patterns to maximize memory efficiency."
                     }
                 },
                 {
-                    "identifier": "COST-007",
-                    "title": "Optimize multi-AZ configurations",
+                    "identifier": "COST-07",
+                    "title": "Optimize cross-AZ data transfer costs",
                     "severity": "Low",
-                    "description": "Balance availability requirements with cost implications of multi-AZ deployments",
+                    "description": "Minimize cross-AZ data transfer by optimizing cluster and application placement",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Enable multi-AZ only for production workloads requiring high availability, use single-AZ for development and testing"
+                        "description": "Deploy ElastiCache clusters in the same AZ as primary application workloads where possible, while maintaining HA requirements."
                     }
                 },
                 {
-                    "identifier": "COST-008",
-                    "title": "Implement cost allocation tags",
+                    "identifier": "COST-08",
+                    "title": "Implement resource tagging for cost allocation",
                     "severity": "Low",
-                    "description": "Use consistent tagging strategy for cost tracking and allocation across teams and projects",
+                    "description": "Use consistent tagging strategy to track and allocate ElastiCache costs across teams and projects",
                     "implementation": {
                         "type": "IaC",
-                        "description": "Implement standardized tagging for Environment, Project, Owner, and CostCenter to enable detailed cost analysis and chargeback"
+                        "description": "Implement mandatory tagging for all ElastiCache resources including environment, team, project, and cost center tags for detailed cost tracking."
                     }
                 }
             ]
