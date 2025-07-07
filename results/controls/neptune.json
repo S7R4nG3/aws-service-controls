@@ -1,1 +1,328 @@
 {
+    "service": "AWS Neptune",
+    "security": [
+        {
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v5",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management",
+                    "severity": "Critical",
+                    "description": "Implement robust identity and access management controls for Neptune cluster access",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure IAM roles and policies with least privilege access, implement database authentication using IAM database authentication"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "Critical",
+                    "description": "Ensure data encryption at rest and in transit for Neptune databases",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable encryption at rest using KMS keys and enforce SSL/TLS for all connections"
+                    }
+                },
+                {
+                    "identifier": "IVS-01",
+                    "title": "Infrastructure and Virtualization Security",
+                    "severity": "High",
+                    "description": "Implement network isolation and security groups for Neptune instances",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy Neptune in private subnets with restrictive security groups and NACLs"
+                    }
+                },
+                {
+                    "identifier": "LOG-01",
+                    "title": "Logging and Monitoring",
+                    "severity": "High",
+                    "description": "Enable comprehensive logging and monitoring for Neptune activities",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable CloudTrail, CloudWatch logs, and Neptune audit logs with appropriate retention policies"
+                    }
+                },
+                {
+                    "identifier": "BCR-01",
+                    "title": "Business Continuity Management and Operational Resilience",
+                    "severity": "Medium",
+                    "description": "Implement backup and disaster recovery procedures for Neptune",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure automated backups, point-in-time recovery, and cross-region replication"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "Critical",
+                    "description": "Manage Neptune database accounts and access credentials",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement regular account reviews, disable unused accounts, and use IAM database authentication"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "Critical",
+                    "description": "Protect data transmission to and from Neptune",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enforce SSL/TLS encryption for all Neptune connections and disable unencrypted endpoints"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "Critical",
+                    "description": "Encrypt Neptune data at rest",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable encryption at rest using customer-managed KMS keys with proper key rotation"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "High",
+                    "description": "Log Neptune database events and administrative actions",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable Neptune audit logs and CloudTrail logging for API calls"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "High",
+                    "description": "Monitor Neptune performance and security events",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure CloudWatch monitoring, set up alarms for anomalous activities"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "System Backup",
+                    "severity": "Medium",
+                    "description": "Implement backup procedures for Neptune data",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure automated backups with appropriate retention periods and test restore procedures"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0",
+            "controls": [
+                {
+                    "identifier": "Neptune.1",
+                    "title": "Neptune DB clusters should be encrypted",
+                    "severity": "Critical",
+                    "description": "Neptune clusters must have encryption at rest enabled",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set StorageEncrypted parameter to true when creating Neptune clusters"
+                    }
+                },
+                {
+                    "identifier": "Neptune.2",
+                    "title": "Neptune DB clusters should have deletion protection enabled",
+                    "severity": "High",
+                    "description": "Enable deletion protection to prevent accidental cluster deletion",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set DeletionProtection parameter to true for Neptune clusters"
+                    }
+                },
+                {
+                    "identifier": "Neptune.3",
+                    "title": "Neptune DB clusters should have backup retention configured",
+                    "severity": "High",
+                    "description": "Configure appropriate backup retention period for Neptune clusters",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set BackupRetentionPeriod to minimum 7 days for production workloads"
+                    }
+                },
+                {
+                    "identifier": "Neptune.4",
+                    "title": "Neptune DB clusters should not be publicly accessible",
+                    "severity": "High",
+                    "description": "Ensure Neptune clusters are not accessible from the internet",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy Neptune clusters in private subnets and configure security groups to restrict access"
+                    }
+                },
+                {
+                    "identifier": "Neptune.5",
+                    "title": "Neptune DB clusters should have IAM database authentication enabled",
+                    "severity": "Medium",
+                    "description": "Enable IAM database authentication for Neptune clusters",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set EnableIAMDatabaseAuthentication parameter to true"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "2023.1",
+            "controls": [
+                {
+                    "identifier": "Neptune.6",
+                    "title": "Neptune clusters should have logging enabled",
+                    "severity": "High",
+                    "description": "Enable audit logging for Neptune clusters",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure EnableCloudwatchLogsExports parameter to include audit logs"
+                    }
+                },
+                {
+                    "identifier": "Neptune.7",
+                    "title": "Neptune clusters should be deployed across multiple Availability Zones",
+                    "severity": "High",
+                    "description": "Deploy Neptune clusters with multi-AZ configuration for high availability",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure DB subnet group with subnets in multiple AZs and enable multi-AZ deployment"
+                    }
+                },
+                {
+                    "identifier": "Neptune.8",
+                    "title": "Neptune clusters should have automated minor version upgrades enabled",
+                    "severity": "Medium",
+                    "description": "Enable automatic minor version upgrades for Neptune clusters",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set AutoMinorVersionUpgrade parameter to true for Neptune instances"
+                    }
+                },
+                {
+                    "identifier": "Neptune.9",
+                    "title": "Neptune clusters should have appropriate maintenance windows configured",
+                    "severity": "Medium",
+                    "description": "Configure maintenance windows for Neptune clusters to minimize business impact",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set PreferredMaintenanceWindow parameter to off-peak hours"
+                    }
+                },
+                {
+                    "identifier": "Neptune.10",
+                    "title": "Neptune clusters should have tags applied",
+                    "severity": "Low",
+                    "description": "Apply appropriate tags to Neptune clusters for resource management",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Define and apply consistent tagging strategy including cost center, environment, and owner tags"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS Neptune Cost Optimization",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "COST-001",
+                    "title": "Right-size Neptune instances",
+                    "severity": "High",
+                    "description": "Select appropriate instance types based on workload requirements",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Monitor CPU, memory, and I/O utilization to select optimal instance types and avoid over-provisioning"
+                    }
+                },
+                {
+                    "identifier": "COST-002",
+                    "title": "Implement automated scaling",
+                    "severity": "High",
+                    "description": "Use Neptune Auto Scaling to automatically adjust read replica count based on demand",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure Auto Scaling policies for read replicas to scale based on CPU utilization or connection count"
+                    }
+                },
+                {
+                    "identifier": "COST-003",
+                    "title": "Optimize backup retention",
+                    "severity": "Medium",
+                    "description": "Set appropriate backup retention periods to balance cost and compliance requirements",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure backup retention period based on business requirements, avoiding excessive retention periods"
+                    }
+                },
+                {
+                    "identifier": "COST-004",
+                    "title": "Monitor and optimize data transfer costs",
+                    "severity": "Medium",
+                    "description": "Minimize data transfer costs by optimizing query patterns and using appropriate endpoints",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Use cluster endpoints for write operations and reader endpoints for read operations to minimize cross-AZ traffic"
+                    }
+                },
+                {
+                    "identifier": "COST-005",
+                    "title": "Implement cost allocation tags",
+                    "severity": "Medium",
+                    "description": "Apply consistent tagging strategy for cost allocation and tracking",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Define and apply cost allocation tags including project, department, and environment for detailed cost tracking"
+                    }
+                },
+                {
+                    "identifier": "COST-006",
+                    "title": "Schedule non-production environments",
+                    "severity": "Medium",
+                    "description": "Stop or scale down non-production Neptune clusters during off-hours",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement Lambda functions with EventBridge rules to automatically stop/start development and test environments"
+                    }
+                },
+                {
+                    "identifier": "COST-007",
+                    "title": "Monitor unused resources",
+                    "severity": "Low",
+                    "description": "Identify and remove unused Neptune clusters and read replicas",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Regularly review CloudWatch metrics to identify low-utilization clusters and unused read replicas"
+                    }
+                },
+                {
+                    "identifier": "COST-008",
+                    "title": "Optimize storage usage",
+                    "severity": "Low",
+                    "description": "Monitor and optimize Neptune storage usage",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Regular data lifecycle management and archiving of historical data to reduce storage costs"
+                    }
+                }
+            ]
+        }
+    ]
+}

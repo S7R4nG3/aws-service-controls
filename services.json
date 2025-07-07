@@ -1,12 +1,8 @@
 {
     "services": [
         {
-            "short": "acm",
-            "long": "Amazon Certificate Manager"
-        },
-        {
-            "short": "s3",
-            "long": "Simple Storage Service"
+            "short": "neptune",
+            "long": "Neptune"
         }
     ]
 }
