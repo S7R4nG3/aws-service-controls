@@ -1,0 +1,268 @@
+{
+    "service": "AWS EventBridge Pipes",
+    "security": [
+        {
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v4.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy and Procedures",
+                    "severity": "Critical",
+                    "description": "Establish and maintain identity and access management policies and procedures for EventBridge Pipes resources",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Implement IAM policies with least privilege access, use IAM roles for pipe execution, and define resource-based policies"
+                    }
+                },
+                {
+                    "identifier": "EKM-01",
+                    "title": "Entitlement",
+                    "severity": "High",
+                    "description": "Establish and maintain encryption key entitlements for data protection",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Use AWS KMS customer-managed keys for encryption, implement key rotation policies, and secure key access"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "High",
+                    "description": "Ensure proper data protection and lifecycle management for event data",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Classify event data, implement data retention policies, and ensure secure data handling practices"
+                    }
+                },
+                {
+                    "identifier": "BCR-01",
+                    "title": "Business Continuity Management and Operational Resilience",
+                    "severity": "Medium",
+                    "description": "Implement business continuity and disaster recovery procedures",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy pipes across multiple availability zones, implement cross-region replication strategies where needed"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-02",
+                    "title": "Account Management",
+                    "severity": "Critical",
+                    "description": "Manage information system accounts including establishment, activation, modification, review, and removal",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Use AWS IAM for account management, implement automated account lifecycle management, and regular access reviews"
+                    }
+                },
+                {
+                    "identifier": "AC-03",
+                    "title": "Access Enforcement",
+                    "severity": "Critical",
+                    "description": "Enforce approved authorizations for logical access to information and system resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement resource-based policies, use condition keys in IAM policies, and enforce MFA where applicable"
+                    }
+                },
+                {
+                    "identifier": "SC-08",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of transmitted information",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable encryption in transit using TLS 1.2+, validate SSL certificates, and use VPC endpoints where possible"
+                    }
+                },
+                {
+                    "identifier": "AU-02",
+                    "title": "Event Logging",
+                    "severity": "High",
+                    "description": "Ensure that auditable events are defined and logged appropriately",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Enable AWS CloudTrail logging, configure EventBridge Pipes logging, and implement centralized log management"
+                    }
+                },
+                {
+                    "identifier": "SI-04",
+                    "title": "System Monitoring",
+                    "severity": "Medium",
+                    "description": "Monitor the system to detect attacks and indicators of potential attacks",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Implement CloudWatch monitoring, set up anomaly detection, and configure security alerting"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "EventBridge.4",
+                    "title": "EventBridge custom bus should have a resource-based policy attached",
+                    "severity": "Critical",
+                    "description": "EventBridge custom buses should have resource-based policies to control access",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Attach resource-based policies to custom EventBridge buses used by pipes to control cross-account access"
+                    }
+                },
+                {
+                    "identifier": "IAM.3",
+                    "title": "IAM users' access keys should be rotated every 90 days or less",
+                    "severity": "High",
+                    "description": "Regularly rotate IAM access keys to reduce security risks",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement automated key rotation policies and use temporary credentials where possible"
+                    }
+                },
+                {
+                    "identifier": "CloudTrail.1",
+                    "title": "CloudTrail should be enabled and configured with at least one multi-Region trail",
+                    "severity": "High",
+                    "description": "Enable CloudTrail for comprehensive API logging across all regions",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure multi-region CloudTrail to capture EventBridge Pipes API calls and management events"
+                    }
+                },
+                {
+                    "identifier": "Config.1",
+                    "title": "AWS Config should be enabled",
+                    "severity": "Medium",
+                    "description": "Enable AWS Config to track configuration changes and compliance",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable AWS Config to monitor EventBridge Pipes configuration changes and compliance status"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "2023.1.0",
+            "controls": [
+                {
+                    "identifier": "EventBridge.1",
+                    "title": "EventBridge custom buses should be encrypted",
+                    "severity": "Critical",
+                    "description": "EventBridge custom buses should use encryption to protect event data",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure customer managed KMS keys for EventBridge bus encryption and ensure proper key policies"
+                    }
+                },
+                {
+                    "identifier": "KMS.1",
+                    "title": "IAM customer managed policies should not allow decryption actions on all KMS keys",
+                    "severity": "High",
+                    "description": "Restrict KMS decryption permissions to specific keys needed for EventBridge Pipes",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create specific IAM policies that grant decryption access only to required KMS keys for pipe operations"
+                    }
+                },
+                {
+                    "identifier": "Lambda.1",
+                    "title": "Lambda functions should prohibit public access by other accounts",
+                    "severity": "High",
+                    "description": "Ensure Lambda functions used as pipe targets are not publicly accessible",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Review and restrict Lambda function resource policies to prevent unauthorized cross-account access"
+                    }
+                },
+                {
+                    "identifier": "CloudWatch.1",
+                    "title": "CloudWatch Log Groups should be encrypted",
+                    "severity": "Medium",
+                    "description": "Encrypt CloudWatch Log Groups used for EventBridge Pipes logging",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure KMS encryption for CloudWatch Log Groups that store EventBridge Pipes execution logs"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "EventBridge Pipes Cost Optimization",
+            "version": "1.0",
+            "controls": [
+                {
+                    "identifier": "COST-01",
+                    "title": "Optimize Pipe Invocation Frequency",
+                    "severity": "High",
+                    "description": "Monitor and optimize the frequency of pipe invocations to reduce unnecessary processing costs",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Implement filtering at the source to reduce unnecessary pipe invocations, use batch processing where possible, and monitor invocation patterns"
+                    }
+                },
+                {
+                    "identifier": "COST-02",
+                    "title": "Right-size Enrichment and Target Resources",
+                    "severity": "High",
+                    "description": "Ensure enrichment Lambda functions and target resources are appropriately sized",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Monitor Lambda function duration and memory usage, optimize target resource configurations, and use reserved capacity where applicable"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Implement Effective Filtering",
+                    "severity": "Medium",
+                    "description": "Use pipe filtering capabilities to process only relevant events",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Configure event pattern filters to reduce processing of irrelevant events and minimize downstream resource consumption"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Monitor and Optimize Dead Letter Queue Usage",
+                    "severity": "Medium",
+                    "description": "Implement and monitor dead letter queues to prevent unnecessary retry costs",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Configure appropriate retry policies, implement DLQ monitoring, and set up automated DLQ processing to prevent cost accumulation"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Optimize Batch Size and Concurrency",
+                    "severity": "Medium",
+                    "description": "Configure optimal batch sizes and concurrency settings to maximize cost efficiency",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Test and optimize batch size configurations, monitor concurrent execution limits, and balance throughput with cost efficiency"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Implement Cost Monitoring and Alerting",
+                    "severity": "Low",
+                    "description": "Set up comprehensive cost monitoring and alerting for EventBridge Pipes usage",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Configure AWS Cost Explorer alerts, implement custom CloudWatch metrics for pipe costs, and set up budget notifications"
+                    }
+                }
+            ]
+        }
+    ]
+}

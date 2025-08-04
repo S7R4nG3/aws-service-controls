@@ -1,0 +1,348 @@
+{
+    "service": "AWS Fault Injection Simulator",
+    "security": [
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "HIGH",
+                    "description": "Manage system accounts, group memberships, and associated privileges for AWS FIS access",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Implement IAM policies with least privilege for FIS experiment creation and execution, use IAM groups for role-based access"
+                    }
+                },
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "HIGH",
+                    "description": "Enforce approved authorizations for logical access to AWS FIS resources",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Configure IAM service roles with specific permissions for FIS experiments, implement resource-based policies for target resources"
+                    }
+                },
+                {
+                    "identifier": "AC-6",
+                    "title": "Least Privilege",
+                    "severity": "HIGH",
+                    "description": "Employ the principle of least privilege for FIS experiment permissions",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Create minimal IAM policies for FIS service roles, restrict actions to only required AWS services and resources"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Audit Events",
+                    "severity": "HIGH",
+                    "description": "Identify the types of events to be logged related to FIS experiments",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Enable CloudTrail logging for FIS API calls, configure CloudWatch for experiment monitoring and logging"
+                    }
+                },
+                {
+                    "identifier": "SC-7",
+                    "title": "Boundary Protection",
+                    "severity": "HIGH",
+                    "description": "Monitor and control communications at external boundaries and key internal boundaries",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Implement VPC endpoints for FIS when applicable, ensure network segmentation for experiment targets"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "Information System Backup",
+                    "severity": "MEDIUM",
+                    "description": "Conduct backups of system-level information before running destructive FIS experiments",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Implement automated backup strategies for target resources before experiment execution"
+                    }
+                },
+                {
+                    "identifier": "RA-5",
+                    "title": "Vulnerability Scanning",
+                    "severity": "MEDIUM",
+                    "description": "Monitor and scan for vulnerabilities in systems targeted by FIS experiments",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Use AWS Inspector and other vulnerability scanning tools on FIS target resources"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "MEDIUM",
+                    "description": "Monitor FIS experiments and detect unauthorized activities",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Configure CloudWatch alarms for FIS experiment status, implement automated monitoring for experiment impacts"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v4.0.10",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy and Procedures",
+                    "severity": "HIGH",
+                    "description": "Establish comprehensive IAM policies for FIS service access and experiment execution",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Define and implement IAM policies specifically for FIS experiment creators and executors with appropriate boundaries"
+                    }
+                },
+                {
+                    "identifier": "IAM-02",
+                    "title": "User ID Credentials",
+                    "severity": "HIGH",
+                    "description": "Ensure unique identification and authentication for all FIS users",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement MFA for all users accessing FIS, use federated authentication where possible"
+                    }
+                },
+                {
+                    "identifier": "BCR-03",
+                    "title": "Business Continuity Testing",
+                    "severity": "MEDIUM",
+                    "description": "Use FIS experiments to validate business continuity and disaster recovery procedures",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Design FIS experiments that test recovery procedures and business continuity plans"
+                    }
+                },
+                {
+                    "identifier": "DSI-02",
+                    "title": "Data Classification",
+                    "severity": "MEDIUM",
+                    "description": "Classify data that may be affected by FIS experiments",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Implement data classification tags and policies for resources targeted by FIS experiments"
+                    }
+                },
+                {
+                    "identifier": "TVM-01",
+                    "title": "Threat and Vulnerability Management",
+                    "severity": "MEDIUM",
+                    "description": "Manage threats and vulnerabilities that could be exposed through chaos engineering",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Integrate vulnerability management processes with FIS experiment planning and execution"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Standard",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "CloudTrail.1",
+                    "title": "CloudTrail should be enabled and configured with at least one multi-Region trail that includes read and write management events and all data events",
+                    "severity": "HIGH",
+                    "description": "Ensure all FIS API activities are logged across regions",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Enable CloudTrail with multi-region trail to capture all FIS service API calls and experiment activities"
+                    }
+                },
+                {
+                    "identifier": "IAM.1",
+                    "title": "IAM policies should not allow full administrative privileges",
+                    "severity": "HIGH",
+                    "description": "Prevent overly permissive IAM policies for FIS service roles",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Create specific IAM policies for FIS with only required permissions, avoid using AdministratorAccess policy"
+                    }
+                },
+                {
+                    "identifier": "IAM.2",
+                    "title": "IAM users should not have IAM policies attached",
+                    "severity": "HIGH",
+                    "description": "Use IAM groups and roles instead of direct policy attachment for FIS access",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Attach FIS permissions to IAM groups or roles rather than directly to users"
+                    }
+                },
+                {
+                    "identifier": "IAM.4",
+                    "title": "IAM root user access key should not exist",
+                    "severity": "HIGH",
+                    "description": "Ensure root account access keys are not used for FIS operations",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Use IAM users or roles for FIS access, never use root account credentials"
+                    }
+                },
+                {
+                    "identifier": "CloudWatch.1",
+                    "title": "CloudWatch log groups should be retained for at least 1 year",
+                    "severity": "MEDIUM",
+                    "description": "Maintain adequate retention for FIS experiment logs",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Configure CloudWatch log groups for FIS experiments with minimum 365-day retention period"
+                    }
+                },
+                {
+                    "identifier": "IAM.3",
+                    "title": "IAM users' access keys should be rotated every 90 days or less",
+                    "severity": "MEDIUM",
+                    "description": "Regularly rotate access keys used for programmatic FIS access",
+                    "implementation": {
+                        "type": "User/Platform",
+                        "description": "Implement automated access key rotation for any programmatic access to FIS services"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub Custom Controls",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "FIS.1",
+                    "title": "FIS experiments should have stop conditions configured",
+                    "severity": "HIGH",
+                    "description": "Ensure all FIS experiments have appropriate stop conditions to prevent uncontrolled failures",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Configure CloudWatch alarms as stop conditions for all FIS experiments to automatically halt on critical thresholds"
+                    }
+                },
+                {
+                    "identifier": "FIS.2",
+                    "title": "FIS experiments should target non-production environments first",
+                    "severity": "HIGH",
+                    "description": "Validate experiments in non-production before running in production",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement a testing workflow that requires successful non-production validation before production experiments"
+                    }
+                },
+                {
+                    "identifier": "FIS.3",
+                    "title": "FIS service roles should follow least privilege principle",
+                    "severity": "HIGH",
+                    "description": "Limit FIS service role permissions to only required actions and resources",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Create granular IAM policies for FIS service roles with specific resource ARNs and minimal required actions"
+                    }
+                },
+                {
+                    "identifier": "FIS.4",
+                    "title": "FIS experiments should be tagged appropriately",
+                    "severity": "MEDIUM",
+                    "description": "Use consistent tagging for FIS experiments to enable proper governance and cost tracking",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Implement standardized tagging strategy for FIS experiments including owner, environment, and cost center tags"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS FIS Cost Optimization Best Practices",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "COST-1",
+                    "title": "Use experiment templates to avoid redundant configurations",
+                    "severity": "MEDIUM",
+                    "description": "Create reusable experiment templates to reduce setup time and standardize experiments",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Develop standardized FIS experiment templates using Infrastructure as Code for common chaos engineering scenarios"
+                    }
+                },
+                {
+                    "identifier": "COST-2",
+                    "title": "Implement proper experiment scheduling",
+                    "severity": "MEDIUM",
+                    "description": "Schedule experiments during off-peak hours to minimize business impact and resource costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Use EventBridge or other scheduling services to automate FIS experiment execution during low-usage periods"
+                    }
+                },
+                {
+                    "identifier": "COST-4",
+                    "title": "Use targeted resource selection",
+                    "severity": "MEDIUM",
+                    "description": "Target specific resources rather than broad selections to minimize unnecessary impact and costs",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Implement precise resource targeting using tags and filters to limit experiment scope to relevant resources only"
+                    }
+                },
+                {
+                    "identifier": "COST-6",
+                    "title": "Clean up temporary resources created during experiments",
+                    "severity": "MEDIUM",
+                    "description": "Ensure temporary resources created during experiments are properly cleaned up to avoid ongoing costs",
+                    "implementation": {
+                        "type": "User/IaC",
+                        "description": "Implement automated cleanup procedures using Lambda functions or other automation tools to remove temporary resources post-experiment"
+                    }
+                },
+                {
+                    "identifier": "COST-8",
+                    "title": "Implement cost tracking and budgets for chaos engineering activities",
+                    "severity": "MEDIUM",
+                    "description": "Track costs associated with FIS experiments and set appropriate budgets and alerts",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Use AWS Cost Explorer and Budget alerts with appropriate tags to monitor and control FIS-related spending"
+                    }
+                },
+                {
+                    "identifier": "COST-3",
+                    "title": "Monitor and optimize experiment duration",
+                    "severity": "LOW",
+                    "description": "Set appropriate experiment durations to balance learning objectives with cost efficiency",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Define optimal experiment durations based on learning objectives and configure stop conditions to prevent excessive runtime"
+                    }
+                },
+                {
+                    "identifier": "COST-5",
+                    "title": "Implement experiment result analysis automation",
+                    "severity": "LOW",
+                    "description": "Automate analysis of experiment results to reduce manual effort and improve efficiency",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy automated dashboards and analysis tools to process FIS experiment results and generate actionable insights"
+                    }
+                },
+                {
+                    "identifier": "COST-7",
+                    "title": "Use appropriate IAM roles and policies",
+                    "severity": "LOW",
+                    "description": "Optimize IAM role usage to avoid unnecessary permissions and associated management overhead",
+                    "implementation": {
+                        "type": "Platform/IaC",
+                        "description": "Create shared service roles for similar experiments and implement role assumption patterns to minimize IAM management overhead"
+                    }
+                }
+            ]
+        }
+    ]
+}

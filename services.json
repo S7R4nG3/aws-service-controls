@@ -1,8 +1,8 @@
 {
     "services": [
         {
-            "short": "neptune",
-            "long": "Neptune"
+            "short": "fis",
+            "long": "Fault Injection Simulator"
         }
     ]
 }

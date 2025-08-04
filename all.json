@@ -127,6 +127,26 @@
         {
             "short": "waf",
             "long": "Web Application Firewall"
+        },
+        {
+            "short": "documentdb",
+            "long": "DocumentDB"
+        },
+        {
+            "short": "cw-synthetics",
+            "long": "CloudWatch Synthetics"
+        },
+        {
+            "short": "fis",
+            "long": "Fault Injection Simulator"
+        },
+        {
+            "short": "finspace",
+            "long": "FinSpace"
+        },
+        {
+            "short": "eb-pipes",
+            "long": "EventBridge Pipes"
         }
     ]
 }

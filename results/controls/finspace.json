@@ -1,0 +1,308 @@
+{
+    "service": "AWS FinSpace",
+    "security": [
+        {
+            "name": "CSA CCM",
+            "version": "v4.0",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy and Procedures",
+                    "severity": "Critical",
+                    "description": "Establish comprehensive identity and access management policies for FinSpace environments and users",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure FinSpace user management with proper role-based access controls and integration with AWS IAM"
+                    }
+                },
+                {
+                    "identifier": "DSI-05",
+                    "title": "Data Classification",
+                    "severity": "Critical",
+                    "description": "Classify all financial data stored and processed within FinSpace according to sensitivity levels",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Implement data classification tags and metadata within FinSpace datasets and organize data based on sensitivity"
+                    }
+                },
+                {
+                    "identifier": "EKM-01",
+                    "title": "Encryption Key Management",
+                    "severity": "Critical",
+                    "description": "Implement proper encryption key management for data at rest and in transit within FinSpace",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure AWS KMS keys for FinSpace encryption and establish key rotation policies through CloudFormation templates"
+                    }
+                },
+                {
+                    "identifier": "IVS-06",
+                    "title": "Network Security",
+                    "severity": "High",
+                    "description": "Implement network segmentation and security controls for FinSpace environments",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy FinSpace within VPC with proper security groups, NACLs, and private subnets configuration"
+                    }
+                },
+                {
+                    "identifier": "BCR-01",
+                    "title": "Business Continuity Planning",
+                    "severity": "High",
+                    "description": "Establish business continuity and disaster recovery procedures for FinSpace environments",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure cross-region backup strategies and implement FinSpace environment replication procedures"
+                    }
+                },
+                {
+                    "identifier": "AIS-01",
+                    "title": "Audit Independent Reviews",
+                    "severity": "Medium",
+                    "description": "Enable comprehensive logging and monitoring for all FinSpace activities and access patterns",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure CloudTrail, CloudWatch, and FinSpace audit logging with appropriate retention policies"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "Critical",
+                    "description": "Manage FinSpace user accounts with proper provisioning, modification, and deprovisioning procedures",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement automated user lifecycle management through AWS SSO integration with FinSpace"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "Critical",
+                    "description": "Protect the confidentiality and integrity of transmitted information in FinSpace",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Ensure all FinSpace communications use TLS 1.2 or higher encryption protocols"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "Critical",
+                    "description": "Protect the confidentiality and integrity of information stored in FinSpace datasets",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure FinSpace with customer-managed KMS keys for encryption at rest of all datasets and clusters"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "High",
+                    "description": "Determine and audit events within FinSpace environments",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure comprehensive audit logging for FinSpace API calls, user activities, and data access events"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "System Backup",
+                    "severity": "High",
+                    "description": "Conduct backups of FinSpace datasets and configurations",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement automated backup procedures for FinSpace datasets using AWS Backup or custom solutions"
+                    }
+                },
+                {
+                    "identifier": "SI-4",
+                    "title": "System Monitoring",
+                    "severity": "Medium",
+                    "description": "Monitor FinSpace for security events and unauthorized activities",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy CloudWatch monitoring and AWS Security Hub integration for FinSpace security monitoring"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "FinSpace.1",
+                    "title": "FinSpace environments should not be publicly accessible",
+                    "severity": "Critical",
+                    "description": "Ensure FinSpace environments are deployed in private networks and not accessible from the public internet",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy FinSpace environments within VPC private subnets with no direct internet gateway access"
+                    }
+                },
+                {
+                    "identifier": "FinSpace.2",
+                    "title": "FinSpace clusters should be encrypted",
+                    "severity": "Critical",
+                    "description": "Enable encryption for FinSpace clusters using AWS KMS keys",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure FinSpace cluster creation with encryption enabled using customer-managed KMS keys"
+                    }
+                },
+                {
+                    "identifier": "FinSpace.3",
+                    "title": "FinSpace should have deletion protection enabled",
+                    "severity": "High",
+                    "description": "Enable deletion protection for FinSpace environments to prevent accidental deletion",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure FinSpace environment settings with deletion protection enabled and implement proper IAM policies"
+                    }
+                },
+                {
+                    "identifier": "FinSpace.4",
+                    "title": "FinSpace access logging should be enabled",
+                    "severity": "High",
+                    "description": "Enable and configure access logging for FinSpace environments",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure FinSpace audit logging and integrate with CloudWatch Logs for centralized log management"
+                    }
+                },
+                {
+                    "identifier": "FinSpace.5",
+                    "title": "FinSpace datasets should have appropriate permissions",
+                    "severity": "Medium",
+                    "description": "Implement least privilege access controls for FinSpace datasets",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure dataset permissions with role-based access controls and regular access reviews"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Config",
+            "version": "2023.1",
+            "controls": [
+                {
+                    "identifier": "finspace-environment-kms-key-configured",
+                    "title": "FinSpace environments should use customer managed keys",
+                    "severity": "Critical",
+                    "description": "Use customer-managed KMS keys instead of AWS managed keys for enhanced control",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create and configure customer-managed KMS keys for FinSpace environment encryption"
+                    }
+                },
+                {
+                    "identifier": "finspace-environment-audit-logging-enabled",
+                    "title": "FinSpace environments should have audit logging enabled",
+                    "severity": "High",
+                    "description": "Ensure FinSpace environments have audit logging enabled for compliance and monitoring",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure FinSpace audit logging and ensure CloudTrail captures all API calls"
+                    }
+                },
+                {
+                    "identifier": "finspace-environment-in-vpc",
+                    "title": "FinSpace environments should be deployed in VPC",
+                    "severity": "High",
+                    "description": "Deploy FinSpace environments within VPC for network isolation and security",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure FinSpace environments to be deployed within VPC with appropriate subnet configuration"
+                    }
+                },
+                {
+                    "identifier": "finspace-cluster-encryption-enabled",
+                    "title": "FinSpace clusters should have encryption enabled",
+                    "severity": "Medium",
+                    "description": "Ensure FinSpace clusters are configured with encryption for data protection",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure FinSpace clusters with encryption enabled using KMS keys"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS FinSpace Cost Optimization",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "COST-01",
+                    "title": "Right-size FinSpace clusters",
+                    "severity": "High",
+                    "description": "Monitor and optimize FinSpace cluster sizes based on actual usage patterns",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Regularly review cluster utilization metrics and adjust cluster configurations to match workload requirements"
+                    }
+                },
+                {
+                    "identifier": "COST-02",
+                    "title": "Implement cluster scheduling",
+                    "severity": "High",
+                    "description": "Schedule FinSpace clusters to run only during business hours when possible",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use AWS Lambda and EventBridge to automatically start and stop FinSpace clusters based on schedules"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Optimize data storage",
+                    "severity": "Medium",
+                    "description": "Implement data lifecycle policies to optimize storage costs for FinSpace datasets",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure data retention policies and archive older datasets to lower-cost storage tiers"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Monitor usage and costs",
+                    "severity": "Medium",
+                    "description": "Implement cost monitoring and alerting for FinSpace usage",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure AWS Cost Explorer, budgets, and billing alerts to track FinSpace spending patterns"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Use appropriate instance types",
+                    "severity": "Medium",
+                    "description": "Select cost-effective instance types for FinSpace clusters based on workload characteristics",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Analyze workload requirements and select appropriate instance families and sizes for optimal cost-performance ratio"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Implement resource tagging",
+                    "severity": "Low",
+                    "description": "Tag all FinSpace resources for cost allocation and chargeback purposes",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Apply consistent tagging strategies across all FinSpace resources for cost tracking and allocation"
+                    }
+                }
+            ]
+        }
+    ]
+}

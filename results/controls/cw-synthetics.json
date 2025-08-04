@@ -1,0 +1,248 @@
+{
+    "service": "AWS CloudWatch Synthetics",
+    "security": [
+        {
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v4.0",
+            "controls": [
+                {
+                    "identifier": "IAM-02",
+                    "title": "User Access Management",
+                    "severity": "Critical",
+                    "description": "Implement proper identity and access management controls for CloudWatch Synthetics resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use AWS IAM policies to restrict access to CloudWatch Synthetics canaries based on principle of least privilege"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "High",
+                    "description": "Protect sensitive data within Synthetics canary configurations and execution results",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable encryption in transit and at rest for CloudWatch Synthetics data using AWS KMS"
+                    }
+                },
+                {
+                    "identifier": "AIS-02",
+                    "title": "Application Security",
+                    "severity": "High",
+                    "description": "Secure application interfaces and APIs monitored by Synthetics canaries",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure canaries to use secure authentication methods and avoid hardcoded credentials"
+                    }
+                },
+                {
+                    "identifier": "BCR-03",
+                    "title": "Business Continuity Planning",
+                    "severity": "Medium",
+                    "description": "Ensure business continuity for monitoring capabilities",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy canaries across multiple regions and availability zones for redundancy"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST SP 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "Critical",
+                    "description": "Manage accounts that have access to CloudWatch Synthetics resources",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Use AWS IAM to create and manage user accounts with appropriate permissions for Synthetics operations"
+                    }
+                },
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "Critical",
+                    "description": "Enforce approved authorizations for logical access to CloudWatch Synthetics",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement resource-based policies and IAM policies to control access to specific canaries and operations"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of transmitted information",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Ensure all API calls and data transmission use TLS 1.2 or higher encryption"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "High",
+                    "description": "Identify the types of events to be logged",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable AWS CloudTrail logging for all CloudWatch Synthetics API calls and operations"
+                    }
+                },
+                {
+                    "identifier": "CP-2",
+                    "title": "Contingency Plan",
+                    "severity": "Medium",
+                    "description": "Develop a contingency plan for the system",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Create backup monitoring strategies and failover procedures for critical canaries"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "IAM.1",
+                    "title": "IAM policies should not allow full administrative privileges",
+                    "severity": "Critical",
+                    "description": "Avoid overly permissive IAM policies for CloudWatch Synthetics access",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create granular IAM policies that grant only necessary permissions for Synthetics operations"
+                    }
+                },
+                {
+                    "identifier": "CloudWatch.1",
+                    "title": "CloudWatch log groups should be encrypted",
+                    "severity": "High",
+                    "description": "CloudWatch Synthetics log groups should be encrypted at rest",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure CloudWatch log groups used by Synthetics canaries with KMS encryption keys"
+                    }
+                },
+                {
+                    "identifier": "SecretsManager.1",
+                    "title": "Secrets Manager secrets should have automatic rotation enabled",
+                    "severity": "Medium",
+                    "description": "Rotate credentials used by Synthetics canaries regularly",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Store canary credentials in AWS Secrets Manager with automatic rotation enabled"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "2024.1",
+            "controls": [
+                {
+                    "identifier": "CloudWatch.12",
+                    "title": "CloudWatch should not have overly permissive policies",
+                    "severity": "High",
+                    "description": "CloudWatch Synthetics should not have overly permissive resource policies",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Review and restrict CloudWatch Synthetics resource policies to follow least privilege principle"
+                    }
+                },
+                {
+                    "identifier": "EC2.2",
+                    "title": "VPC default security groups should not allow inbound or outbound traffic",
+                    "severity": "High",
+                    "description": "Synthetics canaries running in VPC should use custom security groups",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure custom security groups for VPC-enabled canaries with minimal required network access"
+                    }
+                },
+                {
+                    "identifier": "KMS.1",
+                    "title": "IAM customer managed policies should not allow decryption actions on all KMS keys",
+                    "severity": "Medium",
+                    "description": "Limit KMS key access for CloudWatch Synthetics encryption",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create specific KMS key policies for CloudWatch Synthetics with restricted decrypt permissions"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS CloudWatch Synthetics Cost Optimization Best Practices",
+            "version": "2024",
+            "controls": [
+                {
+                    "identifier": "COST-01",
+                    "title": "Optimize Canary Execution Frequency",
+                    "severity": "High",
+                    "description": "Right-size canary execution frequency based on business requirements to reduce unnecessary runs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure canary schedules to run only as frequently as needed for effective monitoring, avoiding over-monitoring"
+                    }
+                },
+                {
+                    "identifier": "COST-02",
+                    "title": "Implement Canary Lifecycle Management",
+                    "severity": "High",
+                    "description": "Regularly review and decommission unused or redundant canaries",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Establish processes to identify and remove canaries that are no longer needed or are duplicating monitoring coverage"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Optimize CloudWatch Logs Retention",
+                    "severity": "Medium",
+                    "description": "Set appropriate log retention periods for Synthetics canary logs to control storage costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure CloudWatch log group retention periods based on compliance and operational requirements rather than using indefinite retention"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Use Appropriate Canary Runtime Versions",
+                    "severity": "Medium",
+                    "description": "Select the most cost-effective runtime version that meets functional requirements",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Choose canary runtime versions that provide required functionality without unnecessary overhead or premium features"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Monitor and Alert on Canary Costs",
+                    "severity": "Medium",
+                    "description": "Implement cost monitoring and alerting for CloudWatch Synthetics usage",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Set up AWS Cost Explorer and CloudWatch billing alarms to track Synthetics costs and receive notifications for unexpected increases"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Optimize Screenshot and HAR File Storage",
+                    "severity": "Low",
+                    "description": "Configure appropriate retention and compression settings for canary artifacts",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set S3 lifecycle policies for canary artifact buckets to transition older screenshots and HAR files to cheaper storage classes or delete them after specified periods"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,272 @@
+{
+    "service": "AWS DocumentDB",
+    "security": [
+        {
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v4.0.10",
+            "controls": [
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "High",
+                    "description": "Implement data classification and protection mechanisms for DocumentDB data",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable encryption at rest and in transit for DocumentDB clusters using AWS KMS keys"
+                    }
+                },
+                {
+                    "identifier": "EKM-01",
+                    "title": "Encryption and Key Management",
+                    "severity": "High",
+                    "description": "Manage encryption keys for DocumentDB data protection",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure customer-managed KMS keys for DocumentDB encryption with proper key rotation policies"
+                    }
+                },
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy and Procedures",
+                    "severity": "High",
+                    "description": "Establish comprehensive identity and access management policies for DocumentDB resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement IAM policies and roles through CloudFormation or Terraform templates with least privilege access to DocumentDB clusters"
+                    }
+                },
+                {
+                    "identifier": "IVS-01",
+                    "title": "Vulnerability Management",
+                    "severity": "Medium",
+                    "description": "Implement vulnerability assessments for DocumentDB infrastructure",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable AWS Security Hub and Inspector for automated vulnerability scanning of DocumentDB resources"
+                    }
+                },
+                {
+                    "identifier": "SEF-01",
+                    "title": "Security Incident Management, E-Discovery & Cloud Forensics",
+                    "severity": "Medium",
+                    "description": "Implement comprehensive logging for DocumentDB activities",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure CloudTrail, CloudWatch, and DocumentDB profiler logging through infrastructure templates"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "High",
+                    "description": "Enforce approved authorizations for logical access to DocumentDB resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement RBAC through DocumentDB database users and roles with VPC-based network access controls"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of transmitted DocumentDB information",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable TLS encryption for all client connections to DocumentDB clusters"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "High",
+                    "description": "Protect confidentiality and integrity of DocumentDB data at rest",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure encryption at rest for DocumentDB clusters using AWS KMS customer-managed keys"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "Medium",
+                    "description": "Identify events that are to be logged for DocumentDB operations",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable DocumentDB audit logging and profiler to capture database operations and performance metrics"
+                    }
+                },
+                {
+                    "identifier": "CP-9",
+                    "title": "System Backup",
+                    "severity": "Medium",
+                    "description": "Conduct backups of DocumentDB data and system-level information",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure automated backups with appropriate retention periods and cross-region backup replication"
+                    }
+                },
+                {
+                    "identifier": "SC-7",
+                    "title": "Boundary Protection",
+                    "severity": "Medium",
+                    "description": "Monitor and control communications at external boundaries and key internal boundaries",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy DocumentDB clusters in private subnets with VPC security groups and NACLs for network segmentation"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Standard",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "DocumentDB.1",
+                    "title": "DocumentDB clusters should be encrypted",
+                    "severity": "High",
+                    "description": "DocumentDB clusters should have encryption at rest enabled",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable storage encryption parameter when creating DocumentDB clusters in infrastructure templates"
+                    }
+                },
+                {
+                    "identifier": "DocumentDB.2",
+                    "title": "DocumentDB clusters should have backup retention period greater than or equal to 7 days",
+                    "severity": "Medium",
+                    "description": "DocumentDB clusters should be configured with adequate backup retention",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Set backup retention period to minimum 7 days in DocumentDB cluster configuration"
+                    }
+                },
+                {
+                    "identifier": "DocumentDB.3",
+                    "title": "DocumentDB clusters should have an adequate number of log exports enabled",
+                    "severity": "Medium",
+                    "description": "DocumentDB clusters should export audit and profiler logs to CloudWatch",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable audit and profiler log exports in DocumentDB cluster configuration"
+                    }
+                },
+                {
+                    "identifier": "DocumentDB.4",
+                    "title": "DocumentDB clusters should be configured to copy tags to snapshots",
+                    "severity": "Low",
+                    "description": "DocumentDB clusters should copy all tags to snapshots for proper resource management",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable copy-tags-to-snapshot parameter in DocumentDB cluster configuration"
+                    }
+                },
+                {
+                    "identifier": "DocumentDB.5",
+                    "title": "DocumentDB clusters should have deletion protection enabled",
+                    "severity": "Low",
+                    "description": "DocumentDB clusters should be protected against accidental deletion",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable deletion protection parameter in DocumentDB cluster configuration"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS DocumentDB Cost Optimization Best Practices",
+            "version": "2023",
+            "controls": [
+                {
+                    "identifier": "COST-01",
+                    "title": "Right-size DocumentDB instances",
+                    "severity": "High",
+                    "description": "Regularly monitor and adjust DocumentDB instance types based on actual resource utilization",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Use CloudWatch metrics to analyze CPU, memory, and I/O utilization and resize instances accordingly"
+                    }
+                },
+                {
+                    "identifier": "COST-02",
+                    "title": "Optimize storage costs",
+                    "severity": "High",
+                    "description": "Monitor storage growth and implement data lifecycle policies to manage storage costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Regularly review storage utilization patterns and archive or delete unnecessary data"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Configure appropriate backup retention",
+                    "severity": "Medium",
+                    "description": "Set backup retention periods based on business requirements to avoid unnecessary storage costs",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Configure backup retention period to match business recovery requirements without excessive retention"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Use Reserved Instances for predictable workloads",
+                    "severity": "Medium",
+                    "description": "Purchase DocumentDB Reserved Instances for steady-state workloads to reduce costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Analyze usage patterns and purchase 1-year or 3-year Reserved Instances for consistent workloads"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Implement resource tagging for cost allocation",
+                    "severity": "Medium",
+                    "description": "Use consistent tagging strategy to track and allocate DocumentDB costs across teams and projects",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement mandatory tags for cost center, environment, and project in DocumentDB resources"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Monitor and alert on cost anomalies",
+                    "severity": "Medium",
+                    "description": "Set up cost monitoring and alerts to detect unexpected DocumentDB spending",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure AWS Cost Anomaly Detection and Budgets to monitor DocumentDB spending patterns"
+                    }
+                },
+                {
+                    "identifier": "COST-07",
+                    "title": "Optimize cross-region data transfer costs",
+                    "severity": "Low",
+                    "description": "Minimize cross-region data transfer by co-locating applications and DocumentDB clusters",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy DocumentDB clusters in the same region as consuming applications to reduce data transfer costs"
+                    }
+                },
+                {
+                    "identifier": "COST-08",
+                    "title": "Review and optimize read replica usage",
+                    "severity": "Low",
+                    "description": "Regularly assess the necessity and utilization of DocumentDB read replicas",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Monitor read replica utilization and remove underutilized replicas or redistribute read traffic"
+                    }
+                }
+            ]
+        }
+    ]
+}
