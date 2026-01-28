@@ -1,0 +1,368 @@
+{
+    "service": "AWS DataSync",
+    "security": [
+        {
+            "name": "NIST 800-53",
+            "version": "Rev 5",
+            "controls": [
+                {
+                    "identifier": "AC-2",
+                    "title": "Account Management",
+                    "severity": "High",
+                    "description": "Manage information system accounts, group memberships, privileges, workflow, notifications, deactivations, and authorizations",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure IAM policies with least privilege access for DataSync operations, implement role-based access with specific permissions for source and destination resources"
+                    }
+                },
+                {
+                    "identifier": "AC-3",
+                    "title": "Access Enforcement",
+                    "severity": "High",
+                    "description": "Enforce approved authorizations for logical access to information and system resources",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement resource-based policies and IAM conditions in CloudFormation/Terraform templates to restrict DataSync access based on source IP, time, and MFA requirements"
+                    }
+                },
+                {
+                    "identifier": "SC-8",
+                    "title": "Transmission Confidentiality and Integrity",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of transmitted information",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable TLS encryption for data in transit, configure DataSync to use VPC endpoints for private network communication"
+                    }
+                },
+                {
+                    "identifier": "SC-28",
+                    "title": "Protection of Information at Rest",
+                    "severity": "High",
+                    "description": "Protect the confidentiality and integrity of information at rest",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure encryption at rest for destination storage services (S3, EFS, FSx) using AWS KMS customer-managed keys"
+                    }
+                },
+                {
+                    "identifier": "AU-2",
+                    "title": "Event Logging",
+                    "severity": "Medium",
+                    "description": "Identify the types of events that the system is capable of logging",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable CloudTrail logging for all DataSync API calls and configure CloudWatch logging for task execution details"
+                    }
+                },
+                {
+                    "identifier": "AU-6",
+                    "title": "Audit Review, Analysis, and Reporting",
+                    "severity": "Medium",
+                    "description": "Review and analyze information system audit records for indications of inappropriate activity",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy CloudWatch dashboards and alarms to monitor DataSync task failures, performance metrics, and unusual activity patterns"
+                    }
+                },
+                {
+                    "identifier": "CM-2",
+                    "title": "Baseline Configuration",
+                    "severity": "Medium",
+                    "description": "Develop, document, and maintain a current baseline configuration",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use Infrastructure as Code templates to maintain consistent DataSync agent and task configurations across environments"
+                    }
+                },
+                {
+                    "identifier": "RA-5",
+                    "title": "Vulnerability Monitoring and Scanning",
+                    "severity": "Low",
+                    "description": "Monitor and scan for vulnerabilities in the information system and hosted applications",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Regularly update DataSync agents and monitor AWS security bulletins for service vulnerabilities"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "CSA Cloud Controls Matrix",
+            "version": "v4.0.10",
+            "controls": [
+                {
+                    "identifier": "IAM-01",
+                    "title": "Identity and Access Management Policy and Procedures",
+                    "severity": "High",
+                    "description": "Policies and procedures shall be established for identity and access management",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Establish organizational policies for DataSync access management, including approval workflows for cross-account transfers and data classification handling"
+                    }
+                },
+                {
+                    "identifier": "IAM-02",
+                    "title": "User Access Provisioning",
+                    "severity": "High",
+                    "description": "User access provisioning procedures shall be established",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Implement automated user provisioning for DataSync using AWS SSO or identity federation with temporary credentials and session limits"
+                    }
+                },
+                {
+                    "identifier": "DSI-01",
+                    "title": "Data Security and Information Lifecycle Management",
+                    "severity": "High",
+                    "description": "Procedures shall be established for data security throughout the information lifecycle",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Classify data before transfer, implement appropriate encryption and access controls, and establish data retention policies for transferred data"
+                    }
+                },
+                {
+                    "identifier": "DSI-07",
+                    "title": "Secure Disposal",
+                    "severity": "Medium",
+                    "description": "Procedures shall be established for the secure disposal of data",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure DataSync to securely delete temporary files and implement secure deletion procedures for DataSync agents when decommissioned"
+                    }
+                },
+                {
+                    "identifier": "IVS-01",
+                    "title": "Information Security Management Program",
+                    "severity": "Medium",
+                    "description": "An information security management program shall be established",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Include DataSync usage in organizational security management program with regular security assessments and compliance reviews"
+                    }
+                },
+                {
+                    "identifier": "TVM-02",
+                    "title": "Vulnerability / Patch Management",
+                    "severity": "Medium",
+                    "description": "Policies and procedures shall be established for vulnerability and patch management",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Maintain current DataSync agent versions and establish procedures for timely security updates and patches"
+                    }
+                },
+                {
+                    "identifier": "LOG-01",
+                    "title": "Logging and Monitoring Policy",
+                    "severity": "Low",
+                    "description": "Policies and procedures shall be established for logging and monitoring",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Establish logging policies for DataSync operations including data classification, retention periods, and access to log data"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Foundational Security Best Practices",
+            "version": "1.0.0",
+            "controls": [
+                {
+                    "identifier": "IAM.1",
+                    "title": "IAM policies should not allow full administrative privileges",
+                    "severity": "High",
+                    "description": "IAM policies should not have statements with Effect: Allow with Action: * over Resource: *",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Create specific IAM policies for DataSync with granular permissions limited to required actions on specific resources"
+                    }
+                },
+                {
+                    "identifier": "IAM.3",
+                    "title": "IAM users' access keys should be rotated every 90 days or less",
+                    "severity": "Medium",
+                    "description": "Access keys should be rotated to ensure that data cannot be accessed with an old key that might have been lost, cracked, or stolen",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Use IAM roles instead of access keys for DataSync agents, implement automated key rotation if programmatic access is required"
+                    }
+                },
+                {
+                    "identifier": "CloudTrail.1",
+                    "title": "CloudTrail should be enabled and configured with at least one multi-Region trail",
+                    "severity": "High",
+                    "description": "CloudTrail creates a trail that enables logging of AWS API calls and related events made by or on behalf of an AWS account",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable CloudTrail in all regions to capture DataSync API calls, configure log file validation and encryption"
+                    }
+                },
+                {
+                    "identifier": "S3.4",
+                    "title": "S3 buckets should have server-side encryption enabled",
+                    "severity": "Medium",
+                    "description": "S3 buckets should have server-side encryption enabled to protect data at rest",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Enable default encryption on S3 buckets used as DataSync destinations, use customer-managed KMS keys for sensitive data"
+                    }
+                },
+                {
+                    "identifier": "S3.5",
+                    "title": "S3 buckets should require requests to use SSL",
+                    "severity": "Medium",
+                    "description": "S3 buckets should have policies that require all requests to use SSL",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Implement bucket policies that deny non-SSL requests for S3 buckets used with DataSync"
+                    }
+                },
+                {
+                    "identifier": "Config.1",
+                    "title": "AWS Config should be enabled",
+                    "severity": "Low",
+                    "description": "AWS Config should be enabled to monitor configuration changes",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Enable AWS Config to track DataSync configuration changes and compliance with organizational policies"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AWS Security Hub",
+            "version": "2023.04.0",
+            "controls": [
+                {
+                    "identifier": "DataSync.1",
+                    "title": "DataSync locations should be encrypted in transit",
+                    "severity": "High",
+                    "description": "DataSync tasks should use encrypted protocols when transferring data to protect data in transit",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure DataSync tasks to use encrypted transfer protocols (TLS for NFS/SMB, HTTPS for object storage)"
+                    }
+                },
+                {
+                    "identifier": "DataSync.2",
+                    "title": "DataSync task logging should be enabled",
+                    "severity": "Medium",
+                    "description": "DataSync tasks should have logging enabled to CloudWatch for monitoring and troubleshooting",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Enable CloudWatch logging for all DataSync tasks and configure appropriate log retention policies"
+                    }
+                },
+                {
+                    "identifier": "DataSync.3",
+                    "title": "DataSync agents should be deployed in private subnets",
+                    "severity": "Medium",
+                    "description": "DataSync agents should be deployed in private subnets to reduce exposure to internet-based threats",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy DataSync agents in private subnets with VPC endpoints for AWS service communication"
+                    }
+                },
+                {
+                    "identifier": "DataSync.4",
+                    "title": "DataSync should use IAM roles instead of IAM users",
+                    "severity": "Low",
+                    "description": "DataSync should use IAM roles for secure access to AWS resources",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure DataSync tasks to use IAM service roles instead of IAM user credentials"
+                    }
+                }
+            ]
+        }
+    ],
+    "operational": [],
+    "cost": [
+        {
+            "name": "AWS DataSync Cost Optimization",
+            "version": "2024.1.0",
+            "controls": [
+                {
+                    "identifier": "COST-01",
+                    "title": "Optimize Data Transfer Scheduling",
+                    "severity": "High",
+                    "description": "Schedule data transfers during off-peak hours to reduce network costs and improve performance",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure DataSync tasks to run during off-peak hours using CloudWatch Events, implement task scheduling to avoid peak network usage periods"
+                    }
+                },
+                {
+                    "identifier": "COST-02",
+                    "title": "Use Bandwidth Throttling",
+                    "severity": "High",
+                    "description": "Implement bandwidth throttling to control network utilization and associated costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure bandwidth throttling on DataSync tasks to limit network usage during business hours and prevent network congestion charges"
+                    }
+                },
+                {
+                    "identifier": "COST-03",
+                    "title": "Implement Incremental Transfers",
+                    "severity": "Medium",
+                    "description": "Use incremental data transfer capabilities to minimize data transfer volumes and costs",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Configure DataSync to transfer only changed files by enabling file modification time and size verification options"
+                    }
+                },
+                {
+                    "identifier": "COST-04",
+                    "title": "Right-size DataSync Agents",
+                    "severity": "Medium",
+                    "description": "Select appropriate instance types for DataSync agents based on transfer requirements",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Use cost-effective EC2 instance types for DataSync agents, implement auto-scaling for variable workloads, consider Spot instances for non-critical transfers"
+                    }
+                },
+                {
+                    "identifier": "COST-05",
+                    "title": "Optimize Storage Classes",
+                    "severity": "Medium",
+                    "description": "Transfer data directly to appropriate S3 storage classes to minimize storage costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Configure DataSync tasks to transfer infrequently accessed data directly to S3 IA or Glacier storage classes"
+                    }
+                },
+                {
+                    "identifier": "COST-06",
+                    "title": "Monitor and Alert on Costs",
+                    "severity": "Medium",
+                    "description": "Implement cost monitoring and alerting for DataSync operations",
+                    "implementation": {
+                        "type": "Platform",
+                        "description": "Set up Cost and Usage Reports, create CloudWatch billing alarms, and implement AWS Budgets for DataSync-related costs"
+                    }
+                },
+                {
+                    "identifier": "COST-07",
+                    "title": "Use VPC Endpoints",
+                    "severity": "Low",
+                    "description": "Implement VPC endpoints to reduce data transfer costs for AWS service communication",
+                    "implementation": {
+                        "type": "IaC",
+                        "description": "Deploy VPC endpoints for S3, EFS, and other AWS services to avoid internet data transfer charges when using DataSync within AWS"
+                    }
+                },
+                {
+                    "identifier": "COST-08",
+                    "title": "Implement Data Lifecycle Policies",
+                    "severity": "Low",
+                    "description": "Configure automatic data lifecycle management to optimize long-term storage costs",
+                    "implementation": {
+                        "type": "User",
+                        "description": "Set up S3 lifecycle policies to automatically transition transferred data to lower-cost storage tiers based on access patterns"
+                    }
+                }
+            ]
+        }
+    ]
+}

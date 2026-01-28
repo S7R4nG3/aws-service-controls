@@ -1,8 +1,8 @@
 {
     "services": [
         {
-            "short": "fis",
-            "long": "Fault Injection Simulator"
+            "short": "datasync",
+            "long": "Datasync"
         }
     ]
 }
