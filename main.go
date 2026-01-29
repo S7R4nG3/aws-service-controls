@@ -89,8 +89,8 @@ func reviewControls(controls chan services.Service, reviews chan string, enabled
 		} else {
 			reviews <- "DONE"
 		}
-		if docsEnabled {
-			docgen.Generate(c)
-		}
+		// if docsEnabled {
+		// 	docgen.Generate(c)
+		// }
 	}
 }
