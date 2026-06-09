@@ -1,8 +1,12 @@
 {
     "services": [
         {
-            "short": "datasync",
-            "long": "Datasync"
+            "short": "transfer-family",
+            "long": "AWS Transfer Family"
+        },
+        {
+            "short": "fsx",
+            "long": "AWS FSx"
         }
     ]
 }

@@ -1,0 +1,568 @@
+{
+  "service": "AWS Transfer Family",
+  "security": [
+    {
+      "name": "AWS Foundational Security Best Practices",
+      "version": "1.0.0",
+      "controls": [
+        {
+          "identifier": "Transfer.1",
+          "title": "AWS Transfer Family servers should not use FTP protocol",
+          "severity": "Critical",
+          "description": "FTP transmits data and credentials in plaintext and should never be used. Only SFTP, FTPS, or AS2 protocols should be enabled on Transfer Family servers to ensure data is encrypted in transit.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In CloudFormation or Terraform, ensure the server resource does not include 'FTP' in the Protocols list. Enforce via AWS Config rule 'transfer-family-server-no-ftp' and use SCP to deny creation of Transfer Family servers with FTP enabled."
+          }
+        },
+        {
+          "identifier": "Transfer.2",
+          "title": "Transfer Family servers should have logging enabled",
+          "severity": "High",
+          "description": "Logging must be enabled for all Transfer Family servers to capture connection and transfer activity. CloudWatch logging provides visibility into user activity and assists with incident response.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In IaC templates, configure the LoggingRole property on the AWS::Transfer::Server resource to an IAM role that grants Transfer Family permission to write to CloudWatch Logs. Validate via AWS Config managed rule."
+          }
+        },
+        {
+          "identifier": "Transfer.3",
+          "title": "Transfer Family servers should not be publicly accessible unless required",
+          "severity": "High",
+          "description": "Transfer Family servers with an endpoint type of PUBLIC expose the service to the internet. Where possible, use VPC endpoints to restrict access to internal networks and reduce the attack surface.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Set EndpointType to VPC in IaC templates and associate the server with a VPC, subnets, and security groups. Use VPC_ENDPOINT type only when internet access is explicitly required and document exceptions."
+          }
+        },
+        {
+          "identifier": "Transfer.4",
+          "title": "Transfer Family servers should use IAM roles with least privilege for service-managed users",
+          "severity": "High",
+          "description": "IAM roles assigned to Transfer Family users must follow least privilege principles. Users should only have access to the specific S3 prefixes or EFS paths required for their function.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define scoped IAM roles in IaC with resource-level restrictions on S3 bucket ARNs and specific prefixes. Use the HomeDirectoryMappings property to restrict users to their designated home directories and prevent directory traversal."
+          }
+        },
+        {
+          "identifier": "Transfer.5",
+          "title": "Transfer Family servers should enforce security policies that disable weak protocols and ciphers",
+          "severity": "High",
+          "description": "Transfer Family supports configurable security policies that control which cryptographic algorithms and protocol versions are allowed. Weak ciphers and older TLS versions must be disabled.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Set the SecurityPolicyName property to the latest recommended policy (e.g., TransferSecurityPolicy-2024-01 or equivalent latest policy) in the server IaC resource definition. Periodically review AWS documentation for updated policy versions."
+          }
+        },
+        {
+          "identifier": "Transfer.6",
+          "title": "Transfer Family servers using FTPS must require client certificate authentication where possible",
+          "severity": "Medium",
+          "description": "FTPS servers should leverage mutual TLS (mTLS) or certificate-based authentication in addition to password-based authentication to strengthen identity verification of connecting clients.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Configure certificate-based authentication using a custom identity provider backed by Lambda or API Gateway. Validate client certificates as part of the authentication workflow and reject connections that do not present a valid certificate."
+          }
+        },
+        {
+          "identifier": "Transfer.7",
+          "title": "Transfer Family servers should use a custom identity provider for centralized authentication",
+          "severity": "Medium",
+          "description": "Using AWS Directory Service, custom Lambda-backed identity providers, or API Gateway-based identity providers enables centralized authentication management, MFA enforcement, and integration with existing identity infrastructure.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Set IdentityProviderType to AWS_DIRECTORY_SERVICE or API_GATEWAY in the server definition. Deploy the identity provider Lambda or API Gateway integration via IaC and ensure the IdentityProviderInvokeRole is appropriately scoped."
+          }
+        }
+      ]
+    },
+    {
+      "name": "NIST 800-53",
+      "version": "Rev 5",
+      "controls": [
+        {
+          "identifier": "AC-2",
+          "title": "Account Management",
+          "severity": "Critical",
+          "description": "Transfer Family user accounts must be managed through a formal account management process. Accounts must be created, reviewed, modified, and disabled in accordance with organizational policy. Inactive accounts must be promptly disabled.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Implement automated account lifecycle management using Lambda functions triggered by HR or IAM Identity Center events. Enforce periodic access reviews using AWS IAM Access Analyzer and define account expiration policies for service-managed users. Use tagging to track account ownership and review dates."
+          }
+        },
+        {
+          "identifier": "AC-3",
+          "title": "Access Enforcement",
+          "severity": "Critical",
+          "description": "Transfer Family must enforce approved authorizations for logical access to S3 buckets or EFS file systems. Users must be restricted to only the data paths and objects they are authorized to access.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Use HomeDirectoryType set to LOGICAL with HomeDirectoryMappings in IaC to restrict users to specific S3 prefixes. Apply S3 bucket policies and IAM session policies that explicitly deny access to paths outside the user's designated directory. Use the ScopeDownPolicy feature to enforce per-user restrictions."
+          }
+        },
+        {
+          "identifier": "AC-17",
+          "title": "Remote Access",
+          "severity": "Critical",
+          "description": "Remote access to Transfer Family servers must be controlled, monitored, and use encrypted protocols. Access must be limited to authorized users and systems, and all remote access sessions must be logged.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Deploy Transfer Family servers with VPC endpoints and restrict access using security groups that limit inbound connections to known IP ranges or CIDR blocks. Enable CloudWatch logging and configure CloudTrail to capture all API calls. Require SFTP or FTPS protocols only."
+          }
+        },
+        {
+          "identifier": "IA-2",
+          "title": "Identification and Authentication (Organizational Users)",
+          "severity": "Critical",
+          "description": "All users accessing Transfer Family servers must be uniquely identified and authenticated. SSH key-based authentication or password authentication must be enforced with strong credential requirements.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enforce SSH public key authentication for SFTP users by importing or generating SSH key pairs and associating them with user accounts. For password-based authentication, use a custom identity provider via Lambda or API Gateway that enforces strong password policies and optionally MFA. Disable password authentication where SSH keys are available."
+          }
+        },
+        {
+          "identifier": "IA-5",
+          "title": "Authenticator Management",
+          "severity": "Critical",
+          "description": "SSH keys and certificates used for Transfer Family authentication must be managed, rotated, and revoked according to organizational policy. Compromised or expired credentials must be promptly revoked.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Implement automated SSH key rotation using Lambda functions or AWS Systems Manager Automation. Store SSH public keys in AWS Secrets Manager or a centralized key management system. Set key expiration policies and configure alerts when keys approach their maximum age. Remove unused keys immediately upon user offboarding."
+          }
+        },
+        {
+          "identifier": "SC-8",
+          "title": "Transmission Confidentiality and Integrity",
+          "severity": "Critical",
+          "description": "Data transmitted through Transfer Family must be encrypted in transit. Only protocols that enforce encryption (SFTP, FTPS, AS2 over HTTPS) must be used. Plaintext FTP must never be enabled.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Configure Transfer Family server Protocols property to include only SFTP, FTPS, or AS2. Apply the most restrictive security policy available to enforce TLS 1.2 or higher and disable weak cipher suites. Use AWS Certificate Manager to provision and manage TLS certificates for FTPS endpoints."
+          }
+        },
+        {
+          "identifier": "SC-28",
+          "title": "Protection of Information at Rest",
+          "severity": "Critical",
+          "description": "Data stored in S3 buckets or EFS file systems used by Transfer Family must be encrypted at rest using AES-256 or AWS KMS. Encryption must be enforced via bucket policies and cannot be disabled by end users.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Enable default S3 bucket encryption using SSE-KMS with a customer-managed KMS key in IaC. Apply a bucket policy that denies s3:PutObject requests that do not include server-side encryption headers. For EFS, enable encryption at rest during file system creation. Manage KMS key policies to restrict access to authorized principals."
+          }
+        },
+        {
+          "identifier": "AU-2",
+          "title": "Event Logging",
+          "severity": "High",
+          "description": "Transfer Family must log all significant events including user authentication attempts (successful and failed), file transfers, connections, and administrative changes to server configurations.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Configure the LoggingRole on the Transfer Family server to enable CloudWatch Logs integration. Enable AWS CloudTrail in all regions to capture Transfer Family API calls. Create CloudWatch log groups with appropriate retention periods (minimum 90 days active, 1 year archive to S3). Enable S3 server access logging on buckets used by Transfer Family."
+          }
+        },
+        {
+          "identifier": "AU-9",
+          "title": "Protection of Audit Information",
+          "severity": "High",
+          "description": "Audit logs generated by Transfer Family must be protected from unauthorized access, modification, and deletion. Log integrity must be maintained to support forensic investigations.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Configure S3 Object Lock in COMPLIANCE mode on the S3 bucket storing archived CloudTrail and Transfer Family logs. Apply restrictive IAM policies that deny log deletion or modification to all principals except a designated security audit role. Enable CloudTrail log file validation to detect tampering. Use separate AWS accounts for log storage."
+          }
+        },
+        {
+          "identifier": "IR-6",
+          "title": "Incident Reporting",
+          "severity": "High",
+          "description": "Security events related to Transfer Family, including unauthorized access attempts, unusual transfer volumes, and authentication failures, must be detected and reported to the appropriate teams in a timely manner.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Create CloudWatch alarms on Transfer Family log metric filters for authentication failures, unauthorized access attempts, and anomalous transfer sizes. Configure SNS topics to notify the security team. Integrate with AWS Security Hub and Amazon EventBridge to automate incident ticket creation in ITSM systems."
+          }
+        },
+        {
+          "identifier": "CM-8",
+          "title": "System Component Inventory",
+          "severity": "High",
+          "description": "All Transfer Family servers, users, and associated resources must be tracked in an inventory. Configuration changes must be recorded and attributed to authorized change requests.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Apply consistent resource tagging in all IaC templates including tags for Owner, Environment, CostCenter, DataClassification, and ProjectCode. Use AWS Config to maintain a configuration history of all Transfer Family resources and detect configuration drift from approved IaC templates. Enforce tagging policies via AWS Organizations Tag Policies."
+          }
+        },
+        {
+          "identifier": "SC-7",
+          "title": "Boundary Protection",
+          "severity": "High",
+          "description": "Transfer Family endpoints must be protected at network boundaries. Access must be restricted to authorized source IP addresses or networks, and all traffic must traverse defined security controls.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Deploy Transfer Family with VPC endpoint type and configure security groups to allow inbound connections only from approved IP ranges. Use Network Access Control Lists (NACLs) for additional layer of protection. Consider deploying AWS Network Firewall or AWS WAF for additional inspection of traffic to public endpoints. Enable VPC Flow Logs to capture network traffic metadata."
+          }
+        },
+        {
+          "identifier": "CP-9",
+          "title": "System Backup",
+          "severity": "High",
+          "description": "Configuration of Transfer Family servers, user accounts, SSH keys, and associated IAM roles must be backed up and recoverable. Backup procedures must be tested regularly.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Store all Transfer Family configuration in version-controlled IaC templates in AWS CodeCommit or a third-party Git repository. Use AWS Backup to configure backup plans for EFS file systems. Enable S3 Versioning on buckets used by Transfer Family. Document recovery procedures and test restoration from backups quarterly."
+          }
+        },
+        {
+          "identifier": "SA-9",
+          "title": "External System Services",
+          "severity": "Medium",
+          "description": "Third-party trading partners and external systems connecting to Transfer Family must be assessed for security compliance. Connection parameters, authentication mechanisms, and data handling practices must be documented and reviewed.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Maintain a register of all external partners with their approved IP addresses, authentication methods, and data classification levels. Use AS2 agreements and certificates to establish verified partner identities. Implement per-partner security policies and connection restrictions. Conduct annual security reviews of partner connections and revoke access for inactive partners."
+          }
+        },
+        {
+          "identifier": "PL-8",
+          "title": "Security and Privacy Architectures",
+          "severity": "Medium",
+          "description": "Transfer Family deployments must follow an approved security architecture that addresses data classification, network segmentation, identity management, and encryption requirements.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Create approved IaC templates for Transfer Family deployments that embed all security controls by default. Use AWS Service Catalog to publish approved Transfer Family products that enforce organizational security standards. Implement AWS Config conformance packs to validate that deployed resources match the approved architecture."
+          }
+        }
+      ]
+    },
+    {
+      "name": "CSA Cloud Controls Matrix",
+      "version": "v4.0",
+      "controls": [
+        {
+          "identifier": "IAM-01",
+          "title": "Identity and Access Management Policy and Procedures",
+          "severity": "Critical",
+          "description": "Policies and procedures must govern the management of identities and access rights for Transfer Family. This includes provisioning, deprovisioning, privilege escalation, and periodic access certification.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Document and implement an IAM policy specifically addressing Transfer Family user lifecycle management. Integrate user provisioning with AWS IAM Identity Center or a custom identity provider. Automate deprovisioning via Lambda triggers connected to HR systems. Conduct quarterly access reviews using AWS IAM Access Analyzer reports."
+          }
+        },
+        {
+          "identifier": "IAM-02",
+          "title": "Strong Authentication",
+          "severity": "Critical",
+          "description": "Transfer Family must enforce strong authentication mechanisms for all users. Weak passwords must be prohibited, and SSH key-based or certificate-based authentication must be preferred over password authentication.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enforce SSH public key authentication for all SFTP users and disable password authentication where feasible. For FTPS and AS2, use certificate-based mutual authentication. When password authentication is necessary, use a custom Lambda identity provider that enforces minimum password complexity, rotation policies, and optionally MFA via TOTP or hardware tokens."
+          }
+        },
+        {
+          "identifier": "DSP-01",
+          "title": "Data Security and Privacy Lifecycle Management",
+          "severity": "Critical",
+          "description": "Data transmitted through and stored by Transfer Family must be classified and handled according to its sensitivity level. Data classification must govern encryption, access controls, retention, and disposal policies.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Tag S3 buckets and EFS file systems with data classification labels (e.g., Confidential, Restricted, Public). Enforce encryption and access controls based on classification using S3 bucket policies and IAM conditions. Use Amazon Macie to automatically discover and classify sensitive data in S3 buckets. Apply S3 Lifecycle policies aligned with data retention requirements."
+          }
+        },
+        {
+          "identifier": "DSP-07",
+          "title": "Data Encryption at Rest",
+          "severity": "Critical",
+          "description": "All data stored in S3 buckets or EFS file systems accessed via Transfer Family must be encrypted at rest. Customer-managed KMS keys should be used for sensitive data to maintain key control and enable independent key rotation.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Configure S3 default encryption with SSE-KMS using a customer-managed CMK in all IaC templates. Create KMS key policies that restrict key usage to Transfer Family service roles and authorized principals. Enable automatic key rotation on all CMKs. Deny unencrypted PutObject operations via S3 bucket policy conditions on aws:SecureTransport and s3:x-amz-server-side-encryption."
+          }
+        },
+        {
+          "identifier": "DSP-08",
+          "title": "Data Encryption in Transit",
+          "severity": "Critical",
+          "description": "All data in transit between clients and Transfer Family servers must be encrypted using current strong cryptographic standards. Expired or self-signed certificates must not be used in production environments.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Configure Transfer Family to use only SFTP or FTPS protocols in IaC. Apply the latest available security policy to enforce TLS 1.2+ and strong cipher suites. Use AWS Certificate Manager to provision, manage, and auto-renew TLS certificates for FTPS endpoints. Set up certificate expiration monitoring and alerting via AWS Config or Lambda."
+          }
+        },
+        {
+          "identifier": "SEF-02",
+          "title": "Incident Reporting",
+          "severity": "High",
+          "description": "Security incidents involving Transfer Family, including unauthorized file access, failed authentication attempts, data exfiltration indicators, and anomalous transfer activity, must be detected, reported, and escalated promptly.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Define CloudWatch metric filters on Transfer Family CloudWatch log groups to detect authentication failures, access denied events, and large volume transfers. Configure CloudWatch Alarms connected to SNS to alert the security operations team. Integrate with Amazon GuardDuty for threat detection and AWS Security Hub for centralized security finding aggregation. Create EventBridge rules to automate response runbooks."
+          }
+        },
+        {
+          "identifier": "LOG-01",
+          "title": "Logging and Monitoring Policy and Procedures",
+          "severity": "High",
+          "description": "A logging and monitoring policy must be implemented for all Transfer Family servers. Logs must be retained for the required period, protected from tampering, and regularly reviewed for anomalies.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In all Transfer Family IaC templates, configure the LoggingRole property to enable CloudWatch Logs. Create CloudWatch Log Groups with retention policies matching regulatory requirements (minimum 1 year for regulated workloads). Configure log exports to S3 with Object Lock enabled. Enable CloudTrail for all Transfer Family API events and integrate with AWS Security Hub."
+          }
+        },
+        {
+          "identifier": "IVS-07",
+          "title": "Network Security",
+          "severity": "High",
+          "description": "Network security controls must be implemented to protect Transfer Family endpoints. Traffic must be filtered, network access must be restricted to authorized sources, and network activity must be monitored.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Deploy Transfer Family servers with VPC endpoint configuration. Define security groups with explicit inbound rules restricting access to approved IP CIDRs and ports (22 for SFTP, 21/990 for FTPS, 4003 for AS2). Enable VPC Flow Logs and ship logs to CloudWatch and S3. Use AWS Network Firewall for stateful inspection of file transfer traffic where applicable."
+          }
+        },
+        {
+          "identifier": "BCR-01",
+          "title": "Business Continuity Management Policy",
+          "severity": "High",
+          "description": "Transfer Family deployments must be designed for high availability and must have documented recovery procedures. RTO and RPO requirements must be defined and validated through regular disaster recovery testing.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Deploy Transfer Family servers in multiple Availability Zones using VPC subnets across at least two AZs. Use Route 53 health checks and DNS failover for endpoint resilience. Store all server configurations in version-controlled IaC and automate redeployment pipelines. Define and test recovery procedures at least annually. Enable S3 Cross-Region Replication for critical data."
+          }
+        },
+        {
+          "identifier": "CCC-04",
+          "title": "Unauthorized Software Installations",
+          "severity": "Medium",
+          "description": "Transfer Family workflows, including Managed Workflows, must be reviewed and approved before deployment. Workflow steps involving Lambda functions must be scanned for malicious code and adhere to change management policies.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Implement a CI/CD pipeline with mandatory code review and security scanning (e.g., Amazon Inspector, SonarQube) for all Lambda functions used in Transfer Family Managed Workflows. Enforce deployment via approved IaC pipelines with change approval gates. Use AWS CodePipeline with manual approval stages for production deployments."
+          }
+        },
+        {
+          "identifier": "GRC-06",
+          "title": "Policy Enforcement",
+          "severity": "Medium",
+          "description": "Security policies applicable to Transfer Family, including those governing encryption, authentication, and access control, must be enforced through automated technical controls rather than relying solely on procedural compliance.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Use AWS Organizations Service Control Policies (SCPs) to deny creation of Transfer Family servers with prohibited configurations (e.g., FTP protocol, public endpoint without approval). Deploy AWS Config rules and conformance packs to continuously validate Transfer Family configurations. Use AWS Security Hub standards to aggregate and track compliance posture."
+          }
+        }
+      ]
+    },
+    {
+      "name": "AWS Security Hub",
+      "version": "2024",
+      "controls": [
+        {
+          "identifier": "Transfer.1",
+          "title": "Transfer Family servers should not use FTP protocol for connections",
+          "severity": "Critical",
+          "description": "AWS Security Hub flags Transfer Family servers that have FTP enabled as a non-compliant finding. FTP transmits all data including credentials in plaintext and must be disabled in all environments.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Ensure all Transfer Family server IaC definitions explicitly omit FTP from the Protocols list and include only SFTP, FTPS, or AS2. Apply an SCP that includes a Deny condition for transfer:CreateServer and transfer:UpdateServer when the FTP protocol is specified. Configure AWS Config custom rule to alert on any existing servers with FTP enabled."
+          }
+        },
+        {
+          "identifier": "Transfer.2",
+          "title": "Transfer Family servers should have CloudWatch logging enabled",
+          "severity": "High",
+          "description": "Security Hub checks that Transfer Family servers have a logging role configured. Without CloudWatch logging, user activity, authentication events, and file transfer operations are not captured, limiting visibility and auditability.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Include a dedicated IAM logging role in all Transfer Family IaC templates. The role must have the AmazonTransferLoggingAccess managed policy attached or equivalent inline policy granting logs:CreateLogGroup, logs:CreateLogStream, and logs:PutLogEvents. Reference the role ARN in the LoggingRole property of the server resource."
+          }
+        },
+        {
+          "identifier": "Transfer.3",
+          "title": "Transfer Family connectors should have logging enabled",
+          "severity": "High",
+          "description": "Security Hub validates that AS2 and SFTP connectors have logging configured. Connectors used for outbound transfers must also have activity logging to maintain a complete audit trail of all data movement.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Configure the LoggingRole property on all Transfer Family connector resources in IaC templates. Create a dedicated CloudWatch Log Group for connector logs and set appropriate retention periods. Include connector logging configuration in the same IaC module as the server configuration to ensure consistency."
+          }
+        },
+        {
+          "identifier": "Transfer.4",
+          "title": "Transfer Family servers should have security policies configured to use strong cipher suites",
+          "severity": "High",
+          "description": "Security Hub validates that Transfer Family servers use an approved security policy that disables weak TLS versions and cipher suites. Using outdated cryptographic configurations exposes transfers to downgrade attacks and interception.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Set the SecurityPolicyName property in all Transfer Family server IaC templates to the most current recommended policy. Monitor AWS documentation for new policy versions and update IaC templates as part of a quarterly security review cycle. Use AWS Config to detect servers not using the approved security policy name."
+          }
+        },
+        {
+          "identifier": "Transfer.5",
+          "title": "Transfer Family servers should use VPC endpoints",
+          "severity": "High",
+          "description": "Security Hub identifies Transfer Family servers with PUBLIC endpoint type as a risk. Public endpoints expose the server directly to the internet without the benefit of VPC-level network controls.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Set EndpointType to VPC in all standard IaC templates. Configure the VpcEndpointDetails property with appropriate VPC, subnet, and security group references. For cases where public endpoints are required, implement a documented exception process and apply compensating controls such as IP allowlisting via security groups and enhanced monitoring."
+          }
+        },
+        {
+          "identifier": "Transfer.6",
+          "title": "Transfer Family servers should restrict access using security group rules with specific IP ranges",
+          "severity": "High",
+          "description": "Security Hub checks for Transfer Family VPC servers that have security groups allowing unrestricted inbound access (0.0.0.0/0 or ::/0). Security groups must restrict access to known IP ranges.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define security group rules in IaC that explicitly list approved source CIDR blocks for Transfer Family ports. Avoid using 0.0.0.0/0 as a source in any inbound rule. Use AWS Config rule 'restricted-common-ports' and custom Config rules to detect overly permissive security group configurations. Parameterize approved IP ranges in IaC to allow per-environment customization."
+          }
+        },
+        {
+          "identifier": "Transfer.7",
+          "title": "Transfer Family users should use SSH keys for SFTP authentication rather than passwords where possible",
+          "severity": "Medium",
+          "description": "Security Hub recommends SSH key-based authentication over password authentication for SFTP. SSH keys are significantly more resistant to brute force and credential stuffing attacks.",
+          "implementation": {
+            "type": "Platform",
+            "description": "For service-managed users, configure SSH public keys and avoid enabling password authentication. For custom identity providers, configure the authentication method to prefer or require SSH keys. Implement SSH key rotation procedures and automate key expiration notifications. Maintain an inventory of all SSH keys associated with Transfer Family users."
+          }
+        },
+        {
+          "identifier": "Transfer.8",
+          "title": "Transfer Family workflows should use managed workflows for file processing validation",
+          "severity": "Medium",
+          "description": "Security Hub recommends the use of Transfer Family Managed Workflows to validate, scan, and process files upon upload. Managed Workflows enable automated security scanning before files reach the destination storage.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define Managed Workflow resources in IaC that include steps for virus and malware scanning (via Lambda integration with anti-malware solutions), file type validation, and tagging. Associate workflows with Transfer Family servers using the WorkflowDetails property. Configure exception handlers in workflows to quarantine files that fail validation checks."
+          }
+        }
+      ]
+    }
+  ],
+  "operational": [],
+  "cost": [
+    {
+      "name": "AWS Transfer Family Cost Optimization Best Practices",
+      "version": "2024",
+      "controls": [
+        {
+          "identifier": "COST-01",
+          "title": "Select the appropriate protocol to minimize costs",
+          "severity": "High",
+          "description": "AWS Transfer Family charges differ by protocol. SFTP, FTPS, and FTP incur hourly server uptime charges plus per-GB data transfer charges. AS2 charges per message rather than per hour. Understanding and selecting the most cost-effective protocol for the use case can significantly reduce costs.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define only the required protocols in the Protocols property of Transfer Family server IaC templates. Avoid enabling multiple protocols on a single server unless all are actively used. If AS2 is the primary use case, evaluate whether a dedicated AS2 server without SFTP/FTPS reduces overall costs by avoiding hourly uptime charges when the server is idle."
+          }
+        },
+        {
+          "identifier": "COST-02",
+          "title": "Shut down or delete unused Transfer Family servers",
+          "severity": "High",
+          "description": "Transfer Family SFTP, FTPS, and FTP servers accrue charges on an hourly basis regardless of whether any file transfers are occurring. Servers that are not actively used must be stopped or deleted to eliminate unnecessary charges.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Implement an automated Lambda function triggered by CloudWatch Events or EventBridge Scheduler to stop Transfer Family servers during known periods of inactivity (e.g., nights, weekends for non-production environments). Use AWS Config to detect servers that have had no connections for an extended period and generate cost optimization findings. Use resource tags to identify non-production servers eligible for automated shutdown."
+          }
+        },
+        {
+          "identifier": "COST-03",
+          "title": "Consolidate multiple Transfer Family servers where protocol and security requirements permit",
+          "severity": "High",
+          "description": "Each Transfer Family server incurs separate hourly charges. Where security, compliance, and operational requirements allow, consolidating multiple servers into a single server with multiple users reduces the number of billable server-hours.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Review the server topology and identify opportunities to consolidate servers that serve similar protocols and security zones. Use logical home directories and user-specific IAM scope-down policies to maintain data isolation between users on a shared server. Document the consolidation decisions and periodically review the server inventory as part of cost optimization reviews."
+          }
+        },
+        {
+          "identifier": "COST-04",
+          "title": "Optimize S3 storage classes for transferred data to reduce storage costs",
+          "severity": "High",
+          "description": "Data uploaded via Transfer Family to S3 defaults to the S3 Standard storage class, which may be unnecessarily expensive for infrequently accessed or archival data. Transitioning data to lower-cost storage classes can substantially reduce storage costs.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Configure S3 Lifecycle policies in IaC on buckets used by Transfer Family to transition objects to S3 Standard-IA after 30 days and to S3 Glacier Instant Retrieval or Glacier Flexible Retrieval based on access patterns. Enable S3 Intelligent-Tiering for workloads with unpredictable access patterns to automatically move objects between tiers. Monitor S3 Storage Lens dashboards to identify optimization opportunities."
+          }
+        },
+        {
+          "identifier": "COST-05",
+          "title": "Enable S3 Versioning selectively and manage version lifecycle to control storage costs",
+          "severity": "High",
+          "description": "S3 Versioning on buckets used by Transfer Family can significantly increase storage costs if large files are frequently overwritten. Each version of an object is stored and billed separately. Lifecycle policies must be configured to expire non-current versions.",
+          "implementation": {
+            "type": "IaC",
+            "description": "When S3 Versioning is enabled for data protection, define S3 Lifecycle rules in IaC to expire non-current object versions after an appropriate number of days (e.g., 30-90 days depending on recovery requirements). Configure rules to delete incomplete multipart uploads after 7 days. Regularly review S3 Storage Lens metrics for version storage growth and adjust policies accordingly."
+          }
+        },
+        {
+          "identifier": "COST-06",
+          "title": "Monitor and control data transfer costs associated with Transfer Family",
+          "severity": "High",
+          "description": "Transfer Family charges per-GB for data transferred. Additionally, if transferred data is retrieved from S3 in another region or sent to the internet via other services, additional data transfer costs accrue. Monitoring and understanding all data transfer cost components is essential.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable AWS Cost Explorer with resource-level granularity for Transfer Family. Configure AWS Budgets with alerts for Transfer Family spending thresholds. Use Cost Allocation Tags to attribute Transfer Family costs to specific business units or projects. Review VPC data transfer costs in conjunction with Transfer Family costs to identify unexpected cross-AZ or cross-region data movement. Use S3 Storage Lens to monitor data egress patterns."
+          }
+        },
+        {
+          "identifier": "COST-07",
+          "title": "Use Transfer Family Managed Workflows efficiently to avoid unnecessary Lambda invocation costs",
+          "severity": "Medium",
+          "description": "Transfer Family Managed Workflows invoke Lambda functions for each workflow step. For high-volume file transfer environments, each Lambda invocation incurs a cost. Inefficient workflow design with redundant steps increases Lambda invocation and duration costs.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Design Managed Workflows with the minimum number of steps required to meet security and operational requirements. Combine multiple processing tasks into a single Lambda function where feasible to reduce invocation overhead. Set appropriate Lambda memory and timeout configurations to optimize price-performance. Monitor Lambda invocation counts and durations via CloudWatch and set Lambda concurrency limits to prevent cost spikes during unexpected transfer surges."
+          }
+        },
+        {
+          "identifier": "COST-08",
+          "title": "Apply resource tagging to enable accurate cost allocation and chargeback",
+          "severity": "Medium",
+          "description": "Without consistent resource tagging, Transfer Family costs cannot be accurately attributed to specific teams, projects, or business units. This prevents effective cost governance and chargeback mechanisms.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define mandatory tags including CostCenter, Project, Environment, Owner, and Application on all Transfer Family servers, connectors, workflows, associated S3 buckets, and IAM roles in IaC templates. Enforce tagging via AWS Organizations Tag Policies and AWS Config rules. Activate cost allocation tags in the AWS Billing Console to enable Cost Explorer filtering and grouping by these dimensions."
+          }
+        },
+        {
+          "identifier": "COST-09",
+          "title": "Use AWS Budgets and Cost Anomaly Detection to prevent unexpected Transfer Family spending",
+          "severity": "Medium",
+          "description": "Unexpected spikes in Transfer Family usage such as unauthorized bulk transfers, misconfigured clients causing repeated transfer retries, or sudden increases in partner volume can result in unanticipated costs. Proactive budget controls prevent cost overruns.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Create AWS Budgets alerts specifically for the Transfer Family service filtered by cost allocation tags. Enable AWS Cost Anomaly Detection with a Transfer Family monitor to automatically detect and alert on unusual spending patterns. Configure SNS notifications to route budget alerts to both finance and engineering teams. Review anomaly detection alerts weekly and investigate the root cause of any unexpected cost increases."
+          }
+        },
+        {
+          "identifier": "COST-10",
+          "title": "Evaluate AS2 connector pricing model versus server-based model for batch workloads",
+          "severity": "Medium",
+          "description": "For business-to-business file exchange workloads, AS2 connectors charge per message rather than per server-hour. For workloads that exchange a moderate number of large files, the per-message pricing model may be more cost-effective than maintaining a continuously running SFTP server.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Analyze the monthly volume of transfers, average file sizes, and transfer frequency for B2B workloads. Calculate the comparative cost of AS2 per-message pricing versus SFTP hourly server pricing for the expected workload. Use AWS Pricing Calculator to model costs under both pricing models. Make the protocol selection based on cost modeling and document the decision for future reviews."
+          }
+        },
+        {
+          "identifier": "COST-11",
+          "title": "Review and remove unused SSH keys, users, and Transfer Family configurations",
+          "severity": "Low",
+          "description": "While unused SSH keys and inactive users do not directly incur charges, they represent operational overhead and contribute to security risk that can indirectly lead to cost impacts through security incidents. Regular cleanup ensures the environment remains lean and governable.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Implement a monthly automated audit using Lambda or AWS Config that identifies Transfer Family users with no recent login activity, unused SSH keys, and servers with zero transfer volume. Generate reports for review and automate the removal of resources that meet defined inactivity thresholds. Track cleanup actions in a governance register and report metrics to cost optimization review meetings."
+          }
+        },
+        {
+          "identifier": "COST-12",
+          "title": "Co-locate Transfer Family VPC endpoints with application resources to minimize cross-AZ data transfer costs",
+          "severity": "Low",
+          "description": "Transfer Family VPC endpoints deployed in different Availability Zones from the consuming application or data processing resources can incur cross-AZ data transfer charges. Aligning Transfer Family endpoints with the AZs used by downstream resources minimizes these charges.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In IaC templates, configure Transfer Family VPC endpoint subnets in the same Availability Zones as the S3 Gateway endpoints, EFS mount targets, and Lambda functions that process transferred files. Use AZ-aware parameterization in IaC modules to ensure alignment across environments. Review VPC data transfer costs monthly using Cost Explorer to identify unexpected cross-AZ charges."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -22,8 +22,8 @@ type LlmPrompt struct {
 
 func NewLlmPrompt(opts ...func(*LlmPrompt)) *LlmPrompt {
 	np := &LlmPrompt{
-		Model:     anthropic.ModelClaude4Sonnet20250514,
-		MaxTokens: 32000,
+		Model:     anthropic.ModelClaudeSonnet4_6,
+		MaxTokens: 20000,
 	}
 	for _, o := range opts {
 		o(np)
@@ -54,15 +54,12 @@ func (p LlmPrompt) Run() string {
 	file, _ := os.Create(p.Outfile)
 	defer file.Close()
 	writer := bufio.NewWriter(file)
-	messages := []anthropic.MessageParam{
-		anthropic.NewUserMessage(anthropic.NewTextBlock(p.Text)),
-	}
+	text := p.Text
 	if p.Prefill != "" {
-		messages = []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock(p.Text)),
-			anthropic.NewAssistantMessage(anthropic.NewTextBlock(p.Prefill)),
-		}
-		writer.WriteString(p.Prefill)
+		text = fmt.Sprintf("%s\n\nYour response must begin with exactly: %s", p.Text, p.Prefill)
+	}
+	messages := []anthropic.MessageParam{
+		anthropic.NewUserMessage(anthropic.NewTextBlock(text)),
 	}
 	stream := client.Messages.NewStreaming(context.TODO(), anthropic.MessageNewParams{
 		Model:     p.Model,
@@ -85,6 +82,7 @@ func (p LlmPrompt) Run() string {
 			}
 		}
 	}
+	utils.Check(stream.Err(), "Error streaming response from Anthropic API...")
 	writer.Flush()
 	contents, _ := io.ReadAll(file)
 	p.Response = string(contents)

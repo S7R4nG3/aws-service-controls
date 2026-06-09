@@ -1,0 +1,758 @@
+{
+  "service": "AWS FSx",
+  "security": [
+    {
+      "name": "AWS Foundational Security Best Practices",
+      "version": "1.0.0",
+      "controls": [
+        {
+          "identifier": "FSx.1",
+          "title": "FSx for OpenZFS file systems should be configured to copy tags to backups and volumes",
+          "severity": "LOW",
+          "description": "Ensures that tags are copied to backups and volumes to maintain consistent resource tracking and access control policies across FSx for OpenZFS resources.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In your Terraform or CloudFormation templates, set the 'copy_tags_to_backups' and 'copy_tags_to_volumes' attributes to true on the aws_fsx_openzfs_file_system resource to enforce tag propagation automatically."
+          }
+        },
+        {
+          "identifier": "FSx.2",
+          "title": "FSx for Lustre file systems should be configured to copy tags to backups",
+          "severity": "LOW",
+          "description": "Ensures that tags applied to FSx for Lustre file systems are propagated to their backups, supporting consistent governance and cost allocation.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In your IaC templates, set the 'copy_tags_to_backups' attribute to true on the aws_fsx_lustre_file_system resource definition to enforce tag propagation at deployment time."
+          }
+        },
+        {
+          "identifier": "FSx.3",
+          "title": "FSx for Windows File Server file systems should be configured with a Multi-AZ deployment",
+          "severity": "MEDIUM",
+          "description": "FSx for Windows File Server file systems should use Multi-AZ deployments to ensure high availability and resilience against single Availability Zone failures.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In your IaC templates, set the deployment_type to MULTI_AZ_1 on the aws_fsx_windows_file_system resource and specify both preferred and standby subnet IDs to ensure Multi-AZ placement."
+          }
+        },
+        {
+          "identifier": "FSx.4",
+          "title": "FSx for Windows File Server file systems should be configured with encryption at rest",
+          "severity": "HIGH",
+          "description": "FSx for Windows File Server file systems must be encrypted at rest using AWS KMS customer-managed keys to protect sensitive data from unauthorized access.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In your IaC templates, set the 'kms_key_id' attribute to a customer-managed KMS key ARN on the aws_fsx_windows_file_system resource. Avoid using the AWS-managed default key where possible."
+          }
+        },
+        {
+          "identifier": "FSx.5",
+          "title": "FSx for NetApp ONTAP file systems should be configured with encryption at rest",
+          "severity": "HIGH",
+          "description": "FSx for NetApp ONTAP file systems must use AWS KMS encryption at rest to protect stored data from unauthorized access.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In your IaC templates, specify the 'kms_key_id' attribute pointing to a customer-managed KMS key on the aws_fsx_ontap_file_system resource to enforce encryption at rest."
+          }
+        },
+        {
+          "identifier": "FSx.6",
+          "title": "FSx for OpenZFS file systems should be configured with encryption at rest",
+          "severity": "HIGH",
+          "description": "FSx for OpenZFS file systems should use AWS KMS customer-managed keys for encryption at rest to ensure data confidentiality.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In your IaC templates, configure the 'kms_key_id' on the aws_fsx_openzfs_file_system resource to reference a customer-managed KMS key, ensuring all data is encrypted at rest."
+          }
+        },
+        {
+          "identifier": "FSx.7",
+          "title": "FSx for Lustre file systems should be configured with encryption at rest",
+          "severity": "HIGH",
+          "description": "FSx for Lustre file systems must use AWS KMS encryption at rest, protecting data stored on the file system from unauthorized access.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Specify the 'kms_key_id' in the aws_fsx_lustre_file_system resource within your IaC templates to enforce encryption at rest using a customer-managed KMS key."
+          }
+        },
+        {
+          "identifier": "FSx.8",
+          "title": "FSx for Windows File Server file systems should not be publicly accessible",
+          "severity": "CRITICAL",
+          "description": "FSx for Windows File Server file systems must be placed in private subnets with appropriate security group rules to prevent public internet access.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In your IaC templates, ensure the FSx file system is deployed in private subnets and associate security groups that deny inbound access from 0.0.0.0/0 or ::/0. Use VPC endpoints where applicable."
+          }
+        }
+      ]
+    },
+    {
+      "name": "AWS Security Hub",
+      "version": "2024.1",
+      "controls": [
+        {
+          "identifier": "SH-FSx-001",
+          "title": "Enable AWS Security Hub findings for FSx resources",
+          "severity": "MEDIUM",
+          "description": "AWS Security Hub should be enabled and configured to aggregate findings related to FSx resources, providing centralized visibility into security posture across all FSx file systems.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable AWS Security Hub in all regions where FSx is deployed. Enable the AWS Foundational Security Best Practices standard and ensure FSx-related checks are active. Configure Security Hub to forward findings to a centralized SIEM or ticketing system."
+          }
+        },
+        {
+          "identifier": "SH-FSx-002",
+          "title": "FSx file systems should have automated backups enabled and Security Hub findings reviewed",
+          "severity": "MEDIUM",
+          "description": "Automated backup findings surfaced in Security Hub for FSx resources should be reviewed and remediated to ensure business continuity and data recovery capabilities.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Review Security Hub findings related to backup configurations for FSx file systems. Enable automated backups in the FSx configuration and set an appropriate retention period aligned with your RPO requirements."
+          }
+        },
+        {
+          "identifier": "SH-FSx-003",
+          "title": "FSx resources should be tagged and findings for untagged resources resolved",
+          "severity": "LOW",
+          "description": "Security Hub surfaces findings for untagged FSx resources, which impairs cost allocation, access control, and governance. All FSx resources should have mandatory tags applied.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define mandatory tags (e.g., Owner, Environment, DataClassification, CostCenter) in your IaC templates and enforce tagging policies using AWS Config rules or Service Control Policies (SCPs)."
+          }
+        },
+        {
+          "identifier": "SH-FSx-004",
+          "title": "FSx encryption findings should be remediated immediately",
+          "severity": "HIGH",
+          "description": "Security Hub findings indicating that FSx file systems lack encryption at rest or in transit should be treated as high severity and remediated promptly to protect data confidentiality.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Triage and resolve Security Hub findings related to unencrypted FSx file systems. Recreate file systems with encryption enabled where encryption cannot be applied to existing resources. Set up automated remediation workflows using Security Hub custom actions and AWS Lambda."
+          }
+        },
+        {
+          "identifier": "SH-FSx-005",
+          "title": "FSx file systems should not use default security groups",
+          "severity": "HIGH",
+          "description": "Security Hub findings highlight FSx file systems using default VPC security groups. Custom, least-privilege security groups should be applied to all FSx deployments.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define dedicated security groups for FSx in your IaC templates with only the required inbound ports (e.g., 445 for SMB, 988 for Lustre) and restrict source CIDRs to trusted internal ranges only."
+          }
+        }
+      ]
+    },
+    {
+      "name": "NIST SP 800-53",
+      "version": "Rev 5",
+      "controls": [
+        {
+          "identifier": "AC-2",
+          "title": "Account Management",
+          "severity": "HIGH",
+          "description": "Manage FSx service accounts, IAM roles, and access permissions through formal account management processes. Ensure that only authorized users and roles have access to FSx file systems and that access is reviewed periodically.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Use AWS IAM to create dedicated roles for FSx administration and user access. Implement IAM Identity Center (SSO) for centralized access management. Enforce periodic access reviews using AWS IAM Access Analyzer and remove unused roles or permissions."
+          }
+        },
+        {
+          "identifier": "AC-3",
+          "title": "Access Enforcement",
+          "severity": "HIGH",
+          "description": "Enforce approved authorizations for logical access to FSx file systems in accordance with applicable access control policies. Implement least-privilege access across all FSx resource types.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define IAM policies in IaC templates that grant only the minimum permissions required for each role (e.g., separate read-only and admin policies). Apply resource-level permissions on FSx API actions and enforce using Service Control Policies (SCPs) at the AWS Organizations level."
+          }
+        },
+        {
+          "identifier": "AC-6",
+          "title": "Least Privilege",
+          "severity": "HIGH",
+          "description": "Grant FSx users, administrators, and application roles only the minimum permissions necessary to perform their duties. Avoid wildcard permissions on FSx resources.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Create fine-grained IAM policies scoped to specific FSx file system ARNs and actions in your IaC templates. Use IAM condition keys (e.g., aws:ResourceTag) to further restrict access based on resource tags."
+          }
+        },
+        {
+          "identifier": "AC-17",
+          "title": "Remote Access",
+          "severity": "HIGH",
+          "description": "Establish and document usage restrictions, configuration requirements, and implementation guidance for remote access to FSx file systems. Control all remote access connections.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Restrict remote access to FSx file systems by requiring VPN or AWS Direct Connect for access from on-premises environments. Prohibit direct internet-facing access to FSx endpoints and enforce VPC-only access through private DNS resolution."
+          }
+        },
+        {
+          "identifier": "AU-2",
+          "title": "Event Logging",
+          "severity": "HIGH",
+          "description": "Identify and log events related to FSx file system creation, deletion, modification, and access. Ensure that all relevant FSx API calls are captured in audit logs.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable AWS CloudTrail in all regions to capture FSx API calls. Enable FSx file access auditing where supported (e.g., FSx for Windows File Server). Forward logs to a centralized, tamper-resistant log store such as an S3 bucket with Object Lock enabled."
+          }
+        },
+        {
+          "identifier": "AU-3",
+          "title": "Content of Audit Records",
+          "severity": "MEDIUM",
+          "description": "Ensure that FSx audit records contain sufficient information to establish what events occurred, the source of events, and the outcome of events.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Configure CloudTrail to capture management and data events for FSx. Ensure log records include user identity, timestamp, source IP, request parameters, and response elements. Use CloudTrail Insights to detect anomalous activity patterns."
+          }
+        },
+        {
+          "identifier": "AU-9",
+          "title": "Protection of Audit Information",
+          "severity": "HIGH",
+          "description": "Protect FSx audit information and audit tools from unauthorized access, modification, and deletion to ensure log integrity.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Configure the CloudTrail S3 bucket in IaC templates with S3 Object Lock (WORM), server-side encryption using KMS, and bucket policies that deny deletion or modification of log objects. Enable CloudTrail log file validation."
+          }
+        },
+        {
+          "identifier": "CA-9",
+          "title": "Internal System Connections",
+          "severity": "MEDIUM",
+          "description": "Authorize and monitor internal connections between FSx file systems and other AWS services or on-premises systems. Ensure that all system interconnections are documented and controlled.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define VPC security group rules and network ACLs in IaC templates to explicitly allow only required internal connections to FSx file systems. Document all authorized system interconnections in architecture diagrams and maintain them in version control."
+          }
+        },
+        {
+          "identifier": "CM-2",
+          "title": "Baseline Configuration",
+          "severity": "MEDIUM",
+          "description": "Develop, document, and maintain a baseline configuration for FSx file systems, including security settings, network configurations, and encryption parameters.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define approved baseline FSx configurations as versioned IaC modules (Terraform modules or CloudFormation templates) and enforce their use through a CI/CD pipeline with policy-as-code checks (e.g., OPA, Checkov, or cfn-nag)."
+          }
+        },
+        {
+          "identifier": "CM-8",
+          "title": "System Component Inventory",
+          "severity": "MEDIUM",
+          "description": "Maintain an accurate inventory of all FSx file systems, including their configurations, ownership, data classification, and associated resources.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Use AWS Config to maintain a current inventory of all FSx resources. Tag all FSx resources with mandatory metadata tags (Owner, Environment, DataClassification) and use AWS Resource Groups to organize and track them."
+          }
+        },
+        {
+          "identifier": "CP-9",
+          "title": "System Backup",
+          "severity": "HIGH",
+          "description": "Conduct backups of FSx file system data at defined frequencies consistent with recovery time and recovery point objectives. Protect backup data with the same level of security controls as the source data.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Configure automatic daily backups in your FSx IaC templates with a retention period meeting your RPO requirements. Use AWS Backup to centralize backup management and apply backup plans with cross-region and cross-account copy rules."
+          }
+        },
+        {
+          "identifier": "CP-10",
+          "title": "System Recovery and Reconstitution",
+          "severity": "HIGH",
+          "description": "Provide for the recovery and reconstitution of FSx file systems to a known state after a disruption, compromise, or failure.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Document and test FSx restore procedures from AWS Backup or native FSx backups. Conduct recovery drills at least annually. Automate recovery workflows using AWS Lambda and AWS Backup restore jobs to minimize RTO."
+          }
+        },
+        {
+          "identifier": "IA-2",
+          "title": "Identification and Authentication (Organizational Users)",
+          "severity": "HIGH",
+          "description": "Uniquely identify and authenticate users accessing FSx file systems. Ensure that FSx for Windows File Server integrates with Microsoft Active Directory for user authentication.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Configure FSx for Windows File Server to use AWS Managed Microsoft AD or self-managed AD for user authentication. Enforce MFA for all administrative access through IAM Identity Center. For FSx for NetApp ONTAP, integrate with Active Directory for SMB authentication."
+          }
+        },
+        {
+          "identifier": "IA-5",
+          "title": "Authenticator Management",
+          "severity": "HIGH",
+          "description": "Manage and rotate credentials and authentication tokens used to access FSx resources. Enforce password complexity and rotation policies.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Use AWS Secrets Manager to store and automatically rotate credentials used for FSx administrative access. Ensure IAM access keys used to manage FSx resources are rotated regularly and monitored via AWS IAM Access Analyzer."
+          }
+        },
+        {
+          "identifier": "IR-4",
+          "title": "Incident Handling",
+          "severity": "HIGH",
+          "description": "Implement an incident handling capability for FSx security incidents that includes preparation, detection, analysis, containment, eradication, and recovery.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Define FSx-specific incident response runbooks for scenarios such as unauthorized access, data exfiltration, or ransomware. Integrate CloudWatch alarms and Security Hub findings with incident management tools (e.g., PagerDuty, Jira) for automated alerting and ticketing."
+          }
+        },
+        {
+          "identifier": "PM-31",
+          "title": "Continuous Monitoring Strategy",
+          "severity": "MEDIUM",
+          "description": "Establish a continuous monitoring strategy for FSx resources that assesses security controls, identifies vulnerabilities, and reports findings.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Configure AWS Config rules to continuously evaluate FSx resource configurations against compliance baselines. Set up CloudWatch dashboards and alarms for FSx performance and security metrics. Use Security Hub for aggregated compliance scoring."
+          }
+        },
+        {
+          "identifier": "RA-5",
+          "title": "Vulnerability Monitoring and Scanning",
+          "severity": "HIGH",
+          "description": "Monitor and scan FSx-related infrastructure for vulnerabilities. Address identified vulnerabilities in accordance with organizational risk assessments.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Use Amazon Inspector and AWS Security Hub to continuously assess FSx-adjacent EC2 instances and configurations for vulnerabilities. Integrate findings into your vulnerability management program and establish SLAs for remediation based on severity."
+          }
+        },
+        {
+          "identifier": "SC-7",
+          "title": "Boundary Protection",
+          "severity": "CRITICAL",
+          "description": "Monitor and control communications at FSx file system boundaries. Implement security groups and network ACLs to enforce boundary protection and prevent unauthorized access.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In IaC templates, define dedicated security groups for FSx with explicit allow rules for required protocols and ports only (e.g., TCP 445 for SMB, TCP 2049 for NFS). Deny all other traffic by default. Place FSx in private subnets with no internet gateway routing."
+          }
+        },
+        {
+          "identifier": "SC-8",
+          "title": "Transmission Confidentiality and Integrity",
+          "severity": "HIGH",
+          "description": "Implement cryptographic mechanisms to prevent unauthorized disclosure or modification of data in transit to and from FSx file systems.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable encryption in transit for all FSx file system types. For FSx for Windows File Server, enforce SMB encryption. For FSx for Lustre, use VPN or Direct Connect with TLS. For FSx for NetApp ONTAP, enable in-transit encryption for NFS and SMB protocols."
+          }
+        },
+        {
+          "identifier": "SC-12",
+          "title": "Cryptographic Key Establishment and Management",
+          "severity": "HIGH",
+          "description": "Establish and manage cryptographic keys used for FSx encryption at rest. Use customer-managed KMS keys with defined key rotation policies.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Create customer-managed KMS keys for FSx in IaC templates with automatic key rotation enabled. Define key policies that restrict usage to authorized roles and enable CloudTrail logging of all key usage events."
+          }
+        },
+        {
+          "identifier": "SC-13",
+          "title": "Cryptographic Protection",
+          "severity": "HIGH",
+          "description": "Implement FIPS-validated or NSA-approved cryptographic mechanisms to protect FSx data at rest and in transit.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Specify AES-256 encryption for FSx at rest via KMS in IaC templates. Ensure that TLS 1.2 or higher is enforced for all data-in-transit connections to FSx endpoints. Use AWS Certificate Manager for any associated TLS certificates."
+          }
+        },
+        {
+          "identifier": "SC-28",
+          "title": "Protection of Information at Rest",
+          "severity": "HIGH",
+          "description": "Implement cryptographic mechanisms to prevent unauthorized disclosure and modification of FSx data at rest.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Enforce encryption at rest for all FSx file system types in IaC templates using customer-managed KMS keys. Include compliance checks in CI/CD pipelines using tools like Checkov or Terraform Sentinel to prevent deployment of unencrypted FSx resources."
+          }
+        },
+        {
+          "identifier": "SI-3",
+          "title": "Malicious Code Protection",
+          "severity": "HIGH",
+          "description": "Implement malicious code protection mechanisms for FSx file systems, particularly for FSx for Windows File Server where files are accessed by end users.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Integrate Amazon Macie to detect sensitive data stored on S3 data repositories linked to FSx for Lustre. For FSx for Windows File Server, configure antivirus solutions via ICAP or native Windows Defender integration. Enable file access auditing to detect suspicious access patterns."
+          }
+        },
+        {
+          "identifier": "SI-4",
+          "title": "System Monitoring",
+          "severity": "HIGH",
+          "description": "Monitor FSx file systems to detect unauthorized access, anomalous usage, and security events. Generate alerts for suspicious activities.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Configure Amazon CloudWatch metrics and alarms for FSx performance and access metrics. Enable Amazon GuardDuty to detect threats related to FSx data access patterns. Set up CloudWatch Logs Insights queries for FSx audit logs."
+          }
+        },
+        {
+          "identifier": "SI-12",
+          "title": "Information Management and Retention",
+          "severity": "MEDIUM",
+          "description": "Manage and retain FSx-related information, including audit logs, backup metadata, and configuration records, in accordance with applicable retention policies.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define S3 lifecycle policies in IaC templates for FSx audit log storage with appropriate retention periods (e.g., 1 year for standard logs, 7 years for compliance workloads). Configure AWS Backup retention policies to align with data retention requirements."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cloud Security Alliance (CSA) Cloud Controls Matrix",
+      "version": "v4.0",
+      "controls": [
+        {
+          "identifier": "AIS-01",
+          "title": "Application and Interface Security - Application Security Baseline Requirements",
+          "severity": "HIGH",
+          "description": "Establish and enforce a security baseline for FSx file system configurations, ensuring that all deployments adhere to documented security standards for encryption, access control, and network isolation.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Codify the FSx security baseline as a reusable IaC module with mandatory parameters for encryption (KMS key ID), network placement (private subnets), and tagging. Enforce the module's use through CI/CD pipeline checks and deny deployments that deviate from the baseline."
+          }
+        },
+        {
+          "identifier": "BCR-01",
+          "title": "Business Continuity Management - Business Continuity Planning",
+          "severity": "HIGH",
+          "description": "Incorporate FSx file systems into the organization's business continuity plan, defining recovery objectives, backup frequencies, and failover procedures.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Document RPO and RTO requirements for FSx file systems and configure backup schedules and retention periods accordingly using AWS Backup. Test recovery procedures at least annually and document results."
+          }
+        },
+        {
+          "identifier": "BCR-11",
+          "title": "Business Continuity Management - Redundancy / Replication",
+          "severity": "HIGH",
+          "description": "Implement redundancy and replication mechanisms for FSx file systems to ensure availability in the event of infrastructure failures or disasters.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Deploy FSx for Windows File Server and FSx for NetApp ONTAP in Multi-AZ configurations in IaC templates. Configure cross-region backup replication using AWS Backup policies to ensure geographic redundancy."
+          }
+        },
+        {
+          "identifier": "CEK-01",
+          "title": "Cryptography, Encryption and Key Management - Encryption and Key Management Policy",
+          "severity": "CRITICAL",
+          "description": "Establish and enforce policies for encryption and key management applicable to FSx file systems, covering encryption at rest, encryption in transit, and key lifecycle management.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Create customer-managed KMS keys with key rotation enabled and restrictive key policies in IaC. Reference these keys in all FSx resource definitions. Document the encryption policy and enforce it via SCPs that deny creation of unencrypted FSx resources."
+          }
+        },
+        {
+          "identifier": "CEK-03",
+          "title": "Cryptography, Encryption and Key Management - Data Encryption",
+          "severity": "CRITICAL",
+          "description": "Encrypt all FSx file system data at rest and in transit using approved cryptographic algorithms and customer-managed keys.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In all FSx IaC templates, configure the 'kms_key_id' attribute with a customer-managed key and enable encryption in transit settings where supported. Use infrastructure-level policy controls to prevent deployment of FSx without encryption."
+          }
+        },
+        {
+          "identifier": "CEK-06",
+          "title": "Cryptography, Encryption and Key Management - Encryption Change Management",
+          "severity": "HIGH",
+          "description": "Manage changes to FSx encryption configurations through formal change management processes. Ensure that key rotation and re-encryption events are tracked and audited.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable CloudTrail logging for all KMS key operations related to FSx encryption. Use AWS Config to detect changes to KMS key policies or FSx encryption configurations and alert the security team."
+          }
+        },
+        {
+          "identifier": "DSI-01",
+          "title": "Data Security and Information Lifecycle Management - Classification",
+          "severity": "HIGH",
+          "description": "Classify data stored on FSx file systems according to the organization's data classification policy and apply appropriate security controls based on classification level.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Apply DataClassification tags to all FSx file systems and their associated data stores. Use Amazon Macie for S3 data repositories linked to FSx for Lustre to automatically classify sensitive data. Document classification policies and train users."
+          }
+        },
+        {
+          "identifier": "DSI-02",
+          "title": "Data Security and Information Lifecycle Management - Data Inventory and Flows",
+          "severity": "MEDIUM",
+          "description": "Maintain an inventory of data stored on FSx file systems and document data flows between FSx and other systems to support data governance and compliance requirements.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Use AWS Config and AWS Resource Groups to maintain an inventory of FSx file systems and their configurations. Document data flows in architecture diagrams and update them as part of change management processes."
+          }
+        },
+        {
+          "identifier": "DSI-07",
+          "title": "Data Security and Information Lifecycle Management - Secure Disposal",
+          "severity": "HIGH",
+          "description": "Ensure that data stored on FSx file systems is securely deleted when no longer required. Apply secure disposal procedures to decommissioned FSx resources.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable the 'skip_final_backup' attribute appropriately in IaC and ensure final backups are taken before deletion. When decommissioning FSx resources, verify that all associated backups are purged after the retention period. Use KMS key deletion to cryptographically erase data."
+          }
+        },
+        {
+          "identifier": "GRC-07",
+          "title": "Governance, Risk and Compliance - Information System Regulatory Mapping",
+          "severity": "MEDIUM",
+          "description": "Map FSx security controls to applicable regulatory requirements (e.g., PCI-DSS, HIPAA, SOC 2) and document compliance evidence for audit purposes.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Use AWS Audit Manager with pre-built frameworks (PCI-DSS, HIPAA) to automatically collect evidence for FSx controls. Enable Security Hub compliance standards relevant to your regulatory environment and review findings regularly."
+          }
+        },
+        {
+          "identifier": "IAM-01",
+          "title": "Identity and Access Management - Identity and Access Management Policy",
+          "severity": "HIGH",
+          "description": "Establish and enforce an identity and access management policy for FSx resources, defining roles, responsibilities, and access control requirements.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define IAM roles and policies for FSx in IaC templates, following the principle of least privilege. Enforce the use of IAM roles over long-term credentials. Document the IAM policy and review it at least annually."
+          }
+        },
+        {
+          "identifier": "IAM-02",
+          "title": "Identity and Access Management - Strong Authentication",
+          "severity": "HIGH",
+          "description": "Enforce strong authentication mechanisms for all access to FSx administrative interfaces and APIs, including multi-factor authentication for privileged users.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enforce MFA for all IAM users and roles with access to FSx resources using IAM policy conditions (aws:MultiFactorAuthPresent). Use IAM Identity Center with MFA for centralized user authentication. Prohibit API access using long-term IAM access keys."
+          }
+        },
+        {
+          "identifier": "IAM-08",
+          "title": "Identity and Access Management - User Access Review",
+          "severity": "HIGH",
+          "description": "Conduct periodic reviews of user access to FSx file systems and associated IAM roles to ensure access remains appropriate and aligned with the principle of least privilege.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Use AWS IAM Access Analyzer to identify unused access and over-privileged policies applied to FSx resources. Conduct quarterly access reviews and revoke unnecessary permissions. Document review results for audit purposes."
+          }
+        },
+        {
+          "identifier": "IVS-01",
+          "title": "Infrastructure and Virtualization Security - Audit Logging and Intrusion Detection",
+          "severity": "HIGH",
+          "description": "Implement audit logging and intrusion detection capabilities for FSx file systems to detect and respond to unauthorized access and anomalous activity.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable CloudTrail for FSx API logging and FSx file access auditing for Windows File Server. Enable Amazon GuardDuty for threat detection. Configure CloudWatch alarms for anomalous access patterns and integrate with a SIEM for correlation and alerting."
+          }
+        },
+        {
+          "identifier": "IVS-06",
+          "title": "Infrastructure and Virtualization Security - Network Security",
+          "severity": "CRITICAL",
+          "description": "Implement network security controls to protect FSx file systems from unauthorized network access, including firewall rules, network segmentation, and traffic monitoring.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define dedicated VPCs and subnets for FSx deployments in IaC templates. Configure security groups with least-privilege rules for FSx ports. Implement VPC Flow Logs for traffic monitoring and use AWS Network Firewall for advanced threat detection if required."
+          }
+        },
+        {
+          "identifier": "IVS-09",
+          "title": "Infrastructure and Virtualization Security - Segmentation",
+          "severity": "HIGH",
+          "description": "Segment FSx file systems from other workloads using VPC isolation, subnet placement, and security group controls to limit the blast radius of potential security incidents.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Deploy FSx in dedicated subnets isolated from publicly accessible workloads. Use VPC peering or AWS Transit Gateway with route table controls to limit inter-VPC access. Define subnet-level network ACLs in IaC to enforce traffic segmentation."
+          }
+        },
+        {
+          "identifier": "LOG-01",
+          "title": "Logging and Monitoring - Logging and Monitoring Policy",
+          "severity": "HIGH",
+          "description": "Establish and enforce a logging and monitoring policy for FSx resources that defines what events are logged, log retention periods, and monitoring responsibilities.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Document a logging policy that covers FSx API calls (CloudTrail), file access events, and performance metrics (CloudWatch). Specify log retention periods aligned with compliance requirements and assign ownership for monitoring activities."
+          }
+        },
+        {
+          "identifier": "LOG-05",
+          "title": "Logging and Monitoring - Audit Logs Protection",
+          "severity": "HIGH",
+          "description": "Protect FSx audit logs from unauthorized access, modification, and deletion to ensure log integrity and availability for forensic investigations.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Configure CloudTrail log storage in an S3 bucket with Object Lock (WORM), versioning, and server-side encryption using KMS. Apply restrictive bucket policies that deny deletion or modification of log objects. Enable MFA Delete on the logging bucket."
+          }
+        },
+        {
+          "identifier": "SEF-01",
+          "title": "Security Incident Management, E-Discovery, and Cloud Forensics - Policy and Procedures",
+          "severity": "MEDIUM",
+          "description": "Establish incident management policies and procedures specific to FSx security incidents, including evidence preservation, forensic analysis, and stakeholder notification.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Document FSx-specific incident response procedures covering common scenarios (unauthorized access, data exfiltration, ransomware). Ensure that FSx logs and backups can be preserved as forensic evidence. Train incident responders on FSx architecture and AWS investigation tools."
+          }
+        },
+        {
+          "identifier": "TVM-01",
+          "title": "Threat and Vulnerability Management - Antivirus and Malware Protection",
+          "severity": "HIGH",
+          "description": "Implement antivirus and malware protection for FSx file systems, particularly for Windows File Server, to detect and prevent malicious code from being stored or spread through shared file systems.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Configure third-party antivirus solutions using ICAP for FSx for Windows File Server. Enable file access auditing to detect suspicious patterns. Use Amazon GuardDuty to monitor for malware-related indicators in conjunction with FSx access logs."
+          }
+        }
+      ]
+    }
+  ],
+  "operational": [],
+  "cost": [
+    {
+      "name": "AWS FSx Cost Optimization Best Practices",
+      "version": "2024.1",
+      "controls": [
+        {
+          "identifier": "COST-FSx-001",
+          "title": "Right-size FSx file system storage and throughput capacity",
+          "severity": "HIGH",
+          "description": "Overprovisioning FSx storage capacity and throughput is one of the primary drivers of unnecessary cost. Regularly review utilization metrics and adjust storage and throughput capacity to match actual workload requirements.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Use Amazon CloudWatch metrics (StorageCapacityUtilization, DataReadBytes, DataWriteBytes) to monitor actual usage. Use FSx's storage and throughput scaling features to adjust capacity based on utilization trends. Implement CloudWatch alarms to alert when utilization falls below 40% for extended periods, indicating overprovisioning."
+          }
+        },
+        {
+          "identifier": "COST-FSx-002",
+          "title": "Select the appropriate FSx file system type for the workload",
+          "severity": "HIGH",
+          "description": "Choosing the wrong FSx file system type for a workload can result in significantly higher costs. Each FSx variant (Windows File Server, Lustre, NetApp ONTAP, OpenZFS) has different pricing models suited to different workload patterns.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Document workload requirements (protocol, throughput, latency, capacity) before selecting an FSx type. Encode the selected FSx type as the standard for specific workload categories in IaC module variables and enforce through pipeline guardrails."
+          }
+        },
+        {
+          "identifier": "COST-FSx-003",
+          "title": "Use FSx for Lustre scratch file systems for transient workloads",
+          "severity": "HIGH",
+          "description": "FSx for Lustre scratch file systems are significantly cheaper than persistent file systems and are appropriate for short-lived, compute-intensive workloads such as HPC jobs or batch processing where data durability is not required.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In IaC templates for batch or HPC workloads, specify SCRATCH_2 deployment type for FSx for Lustre. Implement lifecycle automation to delete scratch file systems upon job completion to eliminate ongoing storage costs."
+          }
+        },
+        {
+          "identifier": "COST-FSx-004",
+          "title": "Delete unused FSx file systems and backups",
+          "severity": "HIGH",
+          "description": "Orphaned FSx file systems and accumulated backups that are no longer needed continue to incur storage charges. Regularly audit and clean up unused resources to eliminate waste.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Use AWS Config rules and AWS Trusted Advisor to identify FSx file systems with zero active connections or low utilization. Configure AWS Backup lifecycle policies to automatically delete old backups after the retention period. Set up regular automated audits using AWS Lambda and tag-based resource management."
+          }
+        },
+        {
+          "identifier": "COST-FSx-005",
+          "title": "Optimize FSx backup retention periods",
+          "severity": "MEDIUM",
+          "description": "Excessive backup retention periods generate unnecessary storage costs. Align backup retention periods with actual recovery requirements and compliance obligations rather than defaulting to maximum retention.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In IaC templates, set the 'automatic_backup_retention_days' attribute to a value aligned with documented RPO and compliance requirements. Avoid setting unnecessarily long retention periods (e.g., 35 days) when shorter periods (e.g., 7-14 days) meet business needs."
+          }
+        },
+        {
+          "identifier": "COST-FSx-006",
+          "title": "Use FSx for NetApp ONTAP storage tiering to S3",
+          "severity": "HIGH",
+          "description": "FSx for NetApp ONTAP supports automatic data tiering to S3-based capacity pools at lower cost. Enabling FabricPool tiering for infrequently accessed data significantly reduces storage costs by moving cold data to cheaper tiers.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Configure FabricPool tiering policies on FSx for NetApp ONTAP volumes to automatically move data that has not been accessed for a defined period to the capacity pool tier. Use tiering minimum cooling days settings appropriate to your workload's access patterns."
+          }
+        },
+        {
+          "identifier": "COST-FSx-007",
+          "title": "Choose the appropriate FSx for Lustre storage type (SSD vs HDD)",
+          "severity": "MEDIUM",
+          "description": "FSx for Lustre persistent file systems can use SSD or HDD storage. HDD storage is significantly less expensive and appropriate for throughput-intensive workloads that do not require low latency random I/O.",
+          "implementation": {
+            "type": "IaC",
+            "description": "In IaC templates, evaluate workload I/O patterns before selecting the storage_type attribute. Set storage_type to HDD for throughput-intensive sequential workloads and reserve SSD for latency-sensitive random I/O workloads to optimize cost per GB."
+          }
+        },
+        {
+          "identifier": "COST-FSx-008",
+          "title": "Use single-AZ deployment for FSx when multi-AZ redundancy is not required",
+          "severity": "MEDIUM",
+          "description": "FSx Multi-AZ deployments incur higher costs due to standby resources. For development, test, or non-production workloads where high availability is not critical, single-AZ deployments offer significant cost savings.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define separate IaC configurations for production (Multi-AZ) and non-production (Single-AZ) FSx deployments. Use input variables to parameterize deployment type and enforce Multi-AZ only for production environments through pipeline policies."
+          }
+        },
+        {
+          "identifier": "COST-FSx-009",
+          "title": "Monitor and optimize FSx throughput capacity separately from storage",
+          "severity": "MEDIUM",
+          "description": "FSx charges separately for storage capacity and throughput capacity. It is common to overprovision throughput capacity to ensure performance headroom, but unutilized throughput capacity represents unnecessary cost.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Monitor CloudWatch metrics for FSx throughput utilization (DataReadOperations, DataWriteOperations). For FSx file system types that support independent throughput scaling (e.g., FSx for Windows File Server), reduce throughput capacity if sustained utilization is consistently below 50% of provisioned capacity."
+          }
+        },
+        {
+          "identifier": "COST-FSx-010",
+          "title": "Implement resource tagging for FSx cost allocation",
+          "severity": "MEDIUM",
+          "description": "Without proper cost allocation tags on FSx resources, it is impossible to accurately attribute FSx costs to specific teams, projects, or business units, making cost optimization efforts difficult.",
+          "implementation": {
+            "type": "IaC",
+            "description": "Define mandatory cost allocation tags (e.g., CostCenter, Project, Environment, Owner) in IaC templates for all FSx resources. Enforce tagging using AWS Config rules and AWS Organizations SCPs. Activate these tags in the AWS Billing console for cost allocation reporting."
+          }
+        },
+        {
+          "identifier": "COST-FSx-011",
+          "title": "Link FSx for Lustre to S3 and export data on completion",
+          "severity": "MEDIUM",
+          "description": "When using FSx for Lustre with S3 as a data repository, export processed data back to S3 and delete the FSx file system when processing is complete. Storing long-term data on FSx rather than S3 significantly increases costs.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Design pipelines to use FSx for Lustre as a high-performance processing layer linked to S3. After processing is complete, export results to S3 using data repository tasks and decommission the FSx file system. Use event-driven automation via AWS Step Functions or Lambda to orchestrate this lifecycle."
+          }
+        },
+        {
+          "identifier": "COST-FSx-012",
+          "title": "Enable and review AWS Cost Anomaly Detection for FSx",
+          "severity": "LOW",
+          "description": "Unexpected spikes in FSx costs due to unintended data growth, forgotten test file systems, or accidental over-provisioning can be detected early using AWS Cost Anomaly Detection.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Configure AWS Cost Anomaly Detection with a monitor scoped to the Amazon FSx service. Set alert thresholds appropriate to your expected spend patterns and route alerts to relevant stakeholders via SNS for prompt investigation and remediation."
+          }
+        },
+        {
+          "identifier": "COST-FSx-013",
+          "title": "Use AWS Budgets to set FSx spending limits",
+          "severity": "LOW",
+          "description": "Without spending limits, FSx costs can grow unchecked due to storage growth, undeleted resources, or provisioning errors. AWS Budgets provides proactive cost governance.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Create AWS Budgets alerts for FSx service costs at the account or linked account level, filtered by the fsx service code. Set budget thresholds that trigger alerts at 80% and 100% of expected spend to provide early warning of cost overruns."
+          }
+        },
+        {
+          "identifier": "COST-FSx-014",
+          "title": "Evaluate Intelligent Tiering and compression features on FSx for NetApp ONTAP",
+          "severity": "MEDIUM",
+          "description": "FSx for NetApp ONTAP supports data deduplication, compression, and compaction features that can significantly reduce the effective storage cost by reducing the amount of data stored on the file system.",
+          "implementation": {
+            "type": "Platform",
+            "description": "Enable deduplication, inline compression, and compaction on FSx for NetApp ONTAP volumes where workload data patterns are suitable (e.g., general purpose file shares, virtual desktop workloads). Monitor storage savings using CloudWatch and ONTAP CLI metrics to quantify cost reduction."
+          }
+        }
+      ]
+    }
+  ]
+}
